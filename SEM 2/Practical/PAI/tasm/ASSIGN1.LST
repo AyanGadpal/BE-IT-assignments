@@ -1,0 +1,260 @@
+Turbo Assembler	 Version 2.0	    02/04/19 11:35:36	    Page 1
+assign1.asm
+
+
+
+      1					     input   macro
+      2
+      3					     mov     ah,01h
+      4
+      5					     int     21h
+      6
+      7					     sub     al,30h
+      8
+      9					     mov     num1,al
+     10
+     11					     mov     ah,01h
+     12
+     13					     int     21h
+     14
+     15					     sub     al,30h
+     16
+     17					     mov     num2,al
+     18
+     19					     mov     al,num1
+     20
+     21					     mul     ten
+     22
+     23					     add     al,num2
+     24
+     25					     endm
+     26
+     27					     output  macro
+     28
+     29					     mov     ah,02h
+     30
+     31					     int     21h
+     32
+     33					     endm
+     34
+     35				     disp    macro   var
+     36
+     37					     lea     dx,var
+     38
+     39					     mov     ah,09h
+     40
+     41					     int     21h
+     42
+     43					     endm
+     44
+     45	0000				     .model  small
+     46
+     47	0000				     .stack
+     48
+     49	0000				     .data
+     50
+     51	0000  0A 0D 45 6E 74 65	72+  line1   db	     10,13,'Enter How Many No You Want to ADD:$'
+     52	      20 48 6F 77 20 4D	61+
+     53	      6E 79 20 4E 6F 20	59+
+     54	      6F 75 20 57 61 6E	74+
+     55	      20 74 6F 20 41 44	44+
+     56	      3A 24
+     57
+Turbo Assembler	 Version 2.0	    02/04/19 11:35:36	    Page 2
+assign1.asm
+
+
+
+     58	0025  0A 0D 45 6E 74 65	72+  line2   db	     10,13,'Enter nos:$'
+     59	      20 6E 6F 73 3A 24
+     60
+     61	0032  0A 0D 41 64 64 69	74+  line3   db	     10,13,'Addition=$'
+     62	      69 6F 6E 3D 24
+     63
+     64	003E  0A 0D 24		     line4   db	     10,13,'$'
+     65
+     66	0041  0F*(00)		     array   db	     15	dup(0)
+     67
+     68	0050  00		     count   db	     0
+     69
+     70	0051  00		     num1    db	     0
+     71
+     72	0052  00		     num2    db	     0
+     73
+     74	0053  00		     temp    db	     0
+     75
+     76	0054  10		     ten     db	     16
+     77
+     78	0055				     .code
+     79
+     80	0000  B8 0000s			     mov     ax,@data
+     81
+     82	0003  8E D8			     mov     ds,ax
+     83
+     84	0005  BE 0041r			     lea     si,array
+     85
+     86					     disp    line1
+1    87	0008  BA 0000r			     lea     dx,line1
+1    88	000B  B4 09			     mov     ah,09h
+1    89	000D  CD 21			     int     21h
+     90
+     91					     input
+1    92	000F  B4 01			     mov     ah,01h
+1    93	0011  CD 21			     int     21h
+1    94	0013  2C 30			     sub     al,30h
+1    95	0015  A2 0051r			     mov     num1,al
+1    96	0018  B4 01			     mov     ah,01h
+1    97	001A  CD 21			     int     21h
+1    98	001C  2C 30			     sub     al,30h
+1    99	001E  A2 0052r			     mov     num2,al
+1   100	0021  A0 0051r			     mov     al,num1
+1   101	0024  F6 26 0054r		     mul     ten
+1   102	0028  02 06 0052r		     add     al,num2
+    103
+    104	002C  A2 0050r			     mov     count,al
+    105
+    106	002F  8A 0E 0050r		     mov     cl,count
+    107
+    108					     disp    line4
+1   109	0033  BA 003Er			     lea     dx,line4
+1   110	0036  B4 09			     mov     ah,09h
+1   111	0038  CD 21			     int     21h
+    112
+    113	003A			     lb1:    disp    line2
+1   114	003A  BA 0025r			     lea     dx,line2
+Turbo Assembler	 Version 2.0	    02/04/19 11:35:36	    Page 3
+assign1.asm
+
+
+
+1   115	003D  B4 09			     mov     ah,09h
+1   116	003F  CD 21			     int     21h
+    117
+    118					     input
+1   119	0041  B4 01			     mov     ah,01h
+1   120	0043  CD 21			     int     21h
+1   121	0045  2C 30			     sub     al,30h
+1   122	0047  A2 0051r			     mov     num1,al
+1   123	004A  B4 01			     mov     ah,01h
+1   124	004C  CD 21			     int     21h
+1   125	004E  2C 30			     sub     al,30h
+1   126	0050  A2 0052r			     mov     num2,al
+1   127	0053  A0 0051r			     mov     al,num1
+1   128	0056  F6 26 0054r		     mul     ten
+1   129	005A  02 06 0052r		     add     al,num2
+    130
+    131	005E  88 04			     mov     [si],al
+    132
+    133	0060  46			     inc     si
+    134
+    135	0061  E2 D7			     loop    lb1
+    136
+    137					     disp    line4
+1   138	0063  BA 003Er			     lea     dx,line4
+1   139	0066  B4 09			     mov     ah,09h
+1   140	0068  CD 21			     int     21h
+    141
+    142					     disp    line3
+1   143	006A  BA 0032r			     lea     dx,line3
+1   144	006D  B4 09			     mov     ah,09h
+1   145	006F  CD 21			     int     21h
+    146
+    147	0071  B8 0000			     mov     ax,0000h
+    148
+    149	0074  8A 0E 0050r		     mov     cl,count
+    150
+    151	0078  BE 0041r			     lea     si,array
+    152
+    153	007B  02 04		     lb2:    add     al,[si]
+    154
+    155	007D  46			     inc     si
+    156
+    157	007E  E2 FB			     loop    lb2
+    158
+    159	0080  B5 02			     mov     ch,02h
+    160
+    161	0082  B1 04			     mov     cl,04h
+    162
+    163	0084  8A D8			     mov     bl,al
+    164
+    165	0086  D2 C3		     lb3:    rol     bl,cl
+    166
+    167	0088  8A D3			     mov     dl,bl
+    168
+    169	008A  80 E2 0F			     and     dl,0fh
+    170
+    171	008D  80 FA 09			     cmp     dl,09
+Turbo Assembler	 Version 2.0	    02/04/19 11:35:36	    Page 4
+assign1.asm
+
+
+
+    172
+    173	0090  76 03			     jbe     lb4
+    174
+    175	0092  80 C2 07			     add     dl,07
+    176
+    177	0095  80 C2 30		     lb4:    add     dl,30h
+    178
+    179					     output
+1   180	0098  B4 02			     mov     ah,02h
+1   181	009A  CD 21			     int     21h
+    182
+    183	009C  FE CD			     dec     ch
+    184
+    185	009E  75 E6			     jnz     lb3
+    186
+    187	00A0  B4 4C			     mov     ah,4ch
+    188
+    189	00A2  CD 21			     int     21h
+    190
+    191					     end
+Turbo Assembler	 Version 2.0	    02/04/19 11:35:36	    Page 5
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/04/19"
+??FILENAME			  Text	 "assign1 "
+??TIME				  Text	 "11:35:35"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ASSIGN1
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ARRAY				  Byte	 DGROUP:0041
+COUNT				  Byte	 DGROUP:0050
+LB1				  Near	 _TEXT:003A
+LB2				  Near	 _TEXT:007B
+LB3				  Near	 _TEXT:0086
+LB4				  Near	 _TEXT:0095
+LINE1				  Byte	 DGROUP:0000
+LINE2				  Byte	 DGROUP:0025
+LINE3				  Byte	 DGROUP:0032
+LINE4				  Byte	 DGROUP:003E
+NUM1				  Byte	 DGROUP:0051
+NUM2				  Byte	 DGROUP:0052
+TEMP				  Byte	 DGROUP:0053
+TEN				  Byte	 DGROUP:0054
+
+Macro Name
+
+DISP
+INPUT
+OUTPUT
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0400 Para	  Stack	  STACK
+  _DATA				  16  0055 Word	  Public  DATA
+_TEXT				  16  00A4 Word	  Public  CODE
+

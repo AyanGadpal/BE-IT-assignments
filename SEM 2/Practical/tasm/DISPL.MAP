@@ -1,0 +1,15 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0002FH 00030H _TEXT              CODE
+ 00030H 00032H 00003H _DATA              DATA
+
+  Address         Publics by Name
+
+
+  Address         Publics by Value
+
+
+Program entry point at 0000:0000
+Warning: No stack
+

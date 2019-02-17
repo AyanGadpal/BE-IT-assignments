@@ -1,0 +1,126 @@
+Turbo Assembler	 Version 2.0	    01/16/19 09:23:03	    Page 1
+ADDN.ASM
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  00		     a	     db	     0
+      6	0001  00		     b	     db	     0
+      7	0002  00		     c	     db	     0
+      8
+      9	0003			     .code
+     10				     print   MACRO   msg
+     11					     mov     ax,@data
+     12					     mov     ds,ax
+     13					     mov     ah,02h
+     14					     lea     dl,msg
+     15					     int     21h
+     16					     ENDM
+     17
+     18				     input   MACRO   var
+     19					     mov     ax,@data
+     20					     mov     ds,ax
+     21					     mov     ah,01h
+     22					     int     21h
+     23					     mov     var,al
+     24					     sub     var,30h
+     25					     ENDM
+     26
+     27				     addno   MACRO   x,y,z
+     28					     mov     ax,@data
+     29					     mov     ds,ax
+     30					     mov     al,x
+     31					     add     al,y
+     32					     mov     z,al
+     33					     add     z,30h
+     34					     ENDM
+     35
+     36
+     37	0000			     main    proc    far
+     38	0000  B8 0000s			     mov     ax,@data
+     39	0003  8E D8			     mov     ds,ax
+     40					     input   a
+1    41	0005  B8 0000s			     mov     ax,@data
+1    42	0008  8E D8			     mov     ds,ax
+1    43	000A  B4 01			     mov     ah,01h
+1    44	000C  CD 21			     int     21h
+1    45	000E  A2 0000r			     mov     a,al
+1    46	0011  80 2E 0000r 30		     sub     a,30h
+     47					     input   b
+1    48	0016  B8 0000s			     mov     ax,@data
+1    49	0019  8E D8			     mov     ds,ax
+1    50	001B  B4 01			     mov     ah,01h
+1    51	001D  CD 21			     int     21h
+1    52	001F  A2 0001r			     mov     b,al
+1    53	0022  80 2E 0001r 30		     sub     b,30h
+     54					     addno   a,b,c
+1    55	0027  B8 0000s			     mov     ax,@data
+1    56	002A  8E D8			     mov     ds,ax
+1    57	002C  A0 0000r			     mov     al,a
+Turbo Assembler	 Version 2.0	    01/16/19 09:23:03	    Page 2
+ADDN.ASM
+
+
+
+1    58	002F  02 06 0001r		     add     al,b
+1    59	0033  A2 0002r			     mov     c,al
+1    60	0036  80 06 0002r 30		     add     c,30h
+     61					     print   c
+1    62	003B  B8 0000s			     mov     ax,@data
+1    63	003E  8E D8			     mov     ds,ax
+1    64	0040  B4 02			     mov     ah,02h
+1    65	0042  BA 0002r			     lea     dl,c
+**Error** ADDN.ASM(43) PRINT(4)	Argument to operation or instruction has illegal size
+1    66	0045  CD 21			     int     21h
+     67	0047  B4 4C			     mov     ah,4ch
+     68	0049  CD 21			     int     21h
+     69	004B				     main    endp
+     70				     end     main
+Turbo Assembler	 Version 2.0	    01/16/19 09:23:03	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/16/19"
+??FILENAME			  Text	 "ADDN	  "
+??TIME				  Text	 "09:23:03"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ADDN
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+A				  Byte	 DGROUP:0000
+B				  Byte	 DGROUP:0001
+C				  Byte	 DGROUP:0002
+MAIN				  Far	 _TEXT:0000
+
+Macro Name
+
+ADDNO
+INPUT
+PRINT
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0003 Word	  Public  DATA
+_TEXT				  16  004B Word	  Public  CODE
+Turbo Assembler	 Version 2.0	    01/16/19 09:23:03	    Page 4
+Error Summary
+
+
+
+**Error** ADDN.ASM(43) PRINT(4)	Argument to operation or instruction has illegal size
+

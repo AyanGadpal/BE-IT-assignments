@@ -1,0 +1,40 @@
+.model small
+.data
+A DB 08H
+B DB 08H
+SUM1 DB ?
+.code
+MOV AX,@data
+MOV DS,AX
+
+MOV AL,A
+ADD AL,B
+DAA
+
+MOV CX,0204h
+MOV BL,AL
+
+@start:
+
+ROL BL,CL
+MOV DL,BL
+AND DL,0FH
+CMP DL,09H
+JBE @loop
+ADD DL,07H
+
+@loop:
+ADD DL,30H
+DEC CH
+
+MOV AH,02H
+INT 21H
+
+JNZ @start
+
+
+MOV AH,4CH
+INT 21H
+end
+
+

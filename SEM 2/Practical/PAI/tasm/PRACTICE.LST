@@ -1,0 +1,60 @@
+Turbo Assembler	 Version 2.0	    12/19/18 09:45:56	    Page 1
+practiceadd.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     stack 64
+      3	0000			     .data
+      4
+      5	0000  00D7		     d	      dw	     215
+      6	0002  007D		     e	      dw	     125
+      7	0004  ????		     f	      dw	     ?
+      8	0006			     .code
+      9
+     10	0000			     main     proc	  far
+     11	0000  B8 0000s			      mov	  ax,@data
+     12	0003  8E D8			      mov	  ds,ax
+     13	0005  A1 0000r			      mov	  ax,d
+     14	0008  03 06 0002r		      add	  ax,e
+     15	000C  A3 0004r			      mov	  f,ax
+     16
+     17
+     18	000F  B8 4C00			  mov		 ax,4c00h
+     19	0012  CD 21			  int		 21h
+     20
+     21	0014			     main endp
+     22					  end	      main
+Turbo Assembler	 Version 2.0	    12/19/18 09:45:56	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "12/19/18"
+??FILENAME			  Text	 "practice"
+??TIME				  Text	 "09:45:56"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 PRACTICE
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+D				  Word	 DGROUP:0000
+E				  Word	 DGROUP:0002
+F				  Word	 DGROUP:0004
+MAIN				  Far	 _TEXT:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0006 Word	  Public  DATA
+_TEXT				  16  0014 Word	  Public  CODE
+

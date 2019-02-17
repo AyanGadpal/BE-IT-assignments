@@ -1,0 +1,61 @@
+Turbo Assembler	 Version 2.0	    01/09/19 10:00:02	    Page 1
+addsum.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  00		     c	     db	     00
+      6
+      7	0001			     .code
+      8
+      9	0000			     main    proc    far
+     10	0000  B8 0000s			     mov     ax,@data
+     11	0003  8E D8			     mov     ds,ax
+     12	0005  B9 0005			     mov     cx,5
+     13
+     14	0008				     ath:
+     15	0008  B4 01			     mov     ah,01
+     16	000A  CD 21			     int     21h
+     17	000C  A0 0000r			     mov     al,c
+     18	000F  E2 F7			     loop    ath
+     19
+     20
+     21	0011  B8 4C00			     mov     ax,4c00h
+     22	0014  CD 21			     int     21h
+     23	0016			     main    endp
+     24					     end     main
+Turbo Assembler	 Version 2.0	    01/09/19 10:00:02	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/09/19"
+??FILENAME			  Text	 "addsum  "
+??TIME				  Text	 "10:00:02"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ADDSUM
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ATH				  Near	 _TEXT:0008
+C				  Byte	 DGROUP:0000
+MAIN				  Far	 _TEXT:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0001 Word	  Public  DATA
+_TEXT				  16  0016 Word	  Public  CODE
+

@@ -1,0 +1,61 @@
+Turbo Assembler	 Version 2.0	    12/26/18 10:32:22	    Page 1
+scanf.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4	0000  00		     charname	     db	     0
+      5
+      6	0001			     .code
+      7	0000			     main    proc    far
+      8
+      9	0000  B8 0000s			     mov     ax,@data
+     10	0003  8E D8			     mov     ds,ax
+     11
+     12	0005  B4 01			     mov     ah,01h
+     13	0007  CD 21			     int     21h
+     14	0009  A2 0000r			     mov     charname,al
+     15
+     16
+     17	000C  B4 02			     mov     ah,2
+     18	000E  8A 16 0000r		     mov     dl,charname
+     19					    ; mov     dl,'*'
+     20	0012  CD 21			     int     21h
+     21
+     22	0014  B8 4C00			     mov     ax,4c00h
+     23	0017  CD 21			     int     21h
+     24	0019			     main    endp
+     25					     end     main
+Turbo Assembler	 Version 2.0	    12/26/18 10:32:22	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "12/26/18"
+??FILENAME			  Text	 "scanf	  "
+??TIME				  Text	 "10:32:22"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 SCANF
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+CHARNAME			  Byte	 DGROUP:0000
+MAIN				  Far	 _TEXT:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0001 Word	  Public  DATA
+_TEXT				  16  0019 Word	  Public  CODE
+

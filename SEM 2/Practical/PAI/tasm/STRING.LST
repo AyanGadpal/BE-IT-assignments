@@ -1,0 +1,443 @@
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 1
+string.asm
+
+
+
+      1
+      2				     DISP MACRO	MSG
+      3					LEA DX,MSG
+      4					MOV AH,09H
+      5					INT 21H
+      6				     ENDM
+      7
+      8				     INPUT MACRO
+      9					MOV AH,01H
+     10					INT 21H;
+     11				     ENDM
+     12
+     13				     INTIALIZE MACRO
+     14					MOV AX,0000H
+     15					MOV BX,AX
+     16					MOV DX,AX
+     17					MOV CX,AX
+     18				     ENDM
+     19
+     20
+     21	0000			     .model small
+     22
+     23	0000			     .data
+     24					    ;-----------------STRING DECLARETION-------------------
+     25	0000  19*(24)			    STR1 DB 25 dup('$')
+     26	0019  19*(24)			    STR2 DB 25 dup('$')
+     27	0032  0A 49 4E 56 41 4C	49+	    invalid DB 10,'INVALID $'
+     28	      44 20 24
+     29	003C  0A 31 29 20 53 74	72+	    menu DB 10,'1) String Input	',10,'2) Display ',10,'3) Length',10,'4) Reverse',10,'5)    +
+     30	      69 6E 67 20 49 6E	70+  Palimdrome	',10,'6) EXIT ',10,'Your Choice	: $'
+     31	      75 74 20 0A 32 29	20+
+     32	      44 69 73 70 6C 61	79+
+     33	      20 0A 33 29 20 4C	65+
+     34	      6E 67 74 68 0A 34	29+
+     35	      20 52 65 76 65 72	73+
+     36	      65 0A 35 29 20 50	61+
+     37	      6C 69 6D 64 72 6F	6D+
+     38	      65 20 0A 36 29 20	45+
+     39	      58 49 54 20 0A 59	6F+
+     40	      75 72 20 43 68 6F	69+
+     41	      63 65 20 3A 20 24
+     42	0096  0A 45 6E 74 65 72	20+	    INPMSG DB 10,'Enter	the String : $'
+     43	      74 68 65 20 53 74	72+
+     44	      69 6E 67 20 3A 20	24
+     45	00AB  0A 4C 45 4E 47 54	48+	    LENMSG DB 10,'LENGTH : $'
+     46	      20 3A 20 24
+     47	00B6  0A 52 45 56 45 52	53+	    REVMSG DB 10,'REVERSE : $'
+     48	      45 20 3A 20 24
+     49	00C2  0A 50 41 4C 49 44	52+	    PALIMSG DB 10,'PALIDROME : $'
+     50	      4F 4D 45 20 3A 20	24
+     51	00D0  59 45 53 24		    YES	DB  'YES$'
+     52	00D4  4E 4F 24			    NO DB 'NO$'
+     53	00D7  0A 44 49 53 50 4C	41+	    DISPMSG DB 10,'DISPLAY    :$'
+     54	      59 09 20 3A 24
+     55	00E3  0A 42 59 45 20 42	59+	    BYE	DB 10,'BYE BYE$'
+     56	      45 24
+     57	00EC  0A 3D 3D 3D 3D 3D	3D+	    DLINE DB 10,'=========================================',10,'$'
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 2
+string.asm
+
+
+
+     58	      3D 3D 3D 3D 3D 3D	3D+
+     59	      3D 3D 3D 3D 3D 3D	3D+
+     60	      3D 3D 3D 3D 3D 3D	3D+
+     61	      3D 3D 3D 3D 3D 3D	3D+
+     62	      3D 3D 3D 3D 3D 3D	3D+
+     63	      0A 24
+     64	0118  0A 2D 2D 2D 2D 2D	2D+	    SLINE DB 10,'-----------------------------------------',10,'$'
+     65	      2D 2D 2D 2D 2D 2D	2D+
+     66	      2D 2D 2D 2D 2D 2D	2D+
+     67	      2D 2D 2D 2D 2D 2D	2D+
+     68	      2D 2D 2D 2D 2D 2D	2D+
+     69	      2D 2D 2D 2D 2D 2D	2D+
+     70	      0A 24
+     71
+     72	0144			     .code
+     73
+     74	0000  B8 0000s			    MOV	AX,@data
+     75	0003  8E D8			    MOV	DS,AX
+     76
+     77					   ;=============MAIN==============
+     78
+     79
+     80	0005			      menuD:
+     81					    DISP DLINE
+1    82	0005  BA 00ECr			LEA DX,DLINE
+1    83	0008  B4 09			MOV AH,09H
+1    84	000A  CD 21			INT 21H
+     85					    DISP menu
+1    86	000C  BA 003Cr			LEA DX,menu
+1    87	000F  B4 09			MOV AH,09H
+1    88	0011  CD 21			INT 21H
+     89					    INPUT
+1    90	0013  B4 01			MOV AH,01H
+1    91	0015  CD 21			INT 21H;
+     92	0017  3C 31			    CMP	AL,31H
+     93	0019  74 14			    JE F1
+     94
+     95	001B  3C 32			    CMP	AL,32H
+     96	001D  74 51			    JE F2
+     97
+     98	001F  3C 33			    CMP	AL,33H
+     99	0021  74 1F			    JE F3
+    100
+    101	0023  3C 34			    CMP	AL,34H
+    102	0025  74 27			    JE F4
+    103
+    104	0027  3C 35			    CMP	AL,35H
+    105	0029  74 32			    JE F5
+    106
+    107	002B  3C 36			    CMP	AL,36H
+    108	002D  74 5C			    JE F6
+    109
+    110	002F			       F1:
+    111					     DISP SLINE
+1   112	002F  BA 0118r			LEA DX,SLINE
+1   113	0032  B4 09			MOV AH,09H
+1   114	0034  CD 21			INT 21H
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 3
+string.asm
+
+
+
+    115					     DISP INPMSG
+1   116	0036  BA 0096r			LEA DX,INPMSG
+1   117	0039  B4 09			MOV AH,09H
+1   118	003B  CD 21			INT 21H
+    119	003D  E8 0064			     CALL INPUTSTR
+    120	0040  EB C3			     JMP menuD
+    121
+    122	0042			       F3:
+    123					     DISP SLINE
+1   124	0042  BA 0118r			LEA DX,SLINE
+1   125	0045  B4 09			MOV AH,09H
+1   126	0047  CD 21			INT 21H
+    127	0049  E8 0069			     CALL LENPROC
+    128	004C  EB B7			     JMP menuD
+    129	004E			       F4:
+    130					     DISP SLINE
+1   131	004E  BA 0118r			LEA DX,SLINE
+1   132	0051  B4 09			MOV AH,09H
+1   133	0053  CD 21			INT 21H
+    134	0055  E8 0103			     CALL STRCPY
+    135	0058  E8 0076			     CALL STRREV
+    136	005B  EB A8			     JMP menuD
+    137
+    138	005D			       F5:
+    139					     DISP SLINE
+1   140	005D  BA 0118r			LEA DX,SLINE
+1   141	0060  B4 09			MOV AH,09H
+1   142	0062  CD 21			INT 21H
+    143					     DISP PALIMSG
+1   144	0064  BA 00C2r			LEA DX,PALIMSG
+1   145	0067  B4 09			MOV AH,09H
+1   146	0069  CD 21			INT 21H
+    147	006B  E8 00A3			     CALL PALICMP
+    148	006E  EB 95			     JMP menuD
+    149
+    150	0070			       F2:
+    151					     DISP SLINE
+1   152	0070  BA 0118r			LEA DX,SLINE
+1   153	0073  B4 09			MOV AH,09H
+1   154	0075  CD 21			INT 21H
+    155	0077  E8 00E1			     CALL STRCPY
+    156					     DISP DISPMSG
+1   157	007A  BA 00D7r			LEA DX,DISPMSG
+1   158	007D  B4 09			MOV AH,09H
+1   159	007F  CD 21			INT 21H
+    160					     DISP STR2+2
+1   161	0081  BA 001Br			LEA DX,STR2+2
+1   162	0084  B4 09			MOV AH,09H
+1   163	0086  CD 21			INT 21H
+    164
+    165	0088  E9 FF7A			     JMP menuD
+    166
+    167	008B			       F6:   DISP DLINE
+1   168	008B  BA 00ECr			LEA DX,DLINE
+1   169	008E  B4 09			MOV AH,09H
+1   170	0090  CD 21			INT 21H
+    171					     DISP BYE
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 4
+string.asm
+
+
+
+1   172	0092  BA 00E3r			LEA DX,BYE
+1   173	0095  B4 09			MOV AH,09H
+1   174	0097  CD 21			INT 21H
+    175					     DISP DLINE
+1   176	0099  BA 00ECr			LEA DX,DLINE
+1   177	009C  B4 09			MOV AH,09H
+1   178	009E  CD 21			INT 21H
+    179					     ;================END MAIN==============
+    180
+    181	00A0  B4 4C			    MOV	AH,4CH
+    182	00A2  CD 21			    INT	21H
+    183
+    184	00A4				    INPUTSTR PROC
+    185						INTIALIZE
+1   186	00A4  B8 0000			MOV AX,0000H
+1   187	00A7  8B D8			MOV BX,AX
+1   188	00A9  8B D0			MOV DX,AX
+1   189	00AB  8B C8			MOV CX,AX
+    190	00AD  BA 0000r				LEA DX,STR1
+    191	00B0  B4 0A				MOV AH,0AH
+    192	00B2  CD 21				INT 21H
+    193	00B4  C3			    RET
+    194	00B5				    ENDP INPUTSTR
+    195
+    196	00B5				    LENPROC PROC
+    197					       INTIALIZE
+1   198	00B5  B8 0000			MOV AX,0000H
+1   199	00B8  8B D8			MOV BX,AX
+1   200	00BA  8B D0			MOV DX,AX
+1   201	00BC  8B C8			MOV CX,AX
+    202					       DISP LENMSG
+1   203	00BE  BA 00ABr			LEA DX,LENMSG
+1   204	00C1  B4 09			MOV AH,09H
+1   205	00C3  CD 21			INT 21H
+    206	00C5  8A 16 0001r		       MOV DL,STR1+1
+    207	00C9  80 C2 30			       ADD DL,30H
+    208	00CC  B4 02			       MOV AH,02H
+    209	00CE  CD 21			       INT 21H
+    210	00D0  C3			    RET
+    211	00D1				    ENDP LENPROC
+    212
+    213	00D1				    STRREV PROC
+    214
+    215
+    216
+    217					       INTIALIZE
+1   218	00D1  B8 0000			MOV AX,0000H
+1   219	00D4  8B D8			MOV BX,AX
+1   220	00D6  8B D0			MOV DX,AX
+1   221	00D8  8B C8			MOV CX,AX
+    222
+    223	00DA  8A 0E 0001r		       MOV CL,STR1+1
+    224	00DE  80 E9 01			       SUB CL,1H
+    225	00E1  BE 0002r			       LEA SI,STR1+2
+    226
+    227	00E4				       L1:
+    228	00E4  46				     INC SI
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 5
+string.asm
+
+
+
+    229	00E5  FE C9				     DEC CL
+    230	00E7  80 F9 00				     CMP CL,0
+    231	00EA  75 F8				     JNE L1
+    232
+    233	00EC  BF 0002r			       LEA DI,STR1+2
+    234	00EF  A0 0001r			       MOV AL,STR1+1
+    235	00F2  B3 02			       MOV BL,02H
+    236	00F4  F6 F3			       DIV BL
+    237	00F6  8A C8			       MOV CL,AL
+    238	00F8				       L2:
+    239	00F8  8A 15				     MOV DL,[DI]
+    240	00FA  8A 04				     MOV AL,[SI]
+    241	00FC  88 14				     MOV [SI],DL
+    242	00FE  88 05				     MOV [DI],AL
+    243	0100  47				     INC DI
+    244	0101  4E				     DEC SI
+    245	0102  FE C9				     DEC CL
+    246	0104  80 F9 00				     CMP CL,0
+    247	0107  75 EF				     JNE L2
+    248					       DISP STR1+2
+1   249	0109  BA 0002r			LEA DX,STR1+2
+1   250	010C  B4 09			MOV AH,09H
+1   251	010E  CD 21			INT 21H
+    252	0110  C3			    RET
+    253	0111				    ENDP STRREV
+    254
+    255
+    256	0111				    PALICMP PROC
+    257
+    258					    INTIALIZE
+1   259	0111  B8 0000			MOV AX,0000H
+1   260	0114  8B D8			MOV BX,AX
+1   261	0116  8B D0			MOV DX,AX
+1   262	0118  8B C8			MOV CX,AX
+    263
+    264	011A  8A 0E 0001r		       MOV CL,STR1+1
+    265	011E  80 E9 01			       SUB CL,1H
+    266	0121  BE 0002r			       LEA SI,STR1+2
+    267
+    268	0124				       K1:
+    269	0124  46				     INC SI
+    270	0125  FE C9				     DEC CL
+    271	0127  80 F9 00				     CMP CL,0
+    272	012A  75 F8				     JNE K1
+    273
+    274	012C  BF 0002r			       LEA DI,STR1+2
+    275	012F  A0 0001r			       MOV AL,STR1+1
+    276	0132  B3 02			       MOV BL,02H
+    277	0134  F6 F3			       DIV BL
+    278	0136  8A C8			       MOV CL,AL
+    279	0138				       K2:
+    280	0138  8A 15				     MOV DL,[DI]
+    281	013A  8A 04				     MOV AL,[SI]
+    282	013C  3A D0				     CMP DL,AL
+    283	013E  75 13				     JNE K3
+    284
+    285	0140  47				     INC DI
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 6
+string.asm
+
+
+
+    286	0141  4E				     DEC SI
+    287	0142  FE C9				     DEC CL
+    288	0144  80 F9 00				     CMP CL,0
+    289	0147  75 EF				     JNE K2
+    290					       DISP YES
+1   291	0149  BA 00D0r			LEA DX,YES
+1   292	014C  B4 09			MOV AH,09H
+1   293	014E  CD 21			INT 21H
+    294	0150  EB 08 90			       JMP K4
+    295
+    296
+    297	0153				    K3:
+    298					       DISP NO
+1   299	0153  BA 00D4r			LEA DX,NO
+1   300	0156  B4 09			MOV AH,09H
+1   301	0158  CD 21			INT 21H
+    302	015A				    K4:
+    303
+    304	015A  C3			    RET
+    305	015B				    ENDP PALICMP
+    306
+    307	015B				    STRCPY PROC
+    308						     INTIALIZE
+1   309	015B  B8 0000			MOV AX,0000H
+1   310	015E  8B D8			MOV BX,AX
+1   311	0160  8B D0			MOV DX,AX
+1   312	0162  8B C8			MOV CX,AX
+    313	0164  8A 0E 0001r			     MOV CL,STR1+1
+    314
+    315
+    316
+    317
+    318	0168  BE 0002r				     LEA SI,STR1+2
+    319	016B  BF 001Br				     LEA DI,STR2+2
+    320						     ;REP MOVSB
+    321
+    322	016E					     J1:
+    323
+    324	016E  8A 14					 MOV DL,[SI]
+    325	0170  88 15					 MOV [DI],DL
+    326	0172  46					 INC SI
+    327	0173  47					 INC DI
+    328	0174  FE C9					 DEC CL
+    329	0176  80 F9 00					 CMP CL,0H
+    330	0179  75 F3					 JNE J1
+    331
+    332
+    333
+    334
+    335
+    336	017B  C3			    RET
+    337	017C				    ENDP STRCPY
+    338
+    339
+    340
+    341				     end
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 7
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/11/19"
+??FILENAME			  Text	 "string  "
+??TIME				  Text	 "12:29:25"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 STRING
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+BYE				  Byte	 DGROUP:00E3
+DISPMSG				  Byte	 DGROUP:00D7
+DLINE				  Byte	 DGROUP:00EC
+F1				  Near	 _TEXT:002F
+F2				  Near	 _TEXT:0070
+F3				  Near	 _TEXT:0042
+F4				  Near	 _TEXT:004E
+F5				  Near	 _TEXT:005D
+F6				  Near	 _TEXT:008B
+INPMSG				  Byte	 DGROUP:0096
+INPUTSTR			  Near	 _TEXT:00A4
+INVALID				  Byte	 DGROUP:0032
+J1				  Near	 _TEXT:016E
+K1				  Near	 _TEXT:0124
+K2				  Near	 _TEXT:0138
+K3				  Near	 _TEXT:0153
+K4				  Near	 _TEXT:015A
+L1				  Near	 _TEXT:00E4
+L2				  Near	 _TEXT:00F8
+LENMSG				  Byte	 DGROUP:00AB
+LENPROC				  Near	 _TEXT:00B5
+MENU				  Byte	 DGROUP:003C
+MENUD				  Near	 _TEXT:0005
+NO				  Byte	 DGROUP:00D4
+PALICMP				  Near	 _TEXT:0111
+PALIMSG				  Byte	 DGROUP:00C2
+REVMSG				  Byte	 DGROUP:00B6
+SLINE				  Byte	 DGROUP:0118
+STR1				  Byte	 DGROUP:0000
+STR2				  Byte	 DGROUP:0019
+STRCPY				  Near	 _TEXT:015B
+STRREV				  Near	 _TEXT:00D1
+YES				  Byte	 DGROUP:00D0
+
+Macro Name
+
+DISP
+INPUT
+INTIALIZE
+Turbo Assembler	 Version 2.0	    02/11/19 12:29:25	    Page 8
+Symbol Table
+
+
+
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0144 Word	  Public  DATA
+_TEXT				  16  017C Word	  Public  CODE
+

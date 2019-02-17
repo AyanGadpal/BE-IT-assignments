@@ -1,0 +1,141 @@
+Turbo Assembler	 Version 2.0	    01/14/19 12:49:25	    Page 1
+nip.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  0A 0D 68 6F 77 20	6D+  m1	     db	     10,13,'how	many nos?:$'
+      6	      61 6E 79 20 6E 6F	73+
+      7	      3F 3A 24
+      8
+      9	0011  0A 0D 65 6E 74 65	72+  m2	     db	     10,13,'enter nos:$'
+     10	      20 6E 6F 73 3A 24
+     11
+     12	001E  0A 0D 61 64 64 69	74+  m3	     db	     10,13,'addition=$'
+     13	      69 6F 6E 3D 24
+     14
+     15	002A  0A 0D 24		     m4	     db	     10,13,'$'
+     16
+     17	002D  0A*(00)		     array   db	     10	dup(0)
+     18
+     19	0037  00		     count   db	     0
+     20	0038				     .code
+     21
+     22	0000  B8 0000s			     mov     ax,@data
+     23	0003  8E D8			     mov     ds,ax
+     24	0005  BE 002Dr			     lea     si,array
+     25					     disp    m1
+**Error** nip.asm(21) Illegal instruction
+     26
+     27					     input
+**Error** nip.asm(23) Illegal instruction
+     28	0008  2C 30			     sub     al,30h
+     29	000A  A2 0037r			     mov     count,al
+     30	000D  8A 0E 0037r		     mov     cl,count
+     31					     disp    m4
+**Error** nip.asm(27) Illegal instruction
+     32	0011			     s1:     disp    m2
+**Error** nip.asm(28) Illegal instruction
+     33
+     34					     input
+**Error** nip.asm(30) Illegal instruction
+     35
+     36	0011  88 04			     mov     [si],al
+     37	0013  46			     inc     si
+     38	0014  E2 EA			     loop    s2
+**Error** nip.asm(34) Undefined	symbol:	S2
+     39
+     40	0016  B5 02			     mov     ch,02h
+     41
+     42	0018  C7 06 0000 0004		     mov     c1,04h
+**Error** nip.asm(38) Undefined	symbol:	C1
+*Warning* nip.asm(38) Argument needs type override
+     43
+     44	001E  8A D8			     mov     bl,al
+     45
+     46	0020  D2 C3		     s3:     rol     bl,cl
+     47
+     48	0022  8A D3			     mov     dl,bl
+     49
+Turbo Assembler	 Version 2.0	    01/14/19 12:49:25	    Page 2
+nip.asm
+
+
+
+     50	0024  80 E2 0F			     and     dl,0fh
+     51
+     52	0027  80 FA 09			     cmp     dl,09
+     53
+     54	002A  76 03			     jbe     s4
+     55
+     56	002C  80 C2 07			     add     dl,07
+     57
+     58	002F  80 C2 30		     s4:     add     dl,30h
+     59					     output
+**Error** nip.asm(55) Illegal instruction
+     60
+     61	0032  FE CD			     dec     ch
+     62	0034  75 EA			     jnz     s3
+     63	0036  B4 4C			     mov     ah,4ch
+     64	0038  CD 21			     int     21h
+     65	003A			     main    endp
+**Error** nip.asm(61) Unmatched	ENDP: MAIN
+     66					     end     main
+**Error** nip.asm(62) Undefined	symbol:	MAIN
+Turbo Assembler	 Version 2.0	    01/14/19 12:49:25	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/14/19"
+??FILENAME			  Text	 "nip	  "
+??TIME				  Text	 "12:49:25"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 NIP
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ARRAY				  Byte	 DGROUP:002D
+COUNT				  Byte	 DGROUP:0037
+M1				  Byte	 DGROUP:0000
+M2				  Byte	 DGROUP:0011
+M3				  Byte	 DGROUP:001E
+M4				  Byte	 DGROUP:002A
+S1				  Near	 _TEXT:0011
+S3				  Near	 _TEXT:0020
+S4				  Near	 _TEXT:002F
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0038 Word	  Public  DATA
+_TEXT				  16  003A Word	  Public  CODE
+Turbo Assembler	 Version 2.0	    01/14/19 12:49:25	    Page 4
+Error Summary
+
+
+
+**Error** nip.asm(21) Illegal instruction
+**Error** nip.asm(23) Illegal instruction
+**Error** nip.asm(27) Illegal instruction
+**Error** nip.asm(28) Illegal instruction
+**Error** nip.asm(30) Illegal instruction
+**Error** nip.asm(34) Undefined	symbol:	S2
+**Error** nip.asm(38) Undefined	symbol:	C1
+*Warning* nip.asm(38) Argument needs type override
+**Error** nip.asm(55) Illegal instruction
+**Error** nip.asm(61) Unmatched	ENDP: MAIN
+**Error** nip.asm(62) Undefined	symbol:	MAIN
+

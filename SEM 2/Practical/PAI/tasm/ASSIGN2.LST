@@ -1,0 +1,361 @@
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 1
+assign2.asm
+
+
+
+      1	0000				.model small
+      2	0000				.stack 100h
+      3	0000				.data
+      4	0000  0A 0A 0A 45 6E 74	65+	   msg0	db 10,10,10,'Enter choice    :	','$'
+      5	      72 20 63 68 6F 69	63+
+      6	      65 20 20 20 20 3A	20+
+      7	      20 24
+      8	0017  0A 31 2E 42 43 44	20+	   msg1	db 10,'1.BCD to	Hexadecimal  ','$'
+      9	      74 6F 20 48 65 78	61+
+     10	      64 65 63 69 6D 61	6C+
+     11	      20 20 24
+     12	002F  0A 32 20 48 65 78	61+	   msg2	db 10,'2 Hexadecimal to	BCD ','$'
+     13	      64 65 63 69 6D 61	6C+
+     14	      20 74 6F 20 42 43	44+
+     15	      20 24
+     16	0046  0A 33 2E 45 78 69	74+	   msg3	db 10,'3.Exit  ','$'
+     17	      20 20 24
+     18	0050  0A 0A 45 6E 74 65	72+	   msg4	db 10,10,'Enter	5 digit	BCD no : ','$'
+     19	      20 35 20 64 69 67	69+
+     20	      74 20 42 43 44 20	6E+
+     21	      6F 20 3A 20 24
+     22	006A  0A 48 45 58 20 76	61+	   msg5	db 10,'HEX value is	    : ','$'
+     23	      6C 75 65 20 69 73	20+
+     24	      20 20 20 20 20 20	20+
+     25	      20 3A 20 24
+     26	0083  0A 0A 45 6E 74 65	72+	   msg6	db 10,10,'Enter	4 digit	HEX no : ','$'
+     27	      20 34 20 64 69 67	69+
+     28	      74 20 48 45 58 20	6E+
+     29	      6F 20 3A 20 24
+     30	009D  0A 42 43 44 20 6E	6F+	   msg7	db 10,'BCD no is	    : ','$'
+     31	      20 69 73 20 20 20	20+
+     32	      20 20 20 20 20 20	20+
+     33	      20 3A 20 24
+     34	00B6  0A 49 6E 76 61 6C	69+	   msg8	db 10,'Invalid Input   ','$'
+     35	      64 20 49 6E 70 75	74+
+     36	      20 20 20 24
+     37	00C8  00			   k  db 0
+     38	00C9  05*(00)			   array db 5 dup(0)
+     39	00CE  0000			   res dw 0
+     40	00D0  0000			   i dw	0
+     41
+     42					   disp1 MACRO msg
+     43					     lea dx,msg
+     44					     mov ah,09h
+     45					     int 21h
+     46					  ENDM
+     47
+     48					  INPUT	MACRO
+     49					     mov ah,01h
+     50					     int 21h
+     51					  ENDM
+     52
+     53					  OUTPUT MACRO
+     54					     mov ah,02h
+     55					     int 21h
+     56					 ENDM
+     57	00D2				.code
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 2
+assign2.asm
+
+
+
+     58
+     59	0000  B8 0000s			   mov ax,@data
+     60	0003  8E D8			   mov ds,ax
+     61
+     62	0005				   label1:
+     63					     disp1 msg0
+1    64	0005  BA 0000r			     lea dx,msg0
+1    65	0008  B4 09			     mov ah,09h
+1    66	000A  CD 21			     int 21h
+     67					     disp1 msg1
+1    68	000C  BA 0017r			     lea dx,msg1
+1    69	000F  B4 09			     mov ah,09h
+1    70	0011  CD 21			     int 21h
+     71					     disp1 msg2
+1    72	0013  BA 002Fr			     lea dx,msg2
+1    73	0016  B4 09			     mov ah,09h
+1    74	0018  CD 21			     int 21h
+     75					     disp1 msg3
+1    76	001A  BA 0046r			     lea dx,msg3
+1    77	001D  B4 09			     mov ah,09h
+1    78	001F  CD 21			     int 21h
+     79	0021  B4 01			   mov ah,01h
+     80	0023  CD 21			   int 21h
+     81	0025  A2 00C8r			   mov k,al
+     82
+     83	0028  80 3E 00C8r 31			  cmp k,31h
+     84	002D  74 10				  je l1
+     85	002F  80 3E 00C8r 32			  cmp k,32h
+     86	0034  74 0E				  je l2
+     87	0036  80 3E 00C8r 33			  cmp k,33h
+     88	003B  74 0C				  je l3
+     89	003D  EB C6				  jmp label1
+     90	003F  E8 0014				  l1:call bcd_to_hex
+     91	0042  EB C1				     jmp label1
+     92	0044  E8 00A2				  l2:call hex_to_bcd
+     93	0047  EB BC				     jmp label1
+     94	0049					  l3:
+     95
+     96	0049  80 3E 00C8r 33			  cmp k,33h
+     97	004E  74 02				  je l4
+     98
+     99	0050  EB B3				  jmp label1
+    100
+    101	0052  B4 4C		      l4:  mov ah,4ch
+    102	0054  CD 21			   int 21h
+    103
+    104	0056				   bcd_to_hex proc near
+    105
+    106					    disp1 msg4
+1   107	0056  BA 0050r			     lea dx,msg4
+1   108	0059  B4 09			     mov ah,09h
+1   109	005B  CD 21			     int 21h
+    110
+    111	005D  BE 00C9r			    lea	si,array
+    112	0060  B5 05			    mov	ch,05h
+    113
+    114
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 3
+assign2.asm
+
+
+
+    115
+    116	0062				    loop1: INPUT
+1   117	0062  B4 01			     mov ah,01h
+1   118	0064  CD 21			     int 21h
+    119	0066  3C 39				   cmp al,39h
+    120	0068  77 F8				   ja loop1
+    121	006A  B4 00				   mov ah,00h
+    122	006C  2D 0030				   sub ax,30h
+    123	006F  89 04				   mov [si],ax
+    124
+    125	0071  46				   inc si
+    126	0072  FE CD				   dec ch
+    127	0074  75 EC				   jnz loop1
+    128					   ; dec si
+    129	0076  83 EE 05			    sub	si,05
+    130	0079  8B 04			    mov	ax,[si]
+    131	007B  3C 06			    cmp	al,06h
+    132	007D  77 3F			    ja invalid
+    133	007F  83 C6 04			    add	si,04
+    134	0082  B5 05			    mov	ch,05h
+    135	0084  B8 0000			    mov	ax,0000h
+    136	0087  C7 06 00CEr 0000		    mov	res,0000h
+    137	008D  C7 06 00D0r 0001		    mov	i,0001h
+    138	0093  8B 1C			    loop4: mov bx,[si]
+    139	0095  B7 00				   mov bh,00h
+    140	0097  8B C3				   mov ax,bx
+    141	0099  F7 26 00D0r			   mul i
+    142
+    143	009D  01 06 00CEr			   add res,ax
+    144	00A1  A1 00D0r				   mov ax,i
+    145	00A4  BB 000A				   mov bx,000Ah
+    146	00A7  F7 E3				   mul bx
+    147	00A9  A3 00D0r				   mov i,ax
+    148
+    149
+    150
+    151	00AC  4E				   dec si
+    152	00AD  FE CD				   dec ch
+    153	00AF  75 E2				   jnz loop4
+    154
+    155					  disp1	msg5
+1   156	00B1  BA 006Ar			     lea dx,msg5
+1   157	00B4  B4 09			     mov ah,09h
+1   158	00B6  CD 21			     int 21h
+    159	00B8  E8 000B			  call disp
+    160	00BB  EB 08 90			  jmp r1
+    161	00BE				  invalid:  disp1 msg8
+1   162	00BE  BA 00B6r			     lea dx,msg8
+1   163	00C1  B4 09			     mov ah,09h
+1   164	00C3  CD 21			     int 21h
+    165	00C5  C3			  r1:  ret
+    166	00C6				  bcd_to_hex ENDP
+    167
+    168
+    169	00C6				     disp proc near
+    170	00C6  A1 00CEr				      mov ax,res
+    171	00C9  8B D8				      mov bx,ax
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 4
+assign2.asm
+
+
+
+    172	00CB  B9 0404				      mov cx,0404h
+    173	00CE					     loop5:
+    174	00CE  D3 C3					    rol	bx,cl
+    175	00D0  8A D3					    mov	dl,bl
+    176	00D2  80 E2 0F					    and	dl,0Fh
+    177	00D5  80 FA 09					    cmp	dl,09h
+    178	00D8  76 03					    jbe	l
+    179	00DA  80 C2 07					    add	dl,07h
+    180	00DD  80 C2 30					 l:add dl,30h
+    181
+    182							    OUTPUT
+1   183	00E0  B4 02			     mov ah,02h
+1   184	00E2  CD 21			     int 21h
+    185	00E4  FE CD					    dec	ch
+    186	00E6  75 E6					    jnz	loop5
+    187	00E8  C3					    ret
+    188	00E9				     disp endp
+    189
+    190
+    191
+    192
+    193
+    194	00E9				   hex_to_bcd proc near
+    195
+    196					    disp1 msg6
+1   197	00E9  BA 0083r			     lea dx,msg6
+1   198	00EC  B4 09			     mov ah,09h
+1   199	00EE  CD 21			     int 21h
+    200
+    201	00F0  B9 0404			    mov	cx,0404h
+    202	00F3  BA 0000			    mov	dx,0000h
+    203	00F6				    w1:INPUT
+1   204	00F6  B4 01			     mov ah,01h
+1   205	00F8  CD 21			     int 21h
+    206	00FA  3C 39			       cmp al,39h
+    207	00FC  76 10			       jbe s1
+    208	00FE  3C 41			       cmp al,41h
+    209	0100  76 F4			       jbe w1
+    210	0102  3C 46			       cmp al,46h
+    211	0104  76 08			       jbe s1
+    212	0106  3C 61			       cmp al,61h
+    213	0108  72 EC			       jb w1
+    214	010A  3C 66			       cmp al,66h
+    215	010C  77 E8			       ja w1
+    216
+    217	010E  B4 00			     s1:  mov ah,00h
+    218	0110  2D 0030				  sub ax,0030h
+    219	0113  3C 09				  cmp al,09h
+    220	0115  76 08				  jbe d2
+    221
+    222	0117  2C 07				  sub al,07h
+    223
+    224	0119  3C 29				  cmp al,29h
+    225	011B  76 02				  jbe d2
+    226	011D  2C 20				  sub al,20h
+    227
+    228	011F					  d2:
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 5
+assign2.asm
+
+
+
+    229	011F  D3 C2				  rol dx,cl
+    230	0121  03 D0				  add dx,ax
+    231
+    232	0123  FE CD			       dec ch
+    233	0125  75 CF			       jnz w1
+    234
+    235
+    236	0127  8B C2			   mov ax,dx
+    237	0129  BB 000A			   mov bx,000Ah
+    238	012C  BA 0000			   mov dx,0000h
+    239	012F  B5 04			   mov ch,04h
+    240	0131  C6 06 00C8r 00		   mov k,00h
+    241	0136  F7 F3			 w2: div bx
+    242	0138  52			     push dx
+    243	0139  FE 06 00C8r		     inc k
+    244	013D  BA 0000			     mov dx,0000h
+    245	0140  FE CD			     dec ch
+    246	0142  75 F2			     jnz w2
+    247
+    248					 disp1 msg7
+1   249	0144  BA 009Dr			     lea dx,msg7
+1   250	0147  B4 09			     mov ah,09h
+1   251	0149  CD 21			     int 21h
+    252	014B  8A 2E 00C8r		 mov ch,k
+    253	014F  5A			 w3:pop	dx
+    254	0150  83 C2 30			    add	dx,0030h
+    255					    OUTPUT
+1   256	0153  B4 02			     mov ah,02h
+1   257	0155  CD 21			     int 21h
+    258	0157  FE CD			    dec	ch
+    259	0159  75 F4			    jnz	w3
+    260
+    261	015B  C3			    ret
+    262	015C				  hex_to_bcd ENDP
+    263
+    264				       end
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 6
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/04/19"
+??FILENAME			  Text	 "assign2 "
+??TIME				  Text	 "11:27:42"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ASSIGN2
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ARRAY				  Byte	 DGROUP:00C9
+BCD_TO_HEX			  Near	 _TEXT:0056
+D2				  Near	 _TEXT:011F
+DISP				  Near	 _TEXT:00C6
+HEX_TO_BCD			  Near	 _TEXT:00E9
+I				  Word	 DGROUP:00D0
+INVALID				  Near	 _TEXT:00BE
+K				  Byte	 DGROUP:00C8
+L				  Near	 _TEXT:00DD
+L1				  Near	 _TEXT:003F
+L2				  Near	 _TEXT:0044
+L3				  Near	 _TEXT:0049
+L4				  Near	 _TEXT:0052
+LABEL1				  Near	 _TEXT:0005
+LOOP1				  Near	 _TEXT:0062
+LOOP4				  Near	 _TEXT:0093
+LOOP5				  Near	 _TEXT:00CE
+MSG0				  Byte	 DGROUP:0000
+MSG1				  Byte	 DGROUP:0017
+MSG2				  Byte	 DGROUP:002F
+MSG3				  Byte	 DGROUP:0046
+MSG4				  Byte	 DGROUP:0050
+MSG5				  Byte	 DGROUP:006A
+MSG6				  Byte	 DGROUP:0083
+MSG7				  Byte	 DGROUP:009D
+MSG8				  Byte	 DGROUP:00B6
+R1				  Near	 _TEXT:00C5
+RES				  Word	 DGROUP:00CE
+S1				  Near	 _TEXT:010E
+W1				  Near	 _TEXT:00F6
+W2				  Near	 _TEXT:0136
+W3				  Near	 _TEXT:014F
+
+Macro Name
+
+DISP1
+INPUT
+OUTPUT
+Turbo Assembler	 Version 2.0	    02/04/19 11:27:42	    Page 7
+Symbol Table
+
+
+
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0100 Para	  Stack	  STACK
+  _DATA				  16  00D2 Word	  Public  DATA
+_TEXT				  16  015C Word	  Public  CODE
+

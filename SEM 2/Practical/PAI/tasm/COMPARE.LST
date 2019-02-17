@@ -1,0 +1,62 @@
+Turbo Assembler	 Version 2.0	    12/24/18 12:52:30	    Page 1
+compare.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  000A		     d	     dw	     10
+      6
+      7
+      8	0002			     .code
+      9
+     10	0000			     main    proc    far
+     11	0000  B8 0000s			     mov     ax,@data
+     12	0003  8E D8			     mov     ds,ax
+     13	0005  8B 1E 0000r		     mov     bx,d
+     14	0009  83 FB 0A			     CMP     bx,10
+     15	000C  74 06			     je	     ath
+     16	000E  B8 0002			     mov     ax,2
+     17	0011  EB 04 90			     jmp     key
+     18
+     19	0014  B8 0001			     ath:    mov ax,1
+     20	0017				     key:
+     21	0017  B4 4C			     mov     ah,4ch
+     22	0019  CD 21			     int     21h
+     23	001B				     main     endp
+     24				     end     main
+Turbo Assembler	 Version 2.0	    12/24/18 12:52:30	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "12/24/18"
+??FILENAME			  Text	 "compare "
+??TIME				  Text	 "12:52:30"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 COMPARE
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ATH				  Near	 _TEXT:0014
+D				  Word	 DGROUP:0000
+KEY				  Near	 _TEXT:0017
+MAIN				  Far	 _TEXT:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0002 Word	  Public  DATA
+_TEXT				  16  001B Word	  Public  CODE
+

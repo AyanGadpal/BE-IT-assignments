@@ -1,0 +1,18 @@
+
+Open Terminal -- and follow the steps
+
+sudo apt-get install dosbox		-- To install DosBox
+
+Type Dosbox 				-- To open Dosbox
+
+
+mount c /home/your.user.name/dos	-- ex: username=pict  where all the directories are present
+						-- Here dos is a folder which is present under pict directory
+						-- Paste TASM folder under dos directory.
+
+
+
+
+
+
+

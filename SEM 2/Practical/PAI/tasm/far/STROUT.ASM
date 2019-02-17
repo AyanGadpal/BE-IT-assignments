@@ -1,0 +1,35 @@
+INTIALIZE MACRO
+   MOV AX,0000H
+   MOV BX,AX
+   MOV DX,AX
+   MOV CX,AX
+ENDM
+
+.model small
+.data
+	EXTRN STR1:BYTE
+	EXTRN STR2:BYTE
+.code
+	
+        MOV AX,@data
+        MOV DS,AX
+        MOV ES,AX
+ 	
+ 	
+ 	PUBLIC DISP
+ 	DISP PROC FAR 
+ 	  	
+ 		LEA DX,STR2
+ 		MOV AH,09H
+   		INT 21H
+ 		
+ 		LEA DX,STR1+2
+ 		MOV AH,09H
+   		INT 21H
+   		RET
+ 	ENDP
+
+
+	MOV AH,4CH
+	INT 21H
+END

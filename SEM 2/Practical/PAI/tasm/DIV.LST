@@ -1,0 +1,56 @@
+Turbo Assembler	 Version 2.0	    12/19/18 10:56:28	    Page 1
+div.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  0016		     d	     dw	     22
+      6	0002  0002		     e	     dw	     2
+      7	0004  ????		     f	     dw	     ?
+      8	0006			     .code
+      9	0000			     main    proc    far
+     10	0000  B8 0000s			     mov     ax,@data
+     11	0003  8E D8			     mov     ds,ax
+     12	0005  A1 0000r			     mov     ax,d
+     13	0008  F7 36 0002r		     div     e
+     14	000C  A3 0004r			     mov     f,ax
+     15	000F  B8 4C00			     mov     ax,4c00h
+     16	0012  CD 21			     int     21h
+     17	0014			     main    endp
+     18					     end     main
+Turbo Assembler	 Version 2.0	    12/19/18 10:56:28	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "12/19/18"
+??FILENAME			  Text	 "div	  "
+??TIME				  Text	 "10:56:28"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 DIV
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+D				  Word	 DGROUP:0000
+E				  Word	 DGROUP:0002
+F				  Word	 DGROUP:0004
+MAIN				  Far	 _TEXT:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  0006 Word	  Public  DATA
+_TEXT				  16  0014 Word	  Public  CODE
+

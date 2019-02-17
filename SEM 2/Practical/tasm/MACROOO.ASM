@@ -1,0 +1,94 @@
+display1 macro msg
+LEA DX,msg
+MOV AH,09H
+INT 21H
+endm
+
+
+
+.model small
+
+.data
+A DB 04H
+B DB 02H
+SUM1 DB ?
+SUB1 DB ?
+DIV1 DB ?
+PRODUCT DB ?
+sum_msg DB 'SUM : ',10,13,'$'
+sub_msg DB 10,'SUBTRACT : ',10,13,'$'
+mul_msg DB 10,'MULTIPICATION : ';10,13,'$'
+div_msg DB 10,'DIV : ',10,13,'$'
+
+.code
+MOV AX,@data
+MOV DS,AX
+
+;--------------LOGIC----------------
+;ADDITION
+MOV AL,A
+ADD AL,B
+ADD AL,30H
+MOV SUM1,AL
+              ;LINE 24
+;SUBRACTION
+MOV AL,A
+SUB AL,B
+ADD AL,30H
+MOV SUB1,AL
+
+;MULTIPLICATION
+MOV AL,A
+MUL B
+ADD AL,30H
+MOV PRODUCT,AL
+
+;DIVISION
+MOV AH,0000H
+MOV AL,A
+DIV B
+ADD AL,30H
+MOV DIV1,AL
+
+
+;------------------DISPLAY OUTPUT-------------------------
+;SUM DISPLAY
+display1 sum_msg
+
+MOV DL,SUM1
+MOV AH,02H
+INT 21H
+
+;SUBTRACT DISPLAY
+MOV DX,OFFSET sub_msg
+MOV AH,09H
+INT 21H
+
+MOV DL,SUB1
+MOV AH,02H
+INT 21H
+
+;PRODUCT DISPLAY
+MOV DX,OFFSET mul_msg
+MOV AH,09H
+INT 21H
+
+MOV DL,PRODUCT
+MOV AH,02H
+INT 21H
+
+;DIVISION DISPLAY
+MOV DX,OFFSET div_msg
+MOV AH,09H
+INT 21H
+
+MOV DL,DIV1
+MOV AH,02H
+INT 21H 
+
+;------------------TERMINATION-----------------
+MOV AH,4CH
+INT 21H
+end
+
+

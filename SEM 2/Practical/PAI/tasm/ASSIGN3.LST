@@ -1,0 +1,126 @@
+Turbo Assembler	 Version 2.0	    02/06/19 10:41:02	    Page 1
+assign3.asm
+
+
+
+      1	0000			     .model small
+      2	0000			     .stack 64
+      3	0000			     .data
+      4
+      5	0000  51		     buff    db	     81
+      6	0001  00			     db	     0
+      7	0002  51*(24)			     db	     81	dup('$')
+      8	0053  0A 0D 4D 45 4E 55	24   msg0    db	     10,13,'MENU','$'
+      9	005A  0A 0D 31 2E 4C 45	4E+  msg1    db	     10,13,'1.LENGTH','$'
+     10	      47 54 48 24
+     11	0065  0A 0D 32 2E 44 49	53+  msg2    db	     10,13,'2.DISPLAY REVERSE','$'
+     12	      50 4C 41 59 20 52	45+
+     13	      56 45 52 53 45 24
+     14	0079  0A 0D 33 2E 50 41	4C+  msg3    db	     10,13,'3.PALINDROME','$'
+     15	      49 4E 44 52 4F 4D	45+
+     16	      24
+     17	0088  0A 0D 34 2E 45 4E	54+  msg4    db	     10,13,'4.ENTER YOUR CHOICE','$'
+     18	      45 52 20 59 4F 55	52+
+     19	      20 43 48 4F 49 43	45+
+     20	      24
+     21
+     22
+     23
+     24
+     25
+     26				     input   MACRO   msg
+     27					    ; mov     ax,@data
+     28					     mov     ah,0ah
+     29					     mov     dx, seg buff
+     30					     mov     ds,dx
+     31					     mov     dx,offset buff
+     32					     int     21h
+     33					     ENDM
+     34
+     35				     disp    MACRO   var
+     36					     mov     ax,@data
+     37					     mov     ah,09h
+     38					     lea     dx,var
+     39					     int     21h
+     40					     ENDM
+     41	009E			     .code
+     42	0000			     main    proc    far
+     43	0000  B8 0000s			     mov     ax,@data
+     44					     input   buff
+1    45	0003  B4 0A			     mov     ah,0ah
+1    46	0005  BA 0000s			     mov     dx, seg buff
+1    47	0008  8E DA			     mov     ds,dx
+1    48	000A  BA 0000r			     mov     dx,offset buff
+1    49	000D  CD 21			     int     21h
+     50	000F			     label1:
+     51					     disp    msg0
+1    52	000F  B8 0000s			     mov     ax,@data
+1    53	0012  B4 09			     mov     ah,09h
+1    54	0014  BA 0053r			     lea     dx,msg0
+1    55	0017  CD 21			     int     21h
+     56					     disp    msg1
+1    57	0019  B8 0000s			     mov     ax,@data
+Turbo Assembler	 Version 2.0	    02/06/19 10:41:02	    Page 2
+assign3.asm
+
+
+
+1    58	001C  B4 09			     mov     ah,09h
+1    59	001E  BA 005Ar			     lea     dx,msg1
+1    60	0021  CD 21			     int     21h
+     61					     disp    msg2
+1    62	0023  B8 0000s			     mov     ax,@data
+1    63	0026  B4 09			     mov     ah,09h
+1    64	0028  BA 0065r			     lea     dx,msg2
+1    65	002B  CD 21			     int     21h
+     66					     disp    msg3
+1    67	002D  B8 0000s			     mov     ax,@data
+1    68	0030  B4 09			     mov     ah,09h
+1    69	0032  BA 0079r			     lea     dx,msg3
+1    70	0035  CD 21			     int     21h
+     71	0037  B8 4C00			     mov     ax,4c00h
+     72	003A  CD 21			     int     21h
+     73	003C			     main    endp
+     74					     end     main
+Turbo Assembler	 Version 2.0	    02/06/19 10:41:02	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/06/19"
+??FILENAME			  Text	 "assign3 "
+??TIME				  Text	 "10:41:02"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ASSIGN3
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+BUFF				  Byte	 DGROUP:0000
+LABEL1				  Near	 _TEXT:000F
+MAIN				  Far	 _TEXT:0000
+MSG0				  Byte	 DGROUP:0053
+MSG1				  Byte	 DGROUP:005A
+MSG2				  Byte	 DGROUP:0065
+MSG3				  Byte	 DGROUP:0079
+MSG4				  Byte	 DGROUP:0088
+
+Macro Name
+
+DISP
+INPUT
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0040 Para	  Stack	  STACK
+  _DATA				  16  009E Word	  Public  DATA
+_TEXT				  16  003C Word	  Public  CODE
+

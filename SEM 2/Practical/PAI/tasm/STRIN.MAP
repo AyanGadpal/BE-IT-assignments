@@ -1,0 +1,31 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00143H 00144H _TEXT              CODE
+ 00144H 0022EH 000EBH _DATA              DATA
+
+  Address         Publics by Name
+
+ 0000:00D1       CONCAT
+ 0000:0097       DISPFAR
+ 0000:00AF       INPUTSTR
+ 0000:00C0       INPUTSTR2
+ 0014:0004       STR1
+ 0014:000E       STR2
+ 0000:00FB       STRCMP
+ 0000:0136       SUBSTRING
+
+  Address         Publics by Value
+
+ 0000:0097       DISPFAR
+ 0000:00AF       INPUTSTR
+ 0000:00C0       INPUTSTR2
+ 0000:00D1       CONCAT
+ 0000:00FB       STRCMP
+ 0000:0136       SUBSTRING
+ 0014:0004       STR1
+ 0014:000E       STR2
+
+Program entry point at 0000:0000
+Warning: No stack
+

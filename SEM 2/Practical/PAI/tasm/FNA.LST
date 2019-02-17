@@ -1,0 +1,204 @@
+Turbo Assembler	 Version 2.0	    01/21/19 11:48:58	    Page 1
+fna.asm
+
+
+
+      1				     inpu     macro
+      2
+      3				     mov     ah,01h
+      4
+      5				     int     21h
+      6
+      7				     sub     al,30h
+      8
+      9				     mov     ah,01h
+     10
+     11				     int     21h
+     12
+     13				     sub     al,30h
+     14
+     15				     mov     num2,al
+     16
+     17				     mov     al,num1
+     18
+     19				     mul     ten
+     20
+     21				     add     al,num2
+     22
+     23				     endm
+     24
+     25				     output  macro
+     26
+     27				     mov     ah,02h
+     28
+     29				     int     21h
+     30
+     31				     endm
+     32
+     33				     disp    macro   var
+     34					     lea     dx,var
+     35					     mov     ah,09h
+     36					     int     21h
+     37					     endm
+     38
+     39	0000				     .model  small
+     40	0000				     .stack
+     41	0000				     .data
+     42
+     43	0000  0A 0D 45 6E 74 65	72+  line1   db	     10,13,'Enter how many no.s:$'
+     44	      20 68 6F 77 20 6D	61+
+     45	      6E 79 20 6E 6F 2E	73+
+     46	      3A 24
+     47	0017  0A 0D 65 6E 74 65	72+  line2   db	     10,13,'enter numbers:$'
+     48	      20 6E 75 6D 62 65	72+
+     49	      73 3A 24
+     50	0028  0A 0D 61 64 64 69	74+  line3   db	     10,13,'addition=$'
+     51	      69 6F 6E 3D 24
+     52	0034  0A 0D 24		     line4   db	     10,13,'$'
+     53
+     54	0037  0F*(00)		     array   db	     15	dup(0)
+     55
+     56	0046  00		     count   db	     0
+     57
+Turbo Assembler	 Version 2.0	    01/21/19 11:48:58	    Page 2
+fna.asm
+
+
+
+     58	0047  00		     num1    db	     0
+     59
+     60	0048  00		     num2    db	     0
+     61
+     62	0049  00		     temp    db	     0
+     63
+     64	004A  0A		     ten     db	     10
+     65
+     66	004B				     .code
+     67
+     68	0000  B8 0000s			     mov     ax,@data
+     69	0003  8E D8			     mov     ds,ax
+     70	0005  BE 0037r			     lea     si,array
+     71					     disp    line1
+1    72	0008  BA 0000r			     lea     dx,line1
+1    73	000B  B4 09			     mov     ah,09h
+1    74	000D  CD 21			     int     21h
+     75
+     76					      input
+**Error** fna.asm(67) Illegal instruction
+     77	000F  A2 0046r			      mov     count,al
+     78	0012  8A 0E 0046r		      mov     cl,count
+     79					      disp    line4
+1    80	0016  BA 0034r			     lea     dx,line4
+1    81	0019  B4 09			     mov     ah,09h
+1    82	001B  CD 21			     int     21h
+     83	001D			     lb1:     disp    line2
+1    84	001D  BA 0017r			     lea     dx,line2
+1    85	0020  B4 09			     mov     ah,09h
+1    86	0022  CD 21			     int     21h
+     87
+     88					     input
+**Error** fna.asm(73) Illegal instruction
+     89
+     90	0024  88 04			     mov     [si],al
+     91	0026  46			     inc     si
+     92	0027  E2 F4			     loop    lb1
+     93					     disp    line4
+1    94	0029  BA 0034r			     lea     dx,line4
+1    95	002C  B4 09			     mov     ah,09h
+1    96	002E  CD 21			     int     21h
+     97					     disp    line3
+1    98	0030  BA 0028r			     lea     dx,line3
+1    99	0033  B4 09			     mov     ah,09h
+1   100	0035  CD 21			     int     21h
+    101	0037  B8 0000			     mov     ax,0000h
+    102	003A  8A 0E 0046r		     mov     cl,count
+    103	003E  BE 0037r			     lea     si,array
+    104	0041  02 04		     lb2:    add     al,[si]
+    105	0043  46			     inc     si
+    106	0044  E2 FB			     loop    lb2
+    107	0046  B5 02			     mov     ch,02h
+    108	0048  B1 04			     mov     cl,04h
+    109	004A  8A D8			     mov     bl,al
+    110	004C  D2 C3		     lb3:    rol     bl,cl
+    111	004E  8A D3			     mov     dl,bl
+    112	0050  80 E2 0F			     and     dl,0fh
+Turbo Assembler	 Version 2.0	    01/21/19 11:48:58	    Page 3
+fna.asm
+
+
+
+    113	0053  80 FA 09			     cmp     dl,09
+    114	0056  76 03			     jbe     lb4
+    115	0058  80 C2 07			     add     dl,07
+    116
+    117	005B  80 C2 30		     lb4:    add     dl,30h
+    118
+    119					     output
+1   120	005E  B4 02		     mov     ah,02h
+1   121	0060  CD 21		     int     21h
+    122	0062  FE CD			     dec     ch
+    123	0064  75 E6			     jnz     lb3
+    124	0066  B4 4C			     mov     ah,4ch
+    125	0068  CD 21			     int     21h
+    126	006A			     main    endp
+**Error** fna.asm(103) Unmatched ENDP: MAIN
+    127					     end     main
+**Error** fna.asm(104) Undefined symbol: MAIN
+Turbo Assembler	 Version 2.0	    01/21/19 11:48:58	    Page 4
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/21/19"
+??FILENAME			  Text	 "fna	  "
+??TIME				  Text	 "11:48:58"
+??VERSION			  Number 0200
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 FNA
+@MODEL				  Text	 2
+@WORDSIZE			  Text	 2
+ARRAY				  Byte	 DGROUP:0037
+COUNT				  Byte	 DGROUP:0046
+LB1				  Near	 _TEXT:001D
+LB2				  Near	 _TEXT:0041
+LB3				  Near	 _TEXT:004C
+LB4				  Near	 _TEXT:005B
+LINE1				  Byte	 DGROUP:0000
+LINE2				  Byte	 DGROUP:0017
+LINE3				  Byte	 DGROUP:0028
+LINE4				  Byte	 DGROUP:0034
+NUM1				  Byte	 DGROUP:0047
+NUM2				  Byte	 DGROUP:0048
+TEMP				  Byte	 DGROUP:0049
+TEN				  Byte	 DGROUP:004A
+
+Macro Name
+
+DISP
+INPU
+OUTPUT
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0400 Para	  Stack	  STACK
+  _DATA				  16  004B Word	  Public  DATA
+_TEXT				  16  006A Word	  Public  CODE
+Turbo Assembler	 Version 2.0	    01/21/19 11:48:58	    Page 5
+Error Summary
+
+
+
+**Error** fna.asm(67) Illegal instruction
+**Error** fna.asm(73) Illegal instruction
+**Error** fna.asm(103) Unmatched ENDP: MAIN
+**Error** fna.asm(104) Undefined symbol: MAIN
+
