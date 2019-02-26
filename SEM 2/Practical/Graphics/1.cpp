@@ -1,12 +1,13 @@
-#include <iostream>
-#include <GL/freeglut.h>
-#include <GL/gl.h>
-#include <math.h>
 /*
     Assingment No. 1    
     Name : Ayan Gadpal / H11 / 23370
 
 */
+
+#include <iostream>
+#include <GL/freeglut.h>
+#include <GL/gl.h>
+#include <math.h>
 
 using namespace std;
 

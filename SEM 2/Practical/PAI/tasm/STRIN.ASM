@@ -1,3 +1,4 @@
+;To Prevent Error
 INTIALIZE MACRO
    MOV AX,0000H
    MOV BX,AX
@@ -24,7 +25,7 @@ ENDM
 	BYE DB 10,'BYE BYE$'
 	DLINE DB 10,'=========================================',10,'$'
        SLINE DB 10,'-----------------------------------------',10,'$'
-	menu DB 10,'1) String Input ',10,'2) Display ',10,'3) Concat',10,'4) Substring',10,'5) Compare String',10,'6) EXIT ',10,'Your Choice : $'
+	menu DB 10,'1) String Input ',10,'2) Display ',10,'3) Concat',10,'4) Substring',10,'5) Compare String',10,'6) Count ',10,'7) EXIT ',10,'Your Choice : $'
 	PUBLIC STR1,STR2
 	
 .code
@@ -55,6 +56,10 @@ ENDM
 
        CMP AL,36H
        JE F6
+
+
+       CMP AL,37H
+       JE F7
 
   F1:   
   	DISP SLINE
@@ -95,9 +100,19 @@ ENDM
   	DISP SLINE
   	EXTRN DISPFAR:FAR
   	CALL DISPFAR
-        JMP menuD
+       JMP menuD
   
-  F6: 
+	 
+  F6: ;Count no. of spaces,Capital Letters and Lower case letter 
+  	DISP SLINE
+  	EXTRN COUNTCHAR:FAR
+  	CALL COUNTCHAR
+  	JMP menuD
+ 
+ 
+ 
+ 
+  F7: 
        DISP DLINE
   	DISP BYE
 	DISP DLINE
