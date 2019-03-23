@@ -5,8 +5,6 @@ using namespace std;
 template <typename T>
 class stack
 {
-   
-
     T Data;
     stack *next;
 
@@ -81,5 +79,3 @@ class stack
             return false;
     }
 };
-
-

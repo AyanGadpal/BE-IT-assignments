@@ -1,0 +1,246 @@
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 1
+
+_______________________________________
+
+Enter The Postfix Expression : ab+cd+*
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 2
+
+_______________________________________
+
+Postfix Expression is : ab+cd+*
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 3
+
+_______________________________________
+
+~~~~~~~~~~~~ Expression TREE ~~~~~~~~~~~
+
+		d
+	+
+		c
+*
+		b
+	+
+		a
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 4
+
+_______________________________________
+
+
+~~~~~~~~~ NON RECURSIVE ALGO ~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 1
+
+~~~~~~~~~~~~ Expression TREE ~~~~~~~~~~~
+
+		d
+	+
+		c
+*
+		b
+	+
+		a
+
+_______________________________________
+
+Inoder :  a + b * c + d
+
+~~~~~~~~~ NON RECURSIVE ALGO ~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 2
+
+~~~~~~~~~~~~ Expression TREE ~~~~~~~~~~~
+
+		d
+	+
+		c
+*
+		b
+	+
+		a
+
+_______________________________________
+
+Preorder :  * + a b + c d
+
+~~~~~~~~~ NON RECURSIVE ALGO ~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 3
+
+~~~~~~~~~~~~ Expression TREE ~~~~~~~~~~~
+
+		d
+	+
+		c
+*
+		b
+	+
+		a
+
+_______________________________________
+
+Postorder :  a b + c d + *
+
+~~~~~~~~~ NON RECURSIVE ALGO ~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 4
+
+~~~~~~~~~~~~ Expression TREE ~~~~~~~~~~~
+
+		d
+	+
+		c
+*
+		b
+	+
+		a
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 5
+
+_______________________________________
+
+
+~~~~~~~~~~ RECURSIVE ALGO ~~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 1
+
+_______________________________________
+
+Inoder :  a  +  b  *  c  +  d 
+
+~~~~~~~~~~ RECURSIVE ALGO ~~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 2
+
+_______________________________________
+
+Preorder :  *  +  a  b  +  c  d 
+
+~~~~~~~~~~ RECURSIVE ALGO ~~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 3
+
+_______________________________________
+
+Postorder :  a  b  +  c  d  +  * 
+
+~~~~~~~~~~ RECURSIVE ALGO ~~~~~~~~~~
+
+Please Select An Option
+1) Inorder
+2) Preorder
+3) Postoder
+4) Back to Main Menu
+YOUR CHOICE : 4
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Enter Postfix Expression 
+2) Display Postfix Expression
+3) Display Tree
+4) Display Non Recursive
+5) Display Recursive
+6) EXIT
+YOUR CHOICE : 6
+
+=======================================
+
+		GOOD BYE
+
+=======================================
+

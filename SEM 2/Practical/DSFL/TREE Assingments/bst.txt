@@ -1,0 +1,193 @@
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 1
+
+_______________________________________
+
+Enter the Value3
+
+ Data was inserted in the tree successfully !
+Do you want to Enter More? (y/n) 
+ CHOICE : y
+
+Enter the Value3
+
+
+Duplication Is Not Allowed
+Do you want to Enter More? (y/n) 
+ CHOICE : y
+
+Enter the Value2
+
+Do you want to Enter More? (y/n) 
+ CHOICE : y
+
+Enter the Value10
+
+Do you want to Enter More? (y/n) 
+ CHOICE : y
+
+Enter the Value11
+
+Do you want to Enter More? (y/n) 
+ CHOICE : y
+
+Enter the Value9
+
+Do you want to Enter More? (y/n) 
+ CHOICE : n
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 4
+
+_______________________________________
+
+~~~~~~~~~~~~ BST ~~~~~~~~~~~
+
+		11
+	10
+		9
+3
+	2
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 5
+
+_______________________________________
+
+~~~~~~~~~~~~ BST ~~~~~~~~~~~
+
+		11
+	10
+		9
+3
+	2
+Level Order :  3  2  10  9  11 
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 6
+
+_______________________________________
+HEIGHT : 3
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 3
+
+_______________________________________
+
+Enter the Value2
+
+Data Found !!
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 2
+
+_______________________________________
+
+Enter the Value10
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 4
+
+_______________________________________
+
+~~~~~~~~~~~~ BST ~~~~~~~~~~~
+
+	11
+		9
+3
+	2
+
+=======================================
+
+~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~
+
+Please Select An Option
+1) Insert 
+2) Delete
+3) Search
+4) Display
+5) Display Level
+6) Height
+7) Exit
+YOUR CHOICE : 7
+
+=======================================
+
+		GOOD BYE
+
+=======================================
+

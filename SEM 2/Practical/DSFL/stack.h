@@ -24,7 +24,7 @@ class stack
         node->Data = eData;
         node->next = next;
         next = node;
-    }
+    } 
 
     void display()
     {

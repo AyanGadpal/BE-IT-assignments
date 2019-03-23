@@ -129,8 +129,6 @@ ENDM
        LENPROC PROC
          
           DISP LENMSG
-       
-          
           INTIALIZE
           MOV BL,TEMP
        
@@ -223,7 +221,6 @@ ENDM
           	MOV AL,[SI]
           	CMP DL,AL
           	JNE K3
-          	
           	INC DI
           	DEC SI
           	DEC CL
@@ -245,11 +242,7 @@ ENDM
        
        STRCPY PROC
        		INTIALIZE
-       		MOV CL,STR1+1
-         	
-          	
-          
-          	
+       		MOV CL,STR1+1          	
           	LEA SI,STR1+2
           	LEA DI,STR2+2
           	;REP MOVSB 
@@ -263,9 +256,6 @@ ENDM
           	    DEC CL
           	    CMP CL,0H
           	    JNE J1
-          	
-       	
-       
        		
          
        RET 
