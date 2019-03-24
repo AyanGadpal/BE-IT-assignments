@@ -1,7 +1,7 @@
 //============================================================================
 // Name         : Assingment No. 6 Social Network
 // Author       : Ayan Gadpal / 23370 / Batch H11
-// Last Updated : 20 / march / 2019
+// Last Updated : 25 / march / 2019
 // Description  :    Consider a friends network on facebook social web site.
 //				 	 Model it as a graph to represent each node as a user and
 //					 a link to represent the friend relationship between them.
@@ -180,9 +180,7 @@ class Network
 		{
 
 			if (v->DOB.thisMonth(current))
-			{
 				cout << v->name;
-			}
 			v = v->nextV;
 		}
 	}
