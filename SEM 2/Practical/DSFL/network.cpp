@@ -112,18 +112,18 @@ class Network
 	// //General Function
 	// bool isEmpty();
 	// Vertex *findVertexById(int);
-	
-	//User (Vertex) Operations 
+
+	//User (Vertex) Operations
 	// void addUser();
 	// void newUser(Vertex *);
 	// void accessUser();
 
 	// //Network Related (Graph)
 	// void createNetworkNodes(); // Define a new Network's Node in LL format
-	// void setNetwork(); // Accept the source and Destination id's and do validation 
-	// void setFriend(int , int , Vertex *, Vertex *); // Set the link b/w source and Destination 
-	// void displayNetwork(); // Display User List With Friends 
-	// void displayUser(); // Display User List with Details (Without Friends) 
+	// void setNetwork(); // Accept the source and Destination id's and do validation
+	// void setFriend(int , int , Vertex *, Vertex *); // Set the link b/w source and Destination
+	// void displayNetwork(); // Display User List With Friends
+	// void displayUser(); // Display User List with Details (Without Friends)
 	// void checkBD();
 
 	Network()
@@ -139,7 +139,7 @@ class Network
 		return false;
 	}
 
-	Vertex* findVertexById(int id)
+	Vertex *findVertexById(int id)
 	{
 		Vertex *vertex;
 		vertex = root;
@@ -154,40 +154,41 @@ class Network
 
 	void addUser()
 	{
-		Vertex *v,*p;
+		Vertex *v, *p;
 		v = new Vertex();
 		cout << "\nEnter The Info for the New User\n";
 		newUser(v);
 		v->id = ++count;
 		p = root;
-		while(p->nextV != NULL)
+		while (p->nextV != NULL)
 			p = p->nextV;
 		p->nextV = v;
 	}
-
 
 	void newUser(Vertex *n)
 	{
 		cout << "\nName : ";
 		cin >> n->name;
-		cout << "Data Of Birth \nDate : ";
+		cout << "\nData Of Birth (dd MM yy) :";
 		cin >> n->DOB.dd;
-		cout << "\nMonth : ";
 		cin >> n->DOB.mm;
-		cout << "\nYear : ";
 		cin >> n->DOB.yy;
+		cout << "\nPost : ";
+		cin >> n->post;
+		cout << "\nComments : ";
+		cin >> n->comment;
 	}
-	
+
 	void checkBD(Date current)
 	{
 		Vertex *v;
 		v = root;
-		
+
 		cout << "\nBirthday In This Month\n";
-		while(v!=NULL)
+		while (v != NULL)
 		{
-			
-			if(v->DOB.thisMonth(current))
+
+			if (v->DOB.thisMonth(current))
 			{
 				cout << v->name;
 			}
@@ -219,7 +220,6 @@ class Network
 		cout << "\nEnter The new Name \n";
 		cin >> vertex->name;
 	}
-
 
 	void createNetworkNodes()
 	{
@@ -263,9 +263,10 @@ class Network
 				return;
 		}
 
-		//Start Module
 		cout << "Enter The source and Destination ID \nof friends (src,des) \n";
 		displayUser();
+
+		//Validation
 		do
 		{
 			flag = false;
@@ -278,31 +279,35 @@ class Network
 			{
 				flag = true;
 				cout << "ERROR Wrong IDs!";
-				return; // handle with do while .....do it later
+				return; 
 			}
 		} while (flag);
+
 		srcVertex = findVertexById(scrID);
 		desVertex = findVertexById(desID);
-		setFriend(scrID, desID, srcVertex, desVertex);
-		setFriend(desID, scrID, desVertex, srcVertex);
+
+		if (setFriend(srcVertex, desVertex))
+			setFriend(desVertex, srcVertex);
+		else
+			cout << "\nERROR : ALREADY FRIENDS";
 	}
 
-	void setFriend(int scrID, int desID, Vertex *srcVertex, Vertex *desVertex)
+	bool setFriend(Vertex *srcVertex, Vertex *desVertex)
 	{
 		Edge *temp, *edge;
-
 		edge = srcVertex->firstE;
 		temp = new Edge(desVertex);
-
 		if (edge == NULL)
 			srcVertex->firstE = temp;
 		else
 		{
+			if (edge->nextV == desVertex)
+				return false;
 			while (edge->nextE != NULL)
 				edge = edge->nextE;
 			edge->nextE = temp;
 		}
-		cout << "\nSuccessfull!!\n";
+		return true;
 	}
 
 	void displayUser()
@@ -317,11 +322,16 @@ class Network
 			int i = 0;
 			Vertex *v;
 			v = root;
+			cout << "\n"
+				 << setw(3) << "ID" << setw(15) << "USER" << setw(12) << "Birthday" << setw(5) << "Post" << setw(9) << "Comments";
 			for (i = 1; i <= count; i++)
 			{
 				cout << "\n"
-					 << v->id << ") NAME : " << v->name
-					 << "DOB : " << v->DOB.dd<<"/"<<v->DOB.mm<<"/"<<v->DOB.yy;
+					 << setw(3) << v->id
+					 << setw(15) << v->name
+					 << setw(4) << v->DOB.dd << "/" << setw(2) << v->DOB.mm << "/"<< setw(2) << v->DOB.yy
+					 << setw(5) << v->post << setw(9) << v->comment;
+
 				v = v->nextV;
 			}
 		}
@@ -333,15 +343,16 @@ class Network
 		Edge *edge;
 		vertex = root;
 		//Table HEADING columb
-		cout << "\n|"<< setw(3) <<"ID |" << setw(11) << " USER |" << setw(14) << "FRIENDSS";
+		cout << "\n"
+			 << setw(3) << "ID" << setw(11) << " USER" << setw(14) << "FRIENDSS";
 
 		for (int i = 0; i < count; i++)
 		{
 			Sline();
 			cout << endl
-				 <<"|"<<setw(4)<<vertex->id 
-				 <<"|"<<setw(10)<< vertex->name
-				 <<"|\t";
+				 << setw(4) << vertex->id
+				 << setw(10) << vertex->name
+				 << "\t\t";
 			edge = vertex->firstE;
 			while (edge != NULL)
 			{
@@ -352,13 +363,112 @@ class Network
 		}
 	}
 
-	
+	void stats()
+	{
+		Vertex *maxFiend = maxFriend();
+		Vertex *minFiend = minFriend();
+		Vertex *maxPost = maxPosts();
+		Vertex *maxComments = minComments();
+	}
+
+	Vertex *maxFriend()
+	{
+		Vertex *v = root, *maxV = root;
+		Edge *e;
+		int max = 0, fcount;
+		while (v != NULL)
+		{
+			fcount = 0;
+			e = v->firstE;
+			while (e != NULL)
+			{
+				fcount++;
+				e = e->nextE;
+			}
+			if (fcount > max)
+			{
+				max = fcount;
+				maxV = v;
+			}
+			v = v->nextV;
+		}
+
+		cout << "\nGot Max Friends : " << maxV->name;
+		return maxV;
+	}
+
+	Vertex *minFriend()
+	{
+		Vertex *v = root, *minV = root;
+		Edge *e;
+		int min = 10000, fcount;
+		while (v != NULL)
+		{
+			fcount = 0;
+			e = v->firstE;
+			while (e != NULL)
+			{
+				fcount++;
+				e = e->nextE;
+			}
+			if (fcount < min)
+			{
+				min = fcount;
+				minV = v;
+			}
+			v = v->nextV;
+		}
+
+		cout << "\nGot Min Friends : " << minV->name;
+		return minV;
+	}
+
+	Vertex* maxPosts()
+	{
+		Vertex *v = root, *maxP = root;
+
+		int max = 0;
+		;
+		while (v != NULL)
+		{			
+			if (v->post > max)
+			{
+				max = v->post;
+				maxP = v;
+			}
+			v = v->nextV;
+		}
+
+		cout << "\nGot Max Post : " << maxP->name;
+		return maxP;
+	}
+
+	Vertex* minComments()
+	{
+		Vertex *v = root, *maxC = root;
+
+		int min = 10000;
+		;
+		while (v != NULL)
+		{			
+			if (v->comment < min)
+			{
+				min = v->comment;
+				maxC = v;
+			}
+			v = v->nextV;
+		}
+
+		cout << "\nGot min Commetns : " << maxC->name;
+		return maxC;
+
+	}
 };
 
 int main()
 {
 	int ch = 0;
-	Network facebook; // Considering facebook using Network to manage there users
+	Network facebook;		   // Considering facebook using Network to manage there users
 	Date current(21, 3, 2019); // FUTURE scope => Take System Date
 	while (ch != 8)
 	{
@@ -397,6 +507,7 @@ int main()
 		case 5:
 			line();
 			facebook.displayNetwork();
+			facebook.stats();
 			break;
 		case 6:
 			line();
@@ -405,7 +516,7 @@ int main()
 			break;
 		case 7:
 			line();
-			facebook.checkBD(current); 
+			facebook.checkBD(current);
 			line();
 			break;
 
