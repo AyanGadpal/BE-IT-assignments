@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <stack> 
 
 using namespace std;
 
@@ -87,17 +88,18 @@ class Vertex
   public:
 	int id;			   // To uniquely Identify every User OR primary key
 	char name[20];	 // Name of User
-	int post, comment; // To Account the number of post and comments
+	int comment; // To Account the number of post and comments
 	Date DOB;		   // Birth date of user
 	Vertex *nextV;	 // Next vertex since SLL is used
 	Edge *firstE;	  // First Connection
-
+	bool visited; 
 	// Initialization
 	Vertex()
 	{
+		visited = false;
 		nextV = NULL;
 		firstE = NULL;
-		id = comment = post = 0;
+		id = comment = 0;
 	}
 };
 
@@ -156,16 +158,13 @@ class Network
 		cout << "\nName : ";
 		cin >> n->name;
 
-		cout << "\nData Of Birth (dd MM yy) :";
-		cin >> n->DOB.dd;
-		cin >> n->DOB.mm;
-		cin >> n->DOB.yy;
+		// cout << "\nData Of Birth (dd MM yy) :";
+		// cin >> n->DOB.dd;
+		// cin >> n->DOB.mm;
+		// cin >> n->DOB.yy;
 
-		cout << "\nPost : ";
-		cin >> n->post;
-
-		cout << "\nComments : ";
-		cin >> n->comment;
+		// cout << "\nComments : ";
+		// cin >> n->comment;
 		sLine();
 	}
 
@@ -327,7 +326,7 @@ class Network
 			Vertex *v;
 			v = root;
 			cout << "\n"
-				 << setw(3) << "ID" << setw(15) << "USER" << setw(12) << "Birthday" << setw(5) << "Post" << setw(9) << "Comments";
+				 << setw(3) << "ID" << setw(15) << "USER" << setw(12) << "Birthday"  << setw(9) << "Comments";
 			for (i = 1; i <= count; i++)
 			{
 				sLine();
@@ -335,7 +334,7 @@ class Network
 					 << setw(3) << v->id
 					 << setw(15) << v->name
 					 << setw(4) << v->DOB.dd << "/" << setw(2) << v->DOB.mm << "/" << setw(2) << v->DOB.yy
-					 << setw(5) << v->post << setw(9) << v->comment;
+					 << setw(9) << v->comment;
 
 				v = v->nextV;
 			}
@@ -375,13 +374,13 @@ class Network
 		// Getting Different Stats
 		Vertex *maxF = maxFriend();
 		Vertex *minF= minFriend();
-		Vertex *maxP = maxPosts();
+		Vertex *maxC = maxComments();
 		Vertex *minC = minComments();
 		//Displaying Them
 		sLine();
 		cout << "\nMaximum Friend : " << maxF->name 
 			 << "\nMinimum Friend : " << minF->name
-			 << "\nMaximum Post : " << maxP->name
+			 << "\nMaximum Comments : " << maxC->name
 			 << "\nMinimum Comments : " << minC->name;
 		sLine();
 	}
@@ -436,23 +435,23 @@ class Network
 		return minV;
 	}
 
-	Vertex *maxPosts()
+	Vertex *maxComments()
 	{
-		Vertex *v = root, *maxP = root;
+		Vertex *v = root, *maxC = root;
 
 		int max = 0;
 		;
 		while (v != NULL)
 		{
-			if (v->post > max)
+			if (v->comment > max)
 			{
-				max = v->post;
-				maxP = v;
+				max = v->comment;
+				maxC = v;
 			}
 			v = v->nextV;
 		}
 
-		return maxP;
+		return maxC;
 	}
 
 	Vertex *minComments()
@@ -472,6 +471,30 @@ class Network
 		}
 		return maxC;
 	}
+
+	void initDFS()
+	{
+		Vertex *v = root;
+		while(v != NULL)
+		{
+			v->visited = false;
+			v = v->nextV;
+		}
+		DFS(root);
+	}
+
+	void DFS(Vertex* temp)
+	{
+		temp->visited = true;
+		cout << " ,"<<temp->name;
+		Edge *g = temp->firstE;
+		while(g!=NULL)
+		{
+			if(g->nextV->visited != true)
+				DFS(g->nextV);
+			g = g->nextE;
+		}
+	}
 };
 
 int main()
@@ -479,18 +502,19 @@ int main()
 	int ch = 0;
 	Network facebook;		   // Considering facebook using Network to manage there users
 	Date current(21, 3, 2019); // FUTURE scope => Take System Date
-	while (ch != 8)
+	while (ch != 9)
 	{
 		line();
 		cout << "\nEnter Your Choice\n"
 				"1) Create A new Network \n"
-				"2) Make Network (Make Connections) \n"
+				"2) Make Network (Make Connections/ Friends) \n"
 				"3) Access User\n"
 				"4) Display User\n"
 				"5) Display Network And its Stats\n"
 				"6) Add a New User To Network\n"
-				"7) Upcoming Birthday\n"
-				"8) EXIT\n"
+				"7) Upcoming Birthday\n" 
+				"8) DSF"
+				"9) EXIT\n"
 				"YOUR CHOICE : ";
 		cin >> ch;
 		switch (ch)
@@ -528,8 +552,12 @@ int main()
 			facebook.checkBD(current);
 			line();
 			break;
-
 		case 8:
+			line();
+			facebook.initDFS();
+			line();
+			break;
+		case 9:
 			line();
 			cout << "\n\t\tGOOD BYE\n";
 			line();
