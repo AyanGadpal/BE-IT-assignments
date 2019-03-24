@@ -22,19 +22,25 @@ using namespace std;
 class Vertex;
 class Edge;
 
-// For Managing User Information
-class UserInfo;
+// For Date
 class Date;
 
 inline void line()
 {
-	cout << "\n============================================\n";
+	cout << "\n=================================================\n";
 }
-inline void Sline()
+inline void sLine()
 {
-	cout << "\n--------------------------------------------";
+	cout << "\n------------------------------------------------";
 }
 
+inline void errorMsg(const char *msg)
+{
+	sLine();
+	cout << endl
+		 << " ERROR : " << msg;
+	sLine();
+}
 class Date
 {
   public:
@@ -56,11 +62,6 @@ class Date
 	}
 };
 
-// class UserInfo
-// {
-//   public:
-// };
-
 class Edge
 {
   public:
@@ -80,23 +81,22 @@ class Edge
 	}
 };
 
+//Vertex of the Graph
 class Vertex
 {
   public:
-	int id;
-	char name[20];
-	bool visited;
-	int post, comment;
-	Date DOB;
-	Vertex *nextV;
-	Edge *firstE;
+	int id;			   // To uniquely Identify every User OR primary key
+	char name[20];	 // Name of User
+	int post, comment; // To Account the number of post and comments
+	Date DOB;		   // Birth date of user
+	Vertex *nextV;	 // Next vertex since SLL is used
+	Edge *firstE;	  // First Connection
 
 	// Initialization
 	Vertex()
 	{
 		nextV = NULL;
 		firstE = NULL;
-		visited = false;
 		id = comment = post = 0;
 	}
 };
@@ -104,34 +104,17 @@ class Vertex
 class Network
 {
   public:
-	Vertex *root;
-	int count;
+	Vertex *root; // The First User
+	int count;	// Total User in Networks
 
-	// Network();
-
-	// //General Function
-	// bool isEmpty();
-	// Vertex *findVertexById(int);
-
-	//User (Vertex) Operations
-	// void addUser();
-	// void newUser(Vertex *);
-	// void accessUser();
-
-	// //Network Related (Graph)
-	// void createNetworkNodes(); // Define a new Network's Node in LL format
-	// void setNetwork(); // Accept the source and Destination id's and do validation
-	// void setFriend(int , int , Vertex *, Vertex *); // Set the link b/w source and Destination
-	// void displayNetwork(); // Display User List With Friends
-	// void displayUser(); // Display User List with Details (Without Friends)
-	// void checkBD();
-
+	// Intialization
 	Network()
 	{
 		count = 0;
 		root = NULL;
 	}
 
+	// Determine Whether the Network Consist of Any user or not
 	bool isEmpty()
 	{
 		if (root == NULL)
@@ -139,6 +122,7 @@ class Network
 		return false;
 	}
 
+	// Return the address of the Vertex for the specified ID
 	Vertex *findVertexById(int id)
 	{
 		Vertex *vertex;
@@ -152,6 +136,7 @@ class Network
 		return vertex;
 	}
 
+	// Add a Signal User to Existing Network
 	void addUser()
 	{
 		Vertex *v, *p;
@@ -165,20 +150,26 @@ class Network
 		p->nextV = v;
 	}
 
+	// Create a new User and take information for it as a input
 	void newUser(Vertex *n)
 	{
 		cout << "\nName : ";
 		cin >> n->name;
+
 		cout << "\nData Of Birth (dd MM yy) :";
 		cin >> n->DOB.dd;
 		cin >> n->DOB.mm;
 		cin >> n->DOB.yy;
+
 		cout << "\nPost : ";
 		cin >> n->post;
+
 		cout << "\nComments : ";
 		cin >> n->comment;
+		sLine();
 	}
 
+	// Display the names of user whoes birthday falls in current month
 	void checkBD(Date current)
 	{
 		Vertex *v;
@@ -196,6 +187,7 @@ class Network
 		}
 	}
 
+	// To Alter the information for the user already present in the Network
 	void accessUser()
 	{
 		int id = 0;
@@ -206,37 +198,46 @@ class Network
 			cout << "\nPlease Select the id of user you want to access\n";
 			displayUser();
 			cout << "\nID : ";
-			cin >> id;
+			cin >> id; // Taking ID of User whose information is to be altered
 			flag = false;
+
+			//Validateing ID
 			if (id > count || id < 0)
 			{
 				flag = true;
-				cout << "\nERROR : Wrong Id ,please Re-Enter\n";
+				errorMsg("WRONG IDs ENTERED , PLEASE RE-ENTER!");
 			}
+
 		} while (flag);
+
+		// Getting the user vertex by id
 		vertex = findVertexById(id);
+
+		// Accepting New Name
 		cout << "User Details\n"
 			 << vertex->name;
 		cout << "\nEnter The new Name \n";
 		cin >> vertex->name;
 	}
 
+	// To Create list of User for network
 	void createNetworkNodes()
 	{
 		int i = 0;
-
 		cout << "\nHow Many User This Network Consist of ? : ";
 		cin >> count;
 
+		// 'n' for travelsing , 'pre' for keeping track of the previous node
 		Vertex *n, *pre;
 		n = new Vertex();
 		pre = root = n;
 
 		for (i = 1; i <= count; i++)
 		{
-
+			//Creating new User
 			cout << "\nEnter The Detail for " << i << " User ";
 			newUser(n);
+
 			// Setting ID
 			n->id = i;
 			pre->nextV = n;
@@ -245,6 +246,7 @@ class Network
 		}
 	}
 
+	// Set Links b/w different users
 	void setNetwork()
 	{
 		bool flag;
@@ -255,7 +257,8 @@ class Network
 		if (isEmpty())
 		{
 			char ch;
-			cout << "NO User FOUND!!\nDo You Want To Add Users Now??(y/n)";
+
+			cout << "NO USER FOUND!!\nDo You Want To Add Users Now??(y/n)";
 			cin >> ch;
 			if (ch == 'y')
 				createNetworkNodes();
@@ -275,23 +278,25 @@ class Network
 			cout << "\nDestination : ";
 			cin >> desID;
 			//Validation
-			if (scrID > count || desID > count || scrID == desID)
+			if (scrID > count || desID > count || scrID == desID || scrID <= 0 || desID <= 0)
 			{
 				flag = true;
-				cout << "ERROR Wrong IDs!";
-				return; 
+				errorMsg("WRONG IDs ENTERED , PLEASE RE-ENTER!");
 			}
 		} while (flag);
 
+		// Getting Source and Destination Vertex by the ID
 		srcVertex = findVertexById(scrID);
 		desVertex = findVertexById(desID);
 
+		// Setting the Link B/w them, and also checking Wheather they are aleady friends
 		if (setFriend(srcVertex, desVertex))
 			setFriend(desVertex, srcVertex);
 		else
-			cout << "\nERROR : ALREADY FRIENDS";
+			errorMsg("ALREADY FRIENDS !");
 	}
 
+	// Set The Link / Edge b/w two Users
 	bool setFriend(Vertex *srcVertex, Vertex *desVertex)
 	{
 		Edge *temp, *edge;
@@ -302,19 +307,20 @@ class Network
 		else
 		{
 			if (edge->nextV == desVertex)
-				return false;
+				return false; // Return Flase if Already Friend / Link exist
 			while (edge->nextE != NULL)
-				edge = edge->nextE;
-			edge->nextE = temp;
+				edge = edge->nextE; // End of the edge link
+			edge->nextE = temp;		// Assinging Edge
 		}
 		return true;
 	}
 
+	// Display The User List with Detail Without Friends
 	void displayUser()
 	{
 		if (isEmpty())
 		{
-			cout << "EMPTY!";
+			errorMsg("The Network is Empty!");
 			return;
 		}
 		else
@@ -326,10 +332,11 @@ class Network
 				 << setw(3) << "ID" << setw(15) << "USER" << setw(12) << "Birthday" << setw(5) << "Post" << setw(9) << "Comments";
 			for (i = 1; i <= count; i++)
 			{
+				sLine();
 				cout << "\n"
 					 << setw(3) << v->id
 					 << setw(15) << v->name
-					 << setw(4) << v->DOB.dd << "/" << setw(2) << v->DOB.mm << "/"<< setw(2) << v->DOB.yy
+					 << setw(4) << v->DOB.dd << "/" << setw(2) << v->DOB.mm << "/" << setw(2) << v->DOB.yy
 					 << setw(5) << v->post << setw(9) << v->comment;
 
 				v = v->nextV;
@@ -337,6 +344,7 @@ class Network
 		}
 	}
 
+	// Display the Network with Users with Friends without details
 	void displayNetwork()
 	{
 		Vertex *vertex;
@@ -348,7 +356,7 @@ class Network
 
 		for (int i = 0; i < count; i++)
 		{
-			Sline();
+			sLine();
 			cout << endl
 				 << setw(4) << vertex->id
 				 << setw(10) << vertex->name
@@ -363,12 +371,21 @@ class Network
 		}
 	}
 
+	//Display the Stats such as user with maximum friend
 	void stats()
 	{
-		Vertex *maxFiend = maxFriend();
-		Vertex *minFiend = minFriend();
-		Vertex *maxPost = maxPosts();
-		Vertex *maxComments = minComments();
+		// Getting Different Stats
+		Vertex *maxF = maxFriend();
+		Vertex *minF= minFriend();
+		Vertex *maxP = maxPosts();
+		Vertex *minC = minComments();
+		//Displaying Them
+		sLine();
+		cout << "\nMaximum Friend : " << maxF->name 
+			 << "\nMinimum Friend : " << minF->name
+			 << "\nMaximum Post : " << maxP->name
+			 << "\nMinimum Comments : " << minC->name;
+		sLine();
 	}
 
 	Vertex *maxFriend()
@@ -393,7 +410,6 @@ class Network
 			v = v->nextV;
 		}
 
-		cout << "\nGot Max Friends : " << maxV->name;
 		return maxV;
 	}
 
@@ -419,18 +435,17 @@ class Network
 			v = v->nextV;
 		}
 
-		cout << "\nGot Min Friends : " << minV->name;
 		return minV;
 	}
 
-	Vertex* maxPosts()
+	Vertex *maxPosts()
 	{
 		Vertex *v = root, *maxP = root;
 
 		int max = 0;
 		;
 		while (v != NULL)
-		{			
+		{
 			if (v->post > max)
 			{
 				max = v->post;
@@ -439,18 +454,17 @@ class Network
 			v = v->nextV;
 		}
 
-		cout << "\nGot Max Post : " << maxP->name;
 		return maxP;
 	}
 
-	Vertex* minComments()
+	Vertex *minComments()
 	{
 		Vertex *v = root, *maxC = root;
 
 		int min = 10000;
 		;
 		while (v != NULL)
-		{			
+		{
 			if (v->comment < min)
 			{
 				min = v->comment;
@@ -458,10 +472,7 @@ class Network
 			}
 			v = v->nextV;
 		}
-
-		cout << "\nGot min Commetns : " << maxC->name;
 		return maxC;
-
 	}
 };
 
