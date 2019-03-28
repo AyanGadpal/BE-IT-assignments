@@ -1,5 +1,4 @@
- gcc Line.c -lGL -lGLU -lglut
-
+# BE-IT-assignments
 
 Open a terminal and enter the following commands to install the necessary libraries for OpenGL development:
 

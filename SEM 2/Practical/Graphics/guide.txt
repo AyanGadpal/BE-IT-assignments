@@ -1,1 +1,0 @@
- gcc Line.c -lGL -lGLU -lglut
