@@ -158,13 +158,13 @@ class Network
 		cout << "\nName : ";
 		cin >> n->name;
 
-		// cout << "\nData Of Birth (dd MM yy) :";
-		// cin >> n->DOB.dd;
-		// cin >> n->DOB.mm;
-		// cin >> n->DOB.yy;
+		cout << "\nData Of Birth (dd MM yy) :";
+		cin >> n->DOB.dd;
+		cin >> n->DOB.mm;
+		cin >> n->DOB.yy;
 
-		// cout << "\nComments : ";
-		// cin >> n->comment;
+		cout << "\nComments : ";
+		cin >> n->comment;
 		sLine();
 	}
 
