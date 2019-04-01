@@ -1,238 +1,90 @@
-#include <iostream>
-#include <iomanip>
+//============================================================================
+// Name        : Dijikstra
+// Author      : Ayan 23370 H11
+// Version     : 1
+// Copyright   : GNU public Libraly
+//============================================================================
 
-using namespace std;
+#include <iostream> 
+  
+using namespace std;  
+// Number of vertices in the graph 
+#define V 5
+#define INT_MAX 1000
+  
+// Vertex with minimum distance value, from 
+// the set of vertices not yet visited
+int minDistance(int dist[], bool visited[]) 
+{ 
+    // Initialize min value 
+    int min = INT_MAX, min_index; 
+  
+    for (int v = 0; v < V; v++) 
+        if (visited[v] == false && dist[v] <= min) 
+            min = dist[v], min_index = v; 
+  
+    return min_index; 
+} 
 
-inline void line()
-{
-	cout << "\n=================================================\n";
-}
-inline void sLine()
-{
-	cout << "\n------------------------------------------------";
-}
+// Dijkstras    
+void dijkstra(int graph[V][V], int src) 
+{ 
+    int dist[V]; 
+    bool visited[V]; 
+  
+    // Initialize all distances as INFINITE and visted as false 
+    for (int i = 0; i < V; i++) 
+        dist[i] = INT_MAX, visited[i] = false; 
+  
+    // Distance of source vertex from itself is always 0 
+    dist[src] = 0; 
+  
+    // Find shortest path for all vertices 
+    for (int count = 0; count < V - 1; count++)
+	{ 
+        int u = minDistance(dist, visited); 
 
-inline void errorMsg(const char *msg)
-{
-	sLine();
-	cout << endl
-		 << " ERROR : " << msg;
-	sLine();
-}
+        visited[u] = true; 
+  
+        for (int v = 0; v < V; v++) 
+  
+            if (!visited[v] && graph[u][v] && dist[u] != INT_MAX 
+                && dist[u] + graph[u][v] < dist[v]) 
+                dist[v] = dist[u] + graph[u][v]; 
+    } 
 
-class Vertex;
-class Edge;
-class Edge
+	for(int i = 0; i < V; i++)
+		cout<<"\n Shortest distance from "<<src+1<<" to "<<i+1<<" is - "<<dist[i];
+} 
+  
+void addEdges(int g[V][V])
 {
-  public:
-	bool present;
-    int weight;
-    Vertex *adjacentV;
-    Edge *nextE;
-	Edge()
+	for(int i = 0;i<V;i++)
+		for(int j = 0;j<V;j++)
+			g[i][j] = 0;
+
+	for(int i = 0;i < V;i++)
 	{
-		adjacentV = NULL;
-		nextE = NULL;
-		present = false;
-        weight = 0;
-    }
-    Edge(Vertex *next,int eWeight)
-	{
-		adjacentV = next;
-		nextE = NULL;
-        weight = eWeight;
-        present = false;
-    }
-};
-
-class Vertex
-{
-  public:
-    int id;
-    Vertex *downV;    // Next vertex since SLL is used
-    Edge *firstE;	  // First Connection
-	bool visited; 
-	// Initialization
-	Vertex()
-	{
-		visited = false;
-		downV = NULL;
-		firstE = NULL;
-	}
-};
-
-class Graph
-{
-    public:
-    int count;
-    Vertex *root; 
-
-    Graph()
-    {
-        root = NULL;
-        count = 0;
-    }
-    bool isEmpty()
-    {
-        return (root == NULL);
-    }
-
-    void defineNodes()
-    {
-        int i = 0;
-		cout << "\nNumber of Graph Nodes : ";
-		cin >> count;
-
-		// 'n' for travelsing , 'pre' for keeping track of the previous node
-		Vertex *n, *pre;
-		n = new Vertex();
-		pre = root = n;
-
-		for (i = 1; i <= count; i++)
+		for(int j = 0;j < V;j++)
 		{
-			// Setting ID
-			n->id = i;
-			pre->downV = n;
-			pre = pre->downV;
-			n = new Vertex();
-		}
-    }
-
-    Vertex *findVertexById(int id)
-	{
-		Vertex *vertex;
-		vertex = root;
-		for (int i = 1; i < count; i++)
-		{
-			if (id == i)
-				break;
-			vertex = vertex->downV;
-		}
-		return vertex;
-	}
-
-    void setConnection()
-    {
-        int scrID, desID , w;
-        Vertex *srcVertex, *desVertex;
-        display();
-        cout << "\n Source : ";
-        cin >> scrID;
-        cout << "\nDestination : ";
-        cin >> desID;
-        cout << "\nWeight : ";
-        cin >> w;
-
-        // Getting Source and Destination Vertex by the ID
-		srcVertex = findVertexById(scrID);
-		desVertex = findVertexById(desID);
-        
-        if (setLink(srcVertex, desVertex,w))
-			setLink(desVertex, srcVertex,w);
-		else
-			errorMsg("ALREADY LINK !");
-        
-
-
-
-    }
-
-    bool setLink(Vertex *srcVertex, Vertex *desVertex,int w)
-	{
-		Edge *temp, *edge;
-		edge = srcVertex->firstE;
-		temp = new Edge(desVertex,w);
-		if (edge == NULL)
-			srcVertex->firstE = temp;
-		else
-		{
-			if (edge->adjacentV == desVertex)
-				return false; // Return Flase if Already Friend / Link exist
-			while (edge->nextE != NULL)
-				edge = edge->nextE; // End of the edge link
-			edge->nextE = temp;		// Assinging Edge
-		}
-		return true;
-	}
-
-
-    void display()
-	{
-		if (isEmpty())
-		{
-			errorMsg("The Graph is Empty!");
-			return;
-		}
-		else
-		{
-			Vertex *vertex;
-            Edge *edge;
-            vertex = root;
-            //Table HEADING columb
-            cout << "\n"
-                << setw(3) << "ID\t" << "Adjacent Nodes";
-
-            for (int i = 0; i < count; i++)
-            {
-                sLine();
-                cout << endl
-                    << setw(4) << vertex->id
-                    << "\t\t";
-                edge = vertex->firstE;
-                while (edge != NULL)
-                {
-                    cout << "(" << edge->adjacentV->id << " ," << edge->weight << ")";
-                    edge = edge->nextE;
-                }
-                vertex = vertex->downV;
+			if(i != j && g[j][i] == 0){
+				cout<<"Enter weight for the edge from "<<i+1<<" to "<<j+1<<" : ";
+				cin>>g[i][j];
+                g[j][i] = g[i][j];
             }
+            else
+				g[i][j] = 0;
 		}
 	}
-};
-int main()
-{
-    int ch;
-    Graph graph;
-    graph.defineNodes();
-    graph.setConnection();
-    graph.display();
+}
 
-    while (ch != 9)
-	{
-		line();
-        cout << "\nEnter Your Choice\n"
-                "1) Define Nodes \n"
-                "2) Make Network (Make Connections) \n"
-                "3) Krushkal User\n"
-                "4) Display User\n"
-                "5) Exit\nCHOICE : ";
-        cin >>ch;
-        switch (ch)
-                {
-                    case 1:
-                        line();
-                        graph.defineNodes();
-                        break;
-                    case 2:
-                        line();
-                        graph.setConnection();
+int main() 
+{ 
+    int graph[V][V];
 
-                        break;
-                    case 3:
-                        line();
-                         graph.display();
-                        break;
-                    case 4:
-                        line();
-                        graph.krushkal();
+	addEdges(graph);
 
-                        break;
-                    case 5:
-                        line();
-                        cout << "\n\t\tGOOD BYE\n";
-                        line();
-                        break;
-                }
-
-        return 0;
+    dijkstra(graph, 0); 
+  
+    return 0; 
 }

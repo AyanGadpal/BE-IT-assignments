@@ -514,7 +514,7 @@ int main()
 				"6) Add a New User To Network\n"
 				"7) Upcoming Birthday\n" 
 				"8) DSF"
-				"9) EXIT\n"
+				"\n9) EXIT\n"
 				"YOUR CHOICE : ";
 		cin >> ch;
 		switch (ch)

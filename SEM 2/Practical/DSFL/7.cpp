@@ -1,3 +1,10 @@
+//============================================================================
+// Name        : Kruskal
+// Author      : Ayan 23370 H11
+// Version     : 4
+// Copyright   : GNU public Libraly
+//============================================================================
+
 #include <iostream>
 #include <iomanip>
 
@@ -25,27 +32,29 @@ class Edge;
 class Edge
 {
   public:
-    bool present,visited;
+    bool visited;
     int weight;
     Vertex *adjacentV;
     Edge *nextE;
+    bool krus;
     Edge()
     {
         adjacentV = NULL;
         nextE = NULL;
-        present = false;
+       
         visited = false;
         weight = 0;
+        krus = false;
     }
     Edge(Vertex *next, int eWeight)
     {
         adjacentV = next;
         visited = false;
-        .0
+    
         
         nextE = NULL;
         weight = eWeight;
-        present = false;
+        
     }
 };
 
@@ -56,12 +65,14 @@ class Vertex
     Vertex *downV; // Next vertex since SLL is used
     Edge *firstE;  // First Connection
     bool visited;
+    
     // Initialization
     Vertex()
     {
         visited = false;
         downV = NULL;
         firstE = NULL;
+        
     }
 };
 
@@ -131,6 +142,8 @@ class Graph
         srcVertex = findVertexById(scrID);
         desVertex = findVertexById(desID);
 
+        // Validation 
+
         if (setLink(srcVertex, desVertex, w))
         {
             setLink(desVertex, srcVertex, w);
@@ -192,28 +205,217 @@ class Graph
             }
         }
     }
+    void initkrus()
+    {
+       
+        Vertex *tempv = root;
+        
+        while(tempv != NULL)
+        {
+            Edge *tempe = tempv->firstE;
+            while(tempe != NULL)
+            {
+                tempe->krus = false;
+                tempe = tempe->nextE;
+            }	
+            tempv = tempv->downV;
+        }
+    }
+    void DFS(Vertex* temp)
+    {
+        temp->visited = true;
+        cout << temp->id << " ";
+        Edge *g = temp->firstE;
+        while(g!=NULL)
+        {
+            if(g->nextE->visited != true)
+                DFS(g->adjacentV);
+            g = g->nextE;
+        }
+    }
+
+// Kruskal traversal
+void krustraverse(Vertex* tempv)
+{
+	while(tempv != NULL)
+	{
+		Edge *tempe = tempv->firstE;
+		while(tempe != NULL)
+		{
+			if(tempe->krus == true)
+				cout<<"\n "<<tempv->id<<" - "<<tempe->adjacentV->id;
+			tempe = tempe->nextE;
+		}	
+		tempv = tempv->downV;
+	}
+}
+
+// Detect Cycle
+bool checkcycle(Vertex* curr)
+{
+	curr->visited = true;
+	Vertex *next = NULL;
+
+	Edge* g = curr->firstE;
+	Edge* tempe;
+
+	while(g!=NULL)
+	{
+		if(g->adjacentV->visited == false && g->visited == false && g->krus == true)
+		{	
+			g->visited = true;
+			next = g->adjacentV;
+			tempe = next->firstE;
+
+			while(tempe != NULL)
+			{
+				if(tempe->adjacentV->id == curr->id)
+				{
+					tempe->visited = true;
+					break;
+				}
+				tempe = tempe->nextE; 	
+			}
+
+			return checkcycle(g->adjacentV);
+		}
+		else if(g->visited == false && g->adjacentV->visited == true && g->krus == true)
+			return true;
+
+		g = g->nextE;
+	}
+    return false;
+}
+void swap(Edge *xp, Edge *yp) 
+{ 
+    Edge temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+} 
+
+void initvisit()
+{
+	Vertex *temp = root;
+	while(temp != NULL)
+	{
+		temp->visited = false;
+		temp= temp->downV;
+	}
+}
+
+// Initialize visited flag for all edges
+void initedges()
+{
+	
+	Vertex *tempv = root;
+	
+	while(tempv != NULL)
+	{
+		Edge *tempe = tempv->firstE;
+		while(tempe != NULL)
+		{
+			tempe->visited = false;
+			tempe = tempe->nextE;
+		}	
+		tempv = tempv->downV;
+	}
+}
+
 
     void kruskal()
     {
-        Edge **sortedEdge;
-        sortedEdge = new Edge*[edgeCount];
+        
         Vertex *v = root;
-        int i=0;
-        Edge *e = v->firstE;
-        while (v != NULL)
+        Vertex *temp = NULL;
+        Edge *tempe;
+
+        Edge *gearr[30];
+        int index = 0, n=0;
+
+        initvisit();
+        initedges();
+
+        while(v!=NULL)
         {
-            while(e != NULL)
+            Edge *ge = v->firstE;
+            
+            while(ge != NULL && ge->visited == false)
             {
-                sortedEdge[i] = e;
-                i++;
-                e = e->nextE;
-                cout << "\n Edge ADDED ! ";
+                gearr[index] = ge;
+                index++;
+                temp = ge->adjacentV;
+                tempe = temp->firstE;
+                
+                while(tempe != NULL)
+                {
+                    if(tempe->adjacentV->id == v->id)
+                    {
+                        tempe->visited = true;
+                        break;
+                    }
+                    tempe = tempe->nextE; 	
+                }
+                ge = ge->nextE; 
             }
             v = v->downV;
-            e = v->firstE;
         }
+
+        // bubble sort
+        int i, j;
+        n = index; 
+        for (i = 0; i < n; i++)       
+        // Last i elements are already in place    
+        for (j = 0; j < n-i-1; j++)  
+            if (gearr[j]->weight > gearr[j+1]->weight) 
+                swap(gearr[j], gearr[j+1]); 
+
+        for(int i = 0; i<n; i++)
+        {
+            cout<<" "<<gearr[i]->weight;
+        }
+
+        int cost = 0;
+
+        initkrus();
+
+        for(int i = 0; i<n; i++)
+        {
+            Vertex *tempv = root;
+            
+            while(tempv != NULL)
+            {
+                Edge *tempe = tempv->firstE;
+                while(tempe != NULL)
+                {
+                    if(gearr[i]->weight == tempe->weight && gearr[i]->adjacentV->id == tempe->adjacentV->id)
+                    {
+                        tempe->krus = true;
+                        cost+=tempe->weight;
+
+                        initvisit();
+                        initedges();
+                        if(checkcycle(root))
+                        {	
+                            cout<<"\n in - "<<i;
+                            tempe->krus = false;
+                            cost-=tempe->weight;
+                        }	
+
+                        break;
+                    }
+
+                    tempe = tempe->nextE;
+                }	
+                tempv = tempv->downV;
+            }
+        }
+
+        krustraverse(root);
+        cout<<"\n Minimal Spanning Tree cost - "<<cost;
     }
 };
+
+
 int main()
 {
     int ch;
@@ -228,8 +430,8 @@ int main()
         cout << "\nEnter Your Choice\n"
                 "1) Define Nodes \n"
                 "2) Make Network (Make Connections) \n"
-                "3) Krushkal User\n"
-                "4) Display User\n"
+                "3) Diplay\n"
+                "4) Kruskal\n"
                 "5) Exit\nCHOICE : ";
         cin >> ch;
         switch (ch)
