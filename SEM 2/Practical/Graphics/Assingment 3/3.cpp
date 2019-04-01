@@ -8,6 +8,8 @@ using namespace std;
 
 void myMouseFunc(int,int,int,int);
 
+
+// TO STORE THE COORDINATES 
 class Point
 {
   public:
@@ -15,18 +17,22 @@ class Point
     GLint y;
     Point *next;
 };
+
+// TO STORE COLOR
 struct COLOR
 {
     float r, g, b;
 };
 
-Point p1, p2;
-int t = 0;
-bool flag = true;
+// GLOBAL VARIABLE
+Point p1, p2; 
+int t = 0; // TO HANDLE CLICK EVENTS
+bool flag = true; 
 
-COLOR fillcolor;
+COLOR fillcolor; // BACKGROUND COLOR
 
 void seedFill(int , int , COLOR , COLOR );
+
 void draw_dda(Point p1, Point p2)
 {
     GLfloat dx = p2.x - p1.x;
@@ -169,12 +175,7 @@ void myMouseFunc(int button, int state, int x, int y)
     else if(!flag)
     {
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        {
-         
 	       fillcolor=getPixelColor(x,480-y);
-
- 			
-        }
         if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
         {
             COLOR fillColor={fillcolor.r,fillcolor.g,fillcolor.b};
