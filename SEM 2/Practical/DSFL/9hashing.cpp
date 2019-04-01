@@ -116,7 +116,7 @@ public:
 				if(H[i].tel%MAX != n)
 				{
 					temp = H[i];
-					H[i].name = name;
+					strcpy(H[i].name,name);
 					H[i].tel = tel;
 				}
 				else
@@ -169,14 +169,65 @@ public:
 	void InsertR()
 	{
 		char name[30];
-		int i,tel,n;
+		int i,tel,link;
 		cout<<"\nEnter The Name : ";
 		cin>>name;
 		cout<<"\nEnter Telephone No. : ";
 		cin>>tel;
 		i = hash(tel);
-		n = i;
 		if(!isFull())
+		{
+			//Find next Empty location
+			int empty = i;
+			while(H[empty].tel != 0)
+			{
+				empty = (empty + 1) % MAX;
+			}
+			if(H[i].tel != 0 )
+			{
+				if(hash(H[i].tel) == i) // Chaining
+				{
+
+					for(link = i;H[link].link != -1;link = H[link].link);
+					H[link].link = empty;
+					H[empty].tel = tel;
+					strcpy(H[empty].name,name);
+				}
+				else // Replacement
+				{
+					// Replace
+					H[empty].tel = H[i].tel;
+					strcpy(H[empty].name,H[i].name);
+					link = 0;
+
+					//Finding Previous Link
+					for(link = 0;H[link].link != i;link++);
+
+					if(H[i].link == -1)
+						H[link].link = empty; //reLinking
+					else
+						H[link].link = H[i].link;
+
+					// Finding Ending Link
+					for(link = i;H[link].link != -1;link = H[link].link);
+
+					//ReLinking
+					H[link].link = empty;
+
+					// Entering Record
+					H[i].tel = tel;
+					H[i].link = -1;
+					strcpy(H[i].name,name);
+
+				}
+			}
+			else
+			{
+				H[i].tel = tel;
+				strcpy(H[empty].name,name);
+			}
+
+		}
 
 		else
 			errorMsg("Hash Table Is Full!");
