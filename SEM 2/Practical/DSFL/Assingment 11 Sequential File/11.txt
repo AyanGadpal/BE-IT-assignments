@@ -1,0 +1,174 @@
+Enter File Name : Records.txt
+Records.txt Is Selected !
+
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 1
+
+======================================
+
+Number of Students :  3
+
+-------------------------
+Enter the name : Ayan
+
+Enter the Roll No. : 70
+
+-------------------------
+Enter the name : Jack
+
+Enter the Roll No. : 3
+
+-------------------------
+Enter the name : Kritika
+
+Enter the Roll No. : 5
+
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 2
+
+======================================
+      NAME | ROLL NO.
+-------------------------
+      Ayan | 70
+      Jack |  3
+   Kritika |  5
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 3
+
+======================================
+Enter Roll Number you want to search:3
+
+ Name : Jack at 1
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 4
+
+======================================
+Enter Roll Number you want to search:3
+
+ Name : Jack at 1
+Enter New Record 
+Name: Rohit
+
+Roll No. : 23
+
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 2
+
+======================================
+      NAME | ROLL NO.
+-------------------------
+      Ayan | 70
+     Rohit | 23
+   Kritika |  5
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 5
+
+======================================
+Enter Roll Number you want to Delete:5
+
+ Name : Kritika at 2
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 2
+
+======================================
+      NAME | ROLL NO.
+-------------------------
+      Ayan | 70
+     Rohit | 23
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 3
+
+======================================
+Enter Roll Number you want to search:6
+
+ERROR : RECORD NOT FOUND !
+
+======================================
+
+
+Student Data Base
+1) Add Data
+2) Display all records
+3) Search for a record
+4) Modify a record
+5) Delete a record
+6) Exit
+Your Choice : 6
+
+======================================
+
+Record.txt Contains
+Ayan 70
+Rohit 23

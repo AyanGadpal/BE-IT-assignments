@@ -1,0 +1,184 @@
+Enter File Name :StudentRecord
+
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 1
+
+======================================
+Enter Employee ID:4
+Enter Employee Name:Ayan  
+Enter Phone Number:7756
+Enter Salary:34353
+0
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 4
+
+======================================
+|Employee ID| Employee Name | Phone Number | Employee Salary|link|
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+4		Ayan		7756		34353		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 1
+
+======================================
+Enter Employee ID:5
+Enter Employee Name:manish
+Enter Phone Number:3435
+Enter Salary:90000
+0
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 1
+
+======================================
+Enter Employee ID:6
+Enter Employee Name:jack
+Enter Phone Number:32
+Enter Salary:3200
+0
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 4
+
+======================================
+|Employee ID| Employee Name | Phone Number | Employee Salary|link|
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+6		jack		32		3200		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+5		manish		3435		90000		-1
+4		Ayan		7756		34353		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 3
+
+======================================
+Enter Phone Number of Record :7756
+Enter New Name:Akki
+Enter New ID:2
+Enter New Salary:20000
+
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 4
+
+======================================
+|Employee ID| Employee Name | Phone Number | Employee Salary|link|
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+6		jack		32		3200		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+5		manish		3435		90000		-1
+2		Akki		7756		20000		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+-1		EMPTY		-1		-1		-1
+
+======================================
+
+
+Student Data Base
+1) Insert
+2) Search for a record
+3) Modify a record
+4) Display all records
+5) Exit
+Your Choice : 5
+
+======================================

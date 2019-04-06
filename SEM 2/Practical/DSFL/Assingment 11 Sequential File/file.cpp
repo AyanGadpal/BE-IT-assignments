@@ -33,11 +33,7 @@ class File
         strcpy(this->filename, filename);
         cout << this->filename << " Is Selected !\n";
     }
-    // void add();
-    // void display();
-    // bool search();
-    // void modify();
-    // void Delete();
+
 
     void add()
     {
