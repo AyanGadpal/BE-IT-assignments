@@ -11,6 +11,7 @@ void reshape(int, int);
 void Timer(int);
 
 float x = -10;
+bool flag = true;
 
 void Init()
 {
@@ -26,22 +27,22 @@ int main(int argc, char **argv)
     glutCreateWindow("Animation");
     glutDisplayFunc(display); // Display CallBack
     glutReshapeFunc(reshape); // This is called whenever windows is reshape
-    glutTimerFunc(1000,Timer,0);
+    glutTimerFunc(1000, Timer, 0);
     Init();
     glutMainLoop();
 }
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT); 
+    glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity(); // RESET ALL CURRENT MATRIX
-    glColor3f(0.0,0.0,1.0);
+    glColor3f(0.0, 0.0, 1.0);
     glBegin(GL_POLYGON);
 
     glVertex2f(x, 1.0);
     glVertex2f(x, -1.0);
-    glVertex2f(x+2.0, -1.0);
-    glVertex2f(x+2.0, 1.0);
-   
+    glVertex2f(x + 2.0, -1.0);
+    glVertex2f(x + 2.0, 1.0);
+
     glEnd();
 
     glutSwapBuffers();
@@ -58,7 +59,18 @@ void reshape(int w, int h)
 void Timer(int t)
 {
     glutPostRedisplay();
-    glutTimerFunc(1000 / 30, Timer, 0);
-    if(x<=8.0)
-        x += 0.15; 
+    glutTimerFunc(1000 / 60, Timer, 0);
+
+    if (flag)
+    {
+        x += 0.15;
+        if(x>8.0)
+            flag = false;
+    }
+    else
+    {
+        x -= 0.15;
+        if (x < -10)
+            flag = true;
+    }
 }
