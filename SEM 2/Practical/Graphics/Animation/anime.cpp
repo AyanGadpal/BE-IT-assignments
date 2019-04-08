@@ -3,19 +3,43 @@
 #include <GL/gl.h>
 
 using namespace std;
-
+class Point;
 void display();
 
 void reshape(int, int);
 
 void Timer(int);
 
+void BCircle(Point, int);
+
+class Point
+{
+  public:
+    int x, y;
+    Point()
+    {
+        x = y = 0;
+    }
+    Point(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+};
+void putPixel(Point P)
+{
+    glBegin(GL_POINTS);
+    glVertex2i(P.x, P.y);
+    glEnd();
+}
+
 float x = -10;
+Point C = {0, 2};
 bool flag = true;
 
 void Init()
 {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.5, 0.5, 0.5, 1.0);
 }
 
 int main(int argc, char **argv)
@@ -36,14 +60,38 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity(); // RESET ALL CURRENT MATRIX
     glColor3f(0.0, 0.0, 1.0);
-    glBegin(GL_POLYGON);
+    int r = 5;
+    Point p;
+    p.x = 0;
+    p.y = r; //radius
+    putPixel(C);
+    putPixel(Point(p.x + C.x, p.y + C.y));
 
-    glVertex2f(x, 1.0);
-    glVertex2f(x, -1.0);
-    glVertex2f(x + 2.0, -1.0);
-    glVertex2f(x + 2.0, 1.0);
+    float Pi = 3 - 2 * r;
 
-    glEnd();
+    while (p.x <= p.y)
+    {
+        if (Pi < 0)
+        {
+            p.x++;
+            Pi += 4 * p.x + 6;
+        }
+        else
+        {
+            p.x++;
+            p.y--;
+            Pi += 4 * (p.x - p.y) + 16;
+        }
+
+        putPixel(Point(C.x + p.x, C.y + p.y));
+        putPixel(Point(C.x + p.y, C.y + p.x));
+        putPixel(Point(C.x + p.y, C.y - p.x));
+        putPixel(Point(C.x + p.x, C.y - p.y));
+        putPixel(Point(C.x - p.x, C.y - p.y));
+        putPixel(Point(C.x - p.y, C.y - p.x));
+        putPixel(Point(C.x - p.y, C.y + p.x));
+        putPixel(Point(C.x - p.x, C.y + p.y));
+    }
 
     glutSwapBuffers();
 }
@@ -64,7 +112,7 @@ void Timer(int t)
     if (flag)
     {
         x += 0.15;
-        if(x>8.0)
+        if (x > 8.0)
             flag = false;
     }
     else
@@ -72,5 +120,40 @@ void Timer(int t)
         x -= 0.15;
         if (x < -10)
             flag = true;
+    }
+}
+
+void BCircle(Point C, int r)
+{
+    Point p;
+    p.x = 0;
+    p.y = r;
+    putPixel(C);
+    putPixel(Point(p.x + C.x, p.y + C.y));
+
+    float Pi = 3 - 2 * r;
+
+    while (p.x <= p.y)
+    {
+        if (Pi < 0)
+        {
+            p.x++;
+            Pi += 4 * p.x + 6;
+        }
+        else
+        {
+            p.x++;
+            p.y--;
+            Pi += 4 * (p.x - p.y) + 16;
+        }
+
+        putPixel(Point(C.x + p.x, C.y + p.y));
+        putPixel(Point(C.x + p.y, C.y + p.x));
+        putPixel(Point(C.x + p.y, C.y - p.x));
+        putPixel(Point(C.x + p.x, C.y - p.y));
+        putPixel(Point(C.x - p.x, C.y - p.y));
+        putPixel(Point(C.x - p.y, C.y - p.x));
+        putPixel(Point(C.x - p.y, C.y + p.x));
+        putPixel(Point(C.x - p.x, C.y + p.y));
     }
 }

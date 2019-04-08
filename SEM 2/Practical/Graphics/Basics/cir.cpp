@@ -99,7 +99,7 @@ void putPixel(Point P)
 {
 	glBegin(GL_POINTS);
 		glVertex2i(P.x,P.y);
-	glEnd();
+	glEnd();	
 }
 
 void reshape(int w,int h)
