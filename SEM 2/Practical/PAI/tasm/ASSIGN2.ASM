@@ -73,7 +73,6 @@
        mov ch,05h
 
 
-
        loop1: INPUT
               cmp al,39h
               ja loop1
