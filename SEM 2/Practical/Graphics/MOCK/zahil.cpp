@@ -1,8 +1,8 @@
 // Code : CG Mock Exam
-// Auther : Ayan Naresh Gadpal
+// Auther : Zahil Shaikh
 // Batch : H11 SE11
-// Roll No: 23370
-// Ques No. : 1(a)
+// Roll No: 23376
+// Ques No. : ?
 
 #include <GL/freeglut.h>
 #include <GL/gl.h>
@@ -13,7 +13,7 @@ class Point;
 void myMouseFunc(int, int, int, int); // To handle click event
 void DDALine(Point, Point);
 void dottedDDA(Point, Point);
-bool flag = true;
+bool flag = true, state = true;
 int c = 0;
 
 // TO STORE THE COORDINATES
@@ -34,17 +34,17 @@ Point sP = {0, 0}, eP;
 
 void init()
 {
-  glClearColor(1.0, 1.0, 1.0, 1.0);
+  glClearColor(0.0, 0.0, 0.0, 1.0);
   // Output Color
   glClear(GL_COLOR_BUFFER_BIT);
   gluOrtho2D(-250, 250, -250, 250);
 }
 void myDisplay()
 {
-  glColor3f(1.0f, 0.0f, 0.0f); //Red
+  glColor3f(1.0f, 0.0f, 0.0f);            //Red
   DDALine(Point(0, -250), Point(0, 250)); // X axis
-  
-  glColor3f(0.0f, 0.0f, 1.0f); //Blue
+
+  glColor3f(0.0f, 0.0f, 1.0f);            //Blue
   DDALine(Point(250, 0), Point(-250, 0)); // Y axis
   glColor3f(0.0f, 1.0f, 0.0f);
 
@@ -133,8 +133,20 @@ void dottedDDA(Point p1, Point p2)
     {
       glVertex2i(x1, y1);
       c++;
-      if (c == 10)
-        flag = false; // Disable Pixel
+      if (state)
+      {
+        if (c == 5)
+        {
+          flag = false;
+          state = false;
+        }
+      }
+
+      else if (c == 10)
+      {
+        flag = false;
+        state = true;
+      }
     }
     else
     {
