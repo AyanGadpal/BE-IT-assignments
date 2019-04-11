@@ -1,0 +1,130 @@
+; 4 FAR PROCEDURES
+
+;--------MACROS----------
+INTIALIZE MACRO; INTIALIZE ALL REGISTORS CONTAIN TO 0
+    XOR AX,AX
+    XOR BX,BX
+    XOR CX,CX
+    XOR DX,DX
+ENDM
+
+DISP MACRO M 
+    LEA DX,M
+    MOV AH,09H
+    INT 21H
+ENDM 
+
+INPUT MACRO 
+    MOV AH,01H
+    INT 21H 
+    MOV AH,00H
+ENDM
+
+.MODEL SMALL
+.DATA
+    STR1 DB 20 DUP("$")
+    STR2 DB 20 DUP("$")
+    HEAD DB 10,10,13,"---------MENU----------",10,"$"
+    LINE DB 10,13,"-----------------------$"
+
+    MENU DB 10,13,"1) INPUT STRING",10,"2) DISPLAY",10,"3) COMPARE",10,"4) REVERSE",10,"5) CONCATION",10,"6) SUBSTRING",10,"7) EXIT",10,13,"YOUR CHOICE : $"
+    
+    
+    URSTR DB 10,13,"YOUR STRING :$ "
+    REV DB 10,13,"REVERSE STRING IS ",10,13,"$"
+    
+    INVALID DB 10,13,"INVALID $"
+
+    PUBLIC STR1,STR2 ; MAKING PUBLIC FOR OTHER MODULE TO USE
+
+.CODE
+    MOV AX,@DATA
+    MOV DS,AX
+    MOV ES,AX
+    ;-------MENU-------
+    @MENU:
+    DISP HEAD
+    DISP MENU
+    INPUT 
+
+    CMP AL,31H
+    JE @CASE1
+
+    CMP AL,32H
+    JE @CASE2
+
+    CMP AL,33H
+    JE @CASE3
+
+    CMP AL,34H
+    JE @CASE4
+
+    CMP AL,35H 
+    JE @CASE5
+    
+    CMP AL,36H 
+    JE @CASE6
+
+    CMP AL,37H 
+    JE @END
+
+    DISP INVALID
+
+    JMP @MENU
+
+    ;INPUT STRING 1
+    @CASE1: 
+    DISP LINE
+    EXTRN INPUTSTR1:FAR
+    CALL INPUTSTR1   
+    
+    JMP @MENU
+
+    ;DISPLAY STRING 1
+    @CASE2:
+    DISP LINE
+    DISP URSTR
+    DISP STR1+2
+    
+    JMP @MENU
+
+    ;REVERSE
+    @CASE4:
+    DISP LINE
+    EXTRN REVSTR:FAR
+    CALL REVSTR
+    DISP REV
+    DISP STR2+2
+    
+    JMP @MENU
+
+    ;COMPARE
+    @CASE3:
+    DISP LINE
+    EXTRN CMPSTR:FAR
+    CALL CMPSTR    
+    
+    JMP @MENU
+
+    ;CONCATE
+    @CASE5:
+    DISP LINE
+    EXTRN CONCAT:FAR
+    CALL CONCAT
+    JMP @MENU
+
+    @CASE6:
+    DISP LINE
+    EXTRN SUBSTRING:FAR
+    CALL SUBSTRING
+
+    JMP @MENU
+
+
+
+
+
+    @END:
+    MOV AH,4CH
+    INT 21H
+END
