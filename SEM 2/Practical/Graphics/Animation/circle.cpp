@@ -6,6 +6,7 @@ using namespace std;
 void init();
 class Point;
 void circle(Point, int);
+void Timer(int);
 
 class Point
 {
@@ -21,6 +22,8 @@ class Point
         this->y = y;
     }
 };
+int r = 60, i = 1;
+Point C = {-350 + r, 0};
 
 void init()
 {
@@ -35,7 +38,7 @@ void myDisplay()
 
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    circle(Point(0, 0), 100);
+    circle(C, r);
 
     glFlush();
 }
@@ -44,11 +47,12 @@ void circle(Point c, int r)
 {
     Point t;
     int d; //Decision Parameter
-    t.x = c.x;
-    t.y = c.y + r;
+    t.x = 0;
+    t.y = r;
     d = 3 - 2 * r; // intial Decision Parameter
     glBegin(GL_POINTS);
     glVertex2i(t.x, t.y);
+    glVertex2i(t.x, t.y + c.y);
 
     while (t.x < t.y)
     {
@@ -63,14 +67,14 @@ void circle(Point c, int r)
             t.y--;
             d += 4 * (t.x - t.y) + 16;
         }
-        glVertex2i(t.x, t.y);
-        glVertex2i(-t.x, t.y);
-        glVertex2i(-t.x, -t.y);
-        glVertex2i(t.x, -t.y);
-        glVertex2i(t.y, t.x);
-        glVertex2i(-t.y, t.x);
-        glVertex2i(-t.y, -t.x);
-        glVertex2i(t.y, -t.x);
+        glVertex2i(t.x + c.x, t.y + c.y);
+        glVertex2i(-t.x + c.x, t.y + c.y);
+        glVertex2i(-t.x + c.x, -t.y + c.y);
+        glVertex2i(t.x + c.x, -t.y + c.y);
+        glVertex2i(t.y + c.x, t.x + c.y);
+        glVertex2i(-t.y + c.x, t.x + c.y);
+        glVertex2i(-t.y + c.x, -t.x + c.y);
+        glVertex2i(t.y + c.x, -t.x + c.y);
     }
 
     glEnd();
@@ -83,9 +87,21 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_SINGLE);
     glutInitWindowSize(700, 700);
     glutInitWindowPosition(200, 200);
-    glutCreateWindow("CHESS");
+    glutCreateWindow("Wheel");
     glutDisplayFunc(myDisplay);
+    glutTimerFunc(1000, Timer, 0);
     init();
     glutMainLoop();
     return 0;
+}
+void Timer(int t)
+{
+    glutPostRedisplay();
+    glutTimerFunc(1000 / 200, Timer, 0);
+
+    C.x += i;
+    if (C.x == 350 - r)
+        i = -1;
+    if (C.x == -350 + r)
+        i = 1;
 }

@@ -156,4 +156,4 @@ void BCircle(Point C, int r)
         putPixel(Point(C.x - p.y, C.y + p.x));
         putPixel(Point(C.x - p.x, C.y + p.y));
     }
-}
+}z
