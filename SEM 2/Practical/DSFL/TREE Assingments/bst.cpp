@@ -10,29 +10,27 @@
 //				 7. Display level wise 1
 //				 8. Height of the tree 1
 
-
-#include<iostream>
+#include <iostream>
 #include "PriorityQ.h"
 #include "PriorityQ.cpp"
 
 using namespace std;
 
-
 //============ TO PROVIDE A LINE IN OUTPUT ============
 inline void line() // INLINE FOR BETTER PERFORMANCE
 {
-    cout<<"\n=======================================\n";
+    cout << "\n=======================================\n";
 }
 inline void sLine() // INLINE FOR BETTER PERFORMANCE
 {
-    cout<<"\n_______________________________________\n";
+    cout << "\n_______________________________________\n";
 }
 
 class Node
 {
-    public:
-        int data;
-        Node *left,*right;
+  public:
+    int data;
+    Node *left, *right;
     Node()
     {
         data = 0;
@@ -42,380 +40,374 @@ class Node
     {
         this->data = data;
     }
-    friend ostream & operator << (ostream &out, const Node &c);
+    friend ostream &operator<<(ostream &out, const Node &c);
 };
 
 class BST
 {
     Node *root;
 
-    public:
-        PriorityQ<Node*> Q;
-        BST()
-        {
-            root = NULL;
-        }
+  public:
+    PriorityQ<Node *> Q;
+    BST()
+    {
+        root = NULL;
+    }
 
-        //GETTERS AND SETTERS FOR ROOT
-        void setRoot(Node* root)
-        {
-            this -> root = root;
-        }
-        Node* getRoot()
-        {
-            return this->root;
-        }
+    //GETTERS AND SETTERS FOR ROOT
+    void setRoot(Node *root)
+    {
+        this->root = root;
+    }
+    Node *getRoot()
+    {
+        return this->root;
+    }
 
-         bool isEmpty()
+    bool isEmpty()
+    {
+        //Only if root is pointing to NULL ,the tree will be empty
+        if (root == NULL)
+            return true;
+        else
+            return false;
+    }
+
+    //Returns the Height : Overloaded for Ease of Use
+    int height()
+    {
+        int hi;
+        hi = height(root);
+        return hi;
+    }
+
+    //Finding height using Recursion
+    int height(Node *temp)
+    {
+        int hl, hr;
+        if (temp == NULL)
+            return 0;
+        else
         {
-            //Only if root is pointing to NULL ,the tree will be empty
-            if(root == NULL)
-                return true;
-            else
-                return false;
+            //left height
+            hl = 1 + height(temp->left);
+            //Right subtree height
+            hr = 1 + height(temp->right);
         }
+        //taking max from both sides
+        if (hl > hr)
+            return hl;
+        else
+            return hr;
+    }
 
-
-        //Returns the Height : Overloaded for Ease of Use
-        int height()
+    void display(Node *temp)
+    {
+        if (temp == NULL)
+            return;
+        if (temp->right == NULL)
+            Q.enqueue(temp, 0);
+        else
         {
-            int hi;
-            hi = height(root);
-            return hi;
+            display(temp->right);
+            Q.enqueue(temp, 0);
         }
+        display(temp->left);
+    }
 
-        //Finding height using Recursion
-        int height(Node *temp)
+    void display()
+    {
+        int h = height(root);
+
+        int th, tabs;
+        Node *t = new Node();
+        display(root);
+        cout << "\n~~~~~~~~~~~~ BST ~~~~~~~~~~~\n\n";
+        while (!Q.isEmpty())
         {
-            int hl,hr;
-            if(temp==NULL)
-                return 0;
-            else
+            t = Q.dequeue();
+            th = height(t);
+            tabs = h - th;
+            while (tabs != 0)
             {
-                //left height
-                hl = 1 + height(temp->left);
-                //Right subtree height
-                hr = 1 + height(temp->right);
+                cout << "\t";
+                tabs--;
             }
-            //taking max from both sides
-            if(hl>hr)
-                return hl;
-            else
-                return hr;
+            cout << t->data;
+            cout << "\n";
         }
+    }
 
-         void display(Node *temp)
+    void insert(int d)
+    {
+        Node *temp = root;
+        if (isEmpty())
         {
-            if(temp == NULL)
-                return;
-            if(temp->right == NULL)
-                Q.enqueue(temp,0);
-            else
-            {
-                display(temp->right);
-                Q.enqueue(temp,0);
-            }
-            display(temp->left);
+            temp = new Node;
+            temp->left = NULL;
+            temp->right = NULL;
+            temp->data = d;
+            root = temp;
+            cout << "\n Data was inserted in the tree successfully !";
+            return;
         }
+        root = insert(d, temp);
+    }
 
-        void display()
+    Node *insert(int data, Node *root)
+    {
+
+        if (root == NULL)
         {
-            int h= height(root);
+            Node *temp = new Node;
+            temp->data = data;
+            temp->left = NULL;
+            temp->right = NULL;
 
-            int th,tabs;
-            Node *t = new Node();
-            display(root);
-            cout<<"\n~~~~~~~~~~~~ BST ~~~~~~~~~~~\n\n";
-            while(!Q.isEmpty())
-            {
-                t = Q.dequeue();
-                th = height(t);
-                tabs = h - th;
-                while(tabs != 0)
-                {
-                    cout<<"\t";
-                    tabs--;
-                }
-                cout<<t->data;
-                cout<<"\n";
-            }
-        }
-
-        void insert(int d)
-        {
-            Node *temp = root;
-            if(isEmpty())
-            {
-                    temp = new Node;
-                    temp->left = NULL;
-                    temp->right = NULL;
-                    temp->data = d;
-                    root=temp;
-                    cout<<"\n Data was inserted in the tree successfully !";
-                    return;
-            }
-           root = insert(d,temp);
-
-        }
-
-        
-
-        Node *insert(int data,Node *root)
-        {
-
-            if(root == NULL)
-            {
-                Node *temp = new Node;
-                temp->data = data;
-                temp->left = NULL;
-                temp->right = NULL;
-
-                root = temp;
-                return root;
-            }
-            else
-            {
-                if(data < root->data)
-                {
-                    root->left = insert(data,root->left);
-
-                }
-                else if(data > root->data)
-                {
-                    root->right = insert(data,root->right);
-                }
-                else
-                {
-                    cout<<"\n\nDuplication Is Not Allowed";
-                }
-                return root;
-            }
-
+            root = temp;
             return root;
         }
-
-        Node* mirrorImage()
+        else
         {
-            return mirrorImage(root);
-        }
-        
-        Node* mirrorImage(Node *root)
-        {
-            Node *temp;
-                if(root != NULL)
-                {
-                    temp = root->left;
-                    root->left = root->right;
-                    root->right = temp;
-                    mirrorImage(root->left);
-                    mirrorImage(root->right);
-                }
-		    return root;
-	    }
-
-        void deleteNode(int key)
-        {
-            if(isEmpty())
+            if (data < root->data)
             {
-                cout<<"\nERROR : EMPTY TREE !";
-                return;
+                root->left = insert(data, root->left);
             }
-            
-            root = deleteNode(root,key);
-        }
-
-        Node* deleteNode(Node* root, int key)
-        {
-            if (root == NULL) return root;
-            if (key < root->data)
-                root->left = deleteNode(root->left, key);
-            else if (key > root->data)
-                root->right = deleteNode(root->right, key);
+            else if (data > root->data)
+            {
+                root->right = insert(data, root->right);
+            }
             else
             {
-                if (root->left == NULL)
-                {
-                    Node *temp = root->right;
-                    delete root;
-                    return temp;
-                }
-                else if (root->right == NULL)
-                {
-                    Node *temp = root->left;
-                    delete root;
-                    return temp;
-                }
-
-                Node* temp = minNode(root->right);
-                root->data = temp->data;
-                root->right = deleteNode(root->right, temp->data);
-
+                cout << "\n\nDuplication Is Not Allowed";
             }
             return root;
         }
 
-        Node * minNode(Node* node)
+        return root;
+    }
+
+    Node *mirrorImage()
+    {
+        return mirrorImage(root);
+    }
+
+    Node *mirrorImage(Node *root)
+    {
+        Node *temp;
+        if (root != NULL)
         {
-            Node* current = node;
+            temp = root->left;
+            root->left = root->right;
+            root->right = temp;
+            mirrorImage(root->left);
+            mirrorImage(root->right);
+        }
+        return root;
+    }
 
-            while (current->left != NULL)
-                current = current->left;
-
-            return current;
+    void deleteNode(int key)
+    {
+        if (isEmpty())
+        {
+            cout << "\nERROR : EMPTY TREE !";
+            return;
         }
 
-        void search(int data)
-        {
-            Node *temp = root;
+        root = deleteNode(root, key);
+    }
 
-            while(temp != NULL){
-                if(data < temp->data && temp->left != NULL){
-                    temp = temp->left;
-                }else if(data > temp->data && temp->right != NULL){
-                    temp = temp->right;
-                }else if(temp->data == data){
-                    cout<<"\nData Found !!";
-                    return;
-                }
-                else
-                {
-                        cout<<"\nERROR : Data Not Found";
-                        return;
-                }
+    Node *deleteNode(Node *root, int key)
+    {
+        if (root == NULL)
+            return root;
+        if (key < root->data)
+            root->left = deleteNode(root->left, key);
+        else if (key > root->data)
+            root->right = deleteNode(root->right, key);
+        else
+        {
+            if (root->left == NULL)
+            {
+                Node *temp = root->right;
+                delete root;
+                return temp;
+            }
+            else if (root->right == NULL)
+            {
+                Node *temp = root->left;
+                delete root;
+                return temp;
+            }
+
+            Node *temp = minNode(root->right);
+            root->data = temp->data;
+            root->right = deleteNode(root->right, temp->data);
+        }
+        return root;
+    }
+
+    Node *minNode(Node *node)
+    {
+        Node *current = node;
+
+        while (current->left != NULL)
+            current = current->left;
+
+        return current;
+    }
+
+    void search(int data)
+    {
+        Node *temp = root;
+
+        while (temp != NULL)
+        {
+            if (data < temp->data && temp->left != NULL)
+            {
+                temp = temp->left;
+            }
+            else if (data > temp->data && temp->right != NULL)
+            {
+                temp = temp->right;
+            }
+            else if (temp->data == data)
+            {
+                cout << "\nData Found !!";
+                return;
+            }
+            else
+            {
+                cout << "\nERROR : Data Not Found";
+                return;
             }
         }
+    }
 
-        void inOrder(Node *root)
+    void inOrder(Node *root)
+    {
+        if (isEmpty())
         {
-            if(isEmpty())
-            {
 
-                cout<<"EMTYY";
-
-            }            
-            else if(root != NULL)
-            {
-                inOrder(root->left);
-                cout<<" "<<root->data;
-                inOrder(root->right);
-            }
+            cout << "EMTYY";
         }
-
-        void levelOrder()
+        else if (root != NULL)
         {
-            PriorityQ<Node*> QU;
-            Node *temp ;
-            temp = root;
-
-            display();
-            cout<<"Level Order : ";
-
-            while(temp!=NULL)
-            {
-
-                int d = temp->data;
-                cout<<" "<<d<<" ";
-
-                if(temp->left!=NULL)
-                    QU.enqueue(temp->left,0);
-
-                if(temp->right!=NULL)
-                    QU.enqueue(temp->right,0);
-
-                if(!QU.isEmpty())
-                {
-                    temp = QU.dequeue();
-                }
-                else
-                    temp = NULL;
-            }
+            inOrder(root->left);
+            cout << " " << root->data;
+            inOrder(root->right);
         }
+    }
+
+    void levelOrder()
+    {
+        PriorityQ<Node *> QU;
+        Node *temp;
+        temp = root;
+
+        display();
+        cout << "Level Order : ";
+
+        while (temp != NULL)
+        {
+
+            int d = temp->data;
+            cout << " " << d << " ";
+
+            if (temp->left != NULL)
+                QU.enqueue(temp->left, 0);
+
+            if (temp->right != NULL)
+                QU.enqueue(temp->right, 0);
+
+            if (!QU.isEmpty())
+            {
+                temp = QU.dequeue();
+            }
+            else
+                temp = NULL;
+        }
+    }
 };
 
 int main()
 {
     BST T;
     Node *temp;
-     int d;
+    int d;
     char choice;
 
-    while ( choice != '7' )
+    while (choice != '7')
     {
         line();
-        cout<<
-            "\n~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~\n"
-            "\nPlease Select An Option\n"
-            "1) Insert \n"
-            "2) Delete\n"
-            "3) Search\n"
-            "4) Display\n"
-            "5) Display Level\n"
-            "6) Height\n"
-            "7) Exit\n"
-            "YOUR CHOICE : "
-            ;
-            cin>>choice;
+        cout << "\n~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~\n"
+                "\nPlease Select An Option\n"
+                "1) Insert \n"
+                "2) Delete\n"
+                "3) Search\n"
+                "4) Display\n"
+                "5) Display Level\n"
+                "6) Height\n"
+                "7) Exit\n"
+                "YOUR CHOICE : ";
+        cin >> choice;
 
-            switch(choice)
+        switch (choice)
+        {
+        case '1':
+            sLine();
+            do
             {
-                case '1':
-                sLine();
-                    do
-                    {
-                       
-                        cout<<"\nEnter the Value";
-                        cin>>d;
-                        T.insert(d);
-                        cout<<"\nDo you want to Enter More? (y/n) \n CHOICE : ";
-                        cin>>choice;
-                    } while( choice != 'n');
-                
-                break;
 
-                case '2':
-                sLine();
-                    cout<<"\nEnter the Value";
-                    cin>>d;
-                    T.deleteNode(d);
-                break;
+                cout << "\nEnter the Value";
+                cin >> d;
+                T.insert(d);
+                cout << "\nDo you want to Enter More? (y/n) \n CHOICE : ";
+                cin >> choice;
+            } while (choice != 'n');
 
-                case '3':
-                sLine();
-                  cout<<"\nEnter the Value";
-                  cin>>d;
-                  T.search(d);
-                
-                break;
+            break;
 
-                case '4':
-                sLine();
-                    T.display();
-                break;
+        case '2':
+            sLine();
+            cout << "\nEnter the Value";
+            cin >> d;
+            T.deleteNode(d);
+            break;
 
+        case '3':
+            sLine();
+            cout << "\nEnter the Value";
+            cin >> d;
+            T.search(d);
 
-                case '5':
-                sLine();
-                    T.levelOrder();
-                break;
+            break;
 
-                case '6':
-                sLine();
-                    cout<<"HEIGHT : "<<T.height();
-                break;
+        case '4':
+            sLine();
+            T.display();
+            break;
 
-                case '7':
-                    line();
-                    cout<<"\n\t\tGOOD BYE\n";
-                    line();
-                break;
-                        
-                default:
-                sLine();
-                cout<<"ERROR : Wrong Option Selected !!";
-                 
+        case '5':
+            sLine();
+            T.levelOrder();
+            break;
 
-            }
+        case '6':
+            sLine();
+            cout << "HEIGHT : " << T.height();
+            break;
 
+        case '7':
+            line();
+            cout << "\n\t\tGOOD BYE\n";
+            line();
+            break;
+
+        default:
+            sLine();
+            cout << "ERROR : Wrong Option Selected !!";
+        }
     }
     return 0;
 }

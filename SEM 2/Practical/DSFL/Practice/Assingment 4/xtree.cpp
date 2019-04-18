@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 #include "stack.h"
 #include "Q.h"
 using namespace std;
@@ -29,20 +30,20 @@ class Tree
         root = NULL;
     }
 
-    void create(char exp[])
+    bool create(char exp[])
     {
         Stack<NodeTree *> stack;
         NodeTree *newNodeTree;
         for (int i = 0; exp[i] != '\0'; i++)
         {
             newNodeTree = new NodeTree();
-            if (determine(exp[i]) == 1)
+            if (determine(exp[i]) == 1) // operand
             {
                 newNodeTree->data = exp[i];
                 newNodeTree->left = NULL;
                 newNodeTree->right = NULL;
             }
-            if (determine(exp[i]) == 2)
+            if (determine(exp[i]) == 2) // operator
             {
                 newNodeTree->data = exp[i];
                 newNodeTree->right = stack.pop();
@@ -51,6 +52,9 @@ class Tree
             stack.push(newNodeTree);
         }
         root = stack.pop();
+        if (!stack.isEmpty())
+            return false;
+        return true;
     }
 
     void inorder(NodeTree *n)
@@ -148,7 +152,13 @@ int main()
     char postfix[20];
     cout << "\nEnter the PostFix Expression : ";
     cin >> postfix;
-    ET.create(postfix);
+    cout <<endl <<strrev(postfix);
+    if (!ET.create(postfix))
+    {
+        cout << "\nInvalid Expression !";
+        exit(0);
+    }
+
     ET.display();
 
     return 0;

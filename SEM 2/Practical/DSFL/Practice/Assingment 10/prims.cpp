@@ -39,15 +39,27 @@ class Vertex
     Edge *firstE;
 };
 
+class priEdge
+{
+  public:
+    int sv, weight, ev;
+};
+
 class Graph
 {
   public:
     Vertex *root;
-    int vertexCount, EdgeCount;
+    int vertexCount, EdgeCount, *a;
     Graph()
     {
         root = NULL;
         vertexCount = EdgeCount = 0;
+    }
+    void unionInit()
+    {
+        a = new int(vertexCount);
+        for (int i = 0; i < vertexCount; i++)
+            a[i] = i;
     }
     bool isEmpty()
     {
@@ -61,7 +73,7 @@ class Graph
         cin >> vertexCount;
         n = new Vertex();
         pre = root = n;
-        for (i = 1; i <= vertexCount; i++)
+        for (i = 0; i < vertexCount; i++)
         {
             n->id = i;
             pre->downlink = n;
@@ -118,15 +130,9 @@ class Graph
         cin >> w;
         src = findVertexById(scrID);
         des = findVertexById(desID);
-  
-        if (setLink(src, des, w))
-            setLink(des, src, w);
-        else
-        {
-            line();
-            cout << "Already Link";
-            line();
-        }
+
+        setLink(src, des, w);
+        setLink(des, src, w);
     }
 
     bool setLink(Vertex *s, Vertex *d, int w)
@@ -151,6 +157,56 @@ class Graph
             edge->nextE = temp;
         }
         return true;
+    }
+    bool isConnected(int x, int y)
+    {
+        return a[x] == a[y];
+    }
+
+    void connect(int x,int y)
+    {
+        for (int i = 0; i < vertexCount;i++)
+        {
+            if(a[i]==a[y])
+                a[i] = a[x];
+        }
+    }
+
+    void primns()
+    {
+        priEdge path;
+        unionInit();
+        int index = 0;
+        int cost = 0;
+        while (index != vertexCount - 1) // n-1 iteration
+        {
+            int mincost = 1000000;
+            Vertex *v = root;
+            while (v != NULL)
+            {
+                if (isConnected(v->id, 0))
+                {
+                    Edge *e;
+                    e = v->firstE;
+                    while (e != NULL)
+                    {
+                        if (e->weight < mincost && !isConnected(0, e->adjacentV->id))
+                        {
+                            path.weight = mincost = e->weight;
+                            path.sv = v->id;
+                            path.ev = e->adjacentV->id;
+                        }
+                        e = e->nextE;
+                    }
+                }
+                v = v->downlink;
+            }
+            connect(0, path.ev);
+            cout <<endl<< path.sv << "<--(" << path.weight << ")-->" << path.ev;
+            cost += path.weight;
+            index++;
+        }
+        cout << "\nCost : " << cost;
     }
 };
 
@@ -187,7 +243,7 @@ int main()
             break;
         case 4:
             line();
-            // graph.kruskal();
+            graph.primns();
 
             break;
         case 5:
