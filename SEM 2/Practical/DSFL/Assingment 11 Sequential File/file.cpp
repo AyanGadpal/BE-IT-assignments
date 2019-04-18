@@ -27,6 +27,7 @@ class File
   public:
     File()
     {
+        
     }
     File(const char *filename)
     {
@@ -52,7 +53,7 @@ class File
     }
     void display()
     {
-        file.open(filename, ios::in);
+        file.open(filename, ios::in );
         char name[30];
         int roll;
       

@@ -1,466 +1,426 @@
-//============================================================================
-// Name        : Kruskal
-// Author      : Ayan 23370 H11
-// Version     : 4
-// Copyright   : GNU public Libraly
-//============================================================================
+//=================================================================================
+// Name        : Assignment6.cpp
+// Author      : Devashish (23364)
+// Version     : 1.0
+// Copyright   : GNU Public License
+// Description : Represent any real world graph using adjacency list /adjacency 
+//               matrix find minimum spanning tree using Kruskal’s algorithm.
+//=================================================================================
 
 #include <iostream>
-#include <iomanip>
+#include <string.h>
 
 using namespace std;
 
-inline void line()
-{
-    cout << "\n=================================================\n";
-}
-inline void sLine()
-{
-    cout << "\n------------------------------------------------";
-}
+//==============================  structure declarations ==============================
 
-inline void errorMsg(const char *msg)
-{
-    sLine();
-    cout << endl
-         << " ERROR : " << msg;
-    sLine();
-}
+int id = 0, *a, size;
 
-class Vertex;
-class Edge;
-class Edge
+// Structure for graph
+
+struct Vertex;
+
+struct Graphedge
 {
-  public:
-    bool visited;
-    int weight;
-    Vertex *adjacentV;
-    Edge *nextE;
-    bool krus;
-    Edge()
-    {
-        adjacentV = NULL;
-        nextE = NULL;
-       
-        visited = false;
-        weight = 0;
-        krus = false;
-    }
-    Edge(Vertex *next, int eWeight)
-    {
-        adjacentV = next;
-        visited = false;
-    
-        
-        nextE = NULL;
-        weight = eWeight;
-        
-    }
+	bool visited;
+	int weight;
+	Vertex* neighbourlink;
+	Graphedge* nextlink;
+
+	Graphedge()
+	{
+		visited = false;
+		nextlink = NULL;
+		neighbourlink = NULL;
+	}
 };
 
-class Vertex
+struct Vertex
 {
-  public:
-    int id;
-    Vertex *downV; // Next vertex since SLL is used
-    Edge *firstE;  // First Connection
-    bool visited;
-    
-    // Initialization
-    Vertex()
-    {
-        visited = false;
-        downV = NULL;
-        firstE = NULL;
-        
-    }
+	char* name;
+	int id;
+	bool visited;
+	Vertex* downlink;
+	Graphedge* edgelink;
+
+	Vertex()
+	{
+		name = new char[20];
+		visited = false;
+		downlink = NULL;
+		edgelink = NULL;
+	}
+
+	void makeuser()
+	{
+		cout<<"\n INFO: Adding new user, Please enter the following details - ";
+		cout<<"\n Name - ";
+		cin>>name;
+	}
+
+	void putdata()
+	{
+		cout<<"\n";
+		cout<<"\t"<<name<<" "<<id;
+	}
 };
 
-class Graph
+// Starting Node of the graph
+struct startnode
 {
-  public:
-    int vertexCount,edgeCount;
-    Vertex *root;
+	int cnt;
+	Vertex* start;
+};
 
-    Graph()
-    {
-        root = NULL;
-        vertexCount = edgeCount = 0;
-    }
-    bool isEmpty()
-    {
-        return (root == NULL);
-    }
-
-    void defineNodes()
-    {
-        int i = 0;
-        cout << "\nNumber of Graph Nodes : ";
-        cin >> vertexCount;
-
-        // 'n' for travelsing , 'pre' for keeping track of the previous node
-        Vertex *n, *pre;
-        n = new Vertex();
-        pre = root = n;
-
-        for (i = 1; i <= vertexCount; i++)
-        {
-            // Setting ID
-            n->id = i;
-            pre->downV = n;
-            pre = pre->downV;
-            n = new Vertex();
-        }
-    }
-
-    Vertex *findVertexById(int id)
-    {
-        Vertex *vertex;
-        vertex = root;
-        for (int i = 1; i < vertexCount; i++)
-        {
-            if (id == i)
-                break;
-            vertex = vertex->downV;
-        }
-        return vertex;
-    }
-
-    void setConnection()
-    {
-        int scrID, desID, w;
-        Vertex *srcVertex, *desVertex;
-        display();
-        cout << "\n Source : ";
-        cin >> scrID;
-        cout << "\nDestination : ";
-        cin >> desID;
-        cout << "\nWeight : ";
-        cin >> w;
-
-        // Getting Source and Destination Vertex by the ID
-        srcVertex = findVertexById(scrID);
-        desVertex = findVertexById(desID);
-
-        // Validation 
-
-        if (setLink(srcVertex, desVertex, w))
-        {
-            setLink(desVertex, srcVertex, w);
-            edgeCount++;
-        }
-        else
-            errorMsg("ALREADY LINK !");
-
-    }
-
-    bool setLink(Vertex *srcVertex, Vertex *desVertex, int w)
-    {
-        Edge *temp, *edge;
-        edge = srcVertex->firstE;
-        temp = new Edge(desVertex, w);
-        if (edge == NULL)
-            srcVertex->firstE = temp;
-        else
-        {
-            if (edge->adjacentV == desVertex)
-                return false; // Return Flase if Already Friend / Link exist
-            while (edge->nextE != NULL)
-                edge = edge->nextE; // End of the edge link
-            edge->nextE = temp;     // Assinging Edge
-        }
-        return true;
-    }
-
-    void display()
-    {
-        if (isEmpty())
-        {
-            errorMsg("The Graph is Empty!");
-            return;
-        }
-        else
-        {
-            Vertex *vertex;
-            Edge *edge;
-            vertex = root;
-            //Table HEADING columb
-            cout << "\n"
-                 << setw(3) << "ID\t"
-                 << "Adjacent Nodes";
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                sLine();
-                cout << endl
-                     << setw(4) << vertex->id
-                     << "\t\t";
-                edge = vertex->firstE;
-                while (edge != NULL)
-                {
-                    cout << "(" << edge->adjacentV->id << " ," << edge->weight << ")";
-                    edge = edge->nextE;
-                }
-                vertex = vertex->downV;
-            }
-        }
-    }
-    void initkrus()
-    {
-       
-        Vertex *tempv = root;
-        
-        while(tempv != NULL)
-        {
-            Edge *tempe = tempv->firstE;
-            while(tempe != NULL)
-            {
-                tempe->krus = false;
-                tempe = tempe->nextE;
-            }	
-            tempv = tempv->downV;
-        }
-    }
-    void DFS(Vertex* temp)
-    {
-        temp->visited = true;
-        cout << temp->id << " ";
-        Edge *g = temp->firstE;
-        while(g!=NULL)
-        {
-            if(g->nextE->visited != true)
-                DFS(g->adjacentV);
-            g = g->nextE;
-        }
-    }
-
-// Kruskal traversal
-void krustraverse(Vertex* tempv)
+// Structure for Kruskal Edges 
+struct kruskaledges
 {
-	while(tempv != NULL)
-	{
-		Edge *tempe = tempv->firstE;
-		while(tempe != NULL)
-		{
-			if(tempe->krus == true)
-				cout<<"\n "<<tempv->id<<" - "<<tempe->adjacentV->id;
-			tempe = tempe->nextE;
-		}	
-		tempv = tempv->downV;
-	}
+	int vstart;
+	int weight;
+	int vend;
+};
+
+//==================================== Functions ==========================================
+
+// Cycle detection algorithms
+void unioninit(int n)
+{
+	a = new int(n);
+	size = n;
+	for(int i = 0;i <= n;i++)
+		a[i] = i;
 }
 
-// Detect Cycle
-bool checkcycle(Vertex* curr)
+int find(int x)
 {
-	curr->visited = true;
-	Vertex *next = NULL;
-
-	Edge* g = curr->firstE;
-	Edge* tempe;
-
-	while(g!=NULL)
-	{
-		if(g->adjacentV->visited == false && g->visited == false && g->krus == true)
-		{	
-			g->visited = true;
-			next = g->adjacentV;
-			tempe = next->firstE;
-
-			while(tempe != NULL)
-			{
-				if(tempe->adjacentV->id == curr->id)
-				{
-					tempe->visited = true;
-					break;
-				}
-				tempe = tempe->nextE; 	
-			}
-
-			return checkcycle(g->adjacentV);
-		}
-		else if(g->visited == false && g->adjacentV->visited == true && g->krus == true)
-			return true;
-
-		g = g->nextE;
-	}
-    return false;
+	return a[x];
 }
-void swap(Edge *xp, Edge *yp) 
-{ 
-    Edge temp = *xp; 
-    *xp = *yp; 
-    *yp = temp; 
-} 
 
-void initvisit()
+bool isConnected(int x,int y)
 {
-	Vertex *temp = root;
+	return find(x) == find(y);
+}
+
+void connect(int x,int y)
+{
+	int p = find(x);
+	int q = find(y);
+	
+	for(int i = 0;i <= size; i++)
+		if(a[i] == p)
+			a[i] = q;
+}
+
+// Initialize visited flag for all nodes
+void initvisit(startnode *startnode)
+{
+	Vertex *temp = startnode->start;
 	while(temp != NULL)
 	{
 		temp->visited = false;
-		temp= temp->downV;
+		temp= temp->downlink;
 	}
 }
 
 // Initialize visited flag for all edges
-void initedges()
+startnode* initedges(startnode *startn)
 {
-	
-	Vertex *tempv = root;
+	startnode *temp = startn;
+	Vertex *tempv = temp->start;
 	
 	while(tempv != NULL)
 	{
-		Edge *tempe = tempv->firstE;
+		Graphedge *tempe = tempv->edgelink;
 		while(tempe != NULL)
 		{
 			tempe->visited = false;
-			tempe = tempe->nextE;
+			tempe = tempe->nextlink;
 		}	
-		tempv = tempv->downV;
+		tempv = tempv->downlink;
 	}
 }
 
+// Depth first traversal
+void traversedfs(Vertex* temp)
+{
+	temp->visited = true;
+	temp->putdata();
+	Graphedge* g = temp->edgelink;
+	while(g!=NULL)
+	{
+		if(g->neighbourlink->visited != true)
+			traversedfs(g->neighbourlink);
+		g = g->nextlink;
+	}
+}
 
-    void kruskal()
-    {
-        
-        Vertex *v = root;
-        Vertex *temp = NULL;
-        Edge *tempe;
+// Add a new user to the network
+startnode* addNode(startnode *startn)
+{
+	cout<<"\n\n INFO: Creating new Node in the graph";
+	startnode *temp = startn;
+	Vertex *tempv = temp->start;
+	
+	if(tempv == NULL)
+	{
+		tempv = new Vertex;
+		tempv->makeuser();
+		tempv->downlink = NULL;
+		tempv->id = id;
+		id++;
+		temp->start = tempv;
+		return temp;
+	}
 
-        Edge *gearr[30];
-        int index = 0, n=0;
+	while(tempv->downlink!=NULL)
+	{
+		startn->cnt++;
+		tempv=tempv->downlink;
+	}
 
-        initvisit();
-        initedges();
+	tempv->downlink = new Vertex;
+	tempv = tempv->downlink;
+	tempv->downlink = NULL;
+	tempv->id = id;
+	id++;
+	tempv->makeuser();
+	
+	cout<<"\n\n INFO: Node was added successfully in the graph";
+	return temp;
+}
 
-        while(v!=NULL)
-        {
-            Edge *ge = v->firstE;
-            
-            while(ge != NULL && ge->visited == false)
-            {
-                gearr[index] = ge;
-                index++;
-                temp = ge->adjacentV;
-                tempe = temp->firstE;
-                
-                while(tempe != NULL)
-                {
-                    if(tempe->adjacentV->id == v->id)
-                    {
-                        tempe->visited = true;
-                        break;
-                    }
-                    tempe = tempe->nextE; 	
-                }
-                ge = ge->nextE; 
-            }
-            v = v->downV;
-        }
+// Add edge 
+startnode* addEdge(startnode *startn, char* name1, char* name2)
+{
+	int flg = 0;
 
-        // bubble sort
-        int i, j;
-        n = index; 
-        for (i = 0; i < n; i++)       
-        // Last i elements are already in place    
-        for (j = 0; j < n-i-1; j++)  
-            if (gearr[j]->weight > gearr[j+1]->weight) 
-                swap(gearr[j], gearr[j+1]); 
+	startnode *temp = startn;
+	Vertex *v1 = startn->start; 
+	Vertex *v2 = startn->start; 
 
-        for(int i = 0; i<n; i++)
-        {
-            cout<<" "<<gearr[i]->weight;
-        }
+	while(v1!=NULL)
+	{	
+		if(strcmp(v1->name,name1) != 0)
+			v1=v1->downlink;
+		else if(strcmp(v1->name,name1) == 0)
+		{
+			flg = 1;
+			break;
+		}
+	}
 
-        int cost = 0;
+	if(flg == 0)
+	{
+		cout<<"\n INFO:	The node specified as \" "<<name1<<" \"does not exist in the graph, please try again !!!";
+		return temp;
+	}
 
-        initkrus();
+	flg = 0;
+	v2 = startn->start; 
 
-        for(int i = 0; i<n; i++)
-        {
-            Vertex *tempv = root;
-            
-            while(tempv != NULL)
-            {
-                Edge *tempe = tempv->firstE;
-                while(tempe != NULL)
-                {
-                    if(gearr[i]->weight == tempe->weight && gearr[i]->adjacentV->id == tempe->adjacentV->id)
-                    {
-                        tempe->krus = true;
-                        cost+=tempe->weight;
+	while(v2!=NULL)
+	{	
+		if(strcmp(v2->name,name2) != 0)
+			v2=v2->downlink;
+		else
+		{
+			flg = 1;
+			break;
+		}
+	}
 
-                        initvisit();
-                        initedges();
-                        if(checkcycle(root))
-                        {	
-                            cout<<"\n in - "<<i;
-                            tempe->krus = false;
-                            cost-=tempe->weight;
-                        }	
+	if(flg == 0)
+	{
+		cout<<"\n INFO: The node specified as \" "<<name2<<" \" does not exist in the graph, please try again !!!";
+		return temp;
+	}
 
-                        break;
-                    }
+	int weight = 0;
 
-                    tempe = tempe->nextE;
-                }	
-                tempv = tempv->downV;
-            }
-        }
+	cout<<"\n Enter the weight of the edge - ";
+	cin>>weight;
 
-        krustraverse(root);
-        cout<<"\n Minimal Spanning Tree cost - "<<cost;
-    }
-};
+	Graphedge *ge1,*ge2;
 
+	// edge from v1 to v2
+	ge1 = v1->edgelink;
+
+	if(ge1 == NULL)
+	{
+		ge1 = new Graphedge;
+		ge1->neighbourlink = v2;
+		ge1->weight = weight;
+		ge1->nextlink = NULL;
+		v1->edgelink = ge1;
+	
+		// return temp;
+		cout<<"\n INFO: The edge was successfully added from \" "<<v1->name<<" \" to \" "<<v2->name<<" \"";
+
+	}
+	else
+	{
+		while(ge1->nextlink != NULL)
+			ge1 = ge1->nextlink;
+
+		ge1->nextlink = new Graphedge;
+		ge1 = ge1->nextlink;
+		ge1->weight = weight;
+		ge1->neighbourlink = v2;
+		ge1->nextlink = NULL;
+
+		cout<<"\n INFO: The edge was successfully added from \" "<<v1->name<<" \" to \" "<<v2->name<<" \"";
+	}
+
+	// edge from v2 to v1
+	ge2 = v2->edgelink;
+
+	if(ge2 == NULL)
+	{
+		ge2 = new Graphedge;
+		ge2->neighbourlink = v1;
+		ge2->weight = weight;	
+		ge2->nextlink = NULL;
+		v2->edgelink = ge2;
+
+		cout<<"\n INFO: The edge was successfully added from \" "<<v2->name<<" \" to \" "<<v1->name<<" \"";	
+	}
+	else
+	{		
+		while(ge2->nextlink != NULL)
+			ge2 = ge2->nextlink;
+
+		ge2->nextlink = new Graphedge;
+		ge2 = ge2->nextlink;
+		ge2->weight = weight;	
+		ge2->neighbourlink = v1;
+		ge2->nextlink = NULL;
+
+		cout<<"\n INFO: The edge was successfully added from \" "<<v2->name<<" \" to \" "<<v1->name<<" \"";	
+	}
+	
+	return temp;
+}
+
+// Swapping edges
+void swap(kruskaledges *xp, kruskaledges *yp) 
+{ 
+    kruskaledges temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+} 
+
+// Kruskal MST
+void kruskal(startnode *graph)
+{
+	Vertex *v = graph->start;
+	Vertex *temp = NULL;
+	Graphedge *tempe;
+
+	kruskaledges ke[30];
+
+	int index = 0;
+
+	initvisit(graph);
+	initedges(graph);
+
+	while(v!=NULL)
+	{
+		Graphedge *ge = v->edgelink;
+		
+		while(ge != NULL && ge->visited == false)
+		{
+			ke[index].vstart = v->id;
+			ke[index].weight = ge->weight;
+			ke[index].vend = ge->neighbourlink->id;
+			index++;
+
+			ge = ge->nextlink; 
+		}
+		v = v->downlink;
+	}
+
+	// bubble sort
+	int i, j, n = index;
+   	for (i = 0; i < n; i++)       
+       // Last i elements are already in place    
+       for (j = 0; j < n-i-1; j++)  
+           if (ke[j].weight > ke[j+1].weight) 
+              swap(ke[j], ke[j+1]); 
+
+	for (i = 0; i < n; i++)       
+	{
+		cout<<"\n"<<ke[i].vstart<<" "<<ke[i].weight<<" "<<ke[i].vend;	
+	}
+	int cost = 0;
+
+	unioninit(n);
+	
+	cout<<"\n Edges in the minimum spanning tree are - ";
+	for(int i = 0; i<n-1; i++)
+	{
+		kruskaledges kte = ke[i];
+		if(!isConnected(kte.vstart, kte.vend))
+		{
+			connect(kte.vstart, kte.vend);
+			cout<<"\n Edge "<<i<<" = "<<kte.vstart<<"----- "<<kte.weight<<" ------"<<kte.vend;
+			cost+=kte.weight;
+		}
+	}
+
+	cout<<"\n Minimal Spanning Tree cost - "<<cost;
+}
 
 int main()
 {
-    int ch;
-    Graph graph;
-    graph.defineNodes();
-    graph.setConnection();
-    graph.display();
+	startnode *graph = new startnode;
+	graph->start = NULL;
 
-    while (ch != 9)
-    {
-        line();
-        cout << "\nEnter Your Choice\n"
-                "1) Define Nodes \n"
-                "2) Make Network (Make Connections) \n"
-                "3) Diplay\n"
-                "4) Kruskal\n"
-                "5) Exit\nCHOICE : ";
-        cin >> ch;
-        switch (ch)
-        {
-        case 1:
-            line();
-            graph.defineNodes();
-            break;
-        case 2:
-            line();
-            graph.setConnection();
+	char *name1 = new char[20], *name2 = new char[20];
+	int choice;
+	
+	do
+	{
+		cout<<"\n\n\n ____________________________________";
+		cout<<"\n|                                    ";
+		cout<<"\n|                MENU                ";
+		cout<<"\n|____________________________________";
+		cout<<"\n|                                    ";
+		cout<<"\n|  1. Create New Node   ";
+		cout<<"\n|  2. Add edges";
+		cout<<"\n|  3. Create MST (kruskal)";
+		cout<<"\n|  4. Traverse the graph";
+		cout<<"\n|  5. Exit                          ";
+		cout<<"\n|____________________________________";
+		cout<<"\n Enter your choice - ";
+		cin>>choice;
 
-            break;
-        case 3:
-            line();
-            graph.display();
-            break;
-        case 4:
-            line();
-            graph.kruskal();
+		switch(choice)
+		{
+			case 1:
+				graph = addNode(graph);
+				break;
+			case 2:
+				cout<<"\n Enter name of vertex 1 - ";
+				cin>>name1;
+				cout<<"\n Enter name of vertex 2 - ";
+				cin>>name2;
+				graph = addEdge(graph, name1, name2);
+				break;
+			case 3:
+				kruskal(graph);
+				break;
+			case 4:
+				cout<<"\t Name ";
+				initvisit(graph);
+				traversedfs(graph->start);
+				break;
+			case 5:
+				return 0;
+			default:
+				break;
+		}
 
-            break;
-        case 5:
-            line();
-            cout << "\n\t\tGOOD BYE\n";
-            line();
-            break;
-        }
-    }
+	}while(1);
 
-    return 0;
+	return 0;
 }

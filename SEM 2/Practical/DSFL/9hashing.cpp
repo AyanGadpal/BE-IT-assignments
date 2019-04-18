@@ -100,16 +100,17 @@ class HashTable
 		i = HashFuct(tel);
 		n = i;
 		if (!isFull())
+		{
 			while (1)
 			{
-				if (H[i].tel == 0)
+				if (H[i].tel == 0) // Found Empty
 				{
 					strcpy(H[i].name, name);
 					H[i].tel = tel;
 					count++;
 					return;
 				}
-				if (H[i].tel % MAX != n)
+				if (H[i].tel % MAX == n)
 				{
 					temp = H[i];
 					strcpy(H[i].name, name);
@@ -121,6 +122,7 @@ class HashTable
 					H[n].link = i;
 				}
 			}
+		}
 		else
 			errorMsg("Hash Table Is Full!");
 	}
@@ -182,7 +184,8 @@ class HashTable
 				if (HashFuct(H[i].tel) == i) // Chaining
 				{
 
-					for (link = i; H[link].link != -1; link = H[link].link);
+					for (link = i; H[link].link != -1; link = H[link].link)
+						;
 					H[link].link = empty;
 					H[empty].tel = tel;
 					strcpy(H[empty].name, name);
