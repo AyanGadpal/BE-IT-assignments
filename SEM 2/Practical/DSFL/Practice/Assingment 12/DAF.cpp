@@ -10,6 +10,11 @@ int hashF(int i)
     return i % MAX;
 }
 
+inline void line()
+{
+    cout << "\n===================================\n";
+}
+
 class Student
 {
   public:
@@ -96,7 +101,7 @@ class Filehash
 
             moveG(i);
             file.read((char *)&r, sizeof(Hashrow));
-            if (r.S.roll == 0)
+            if (r.S.roll == 0) 
             {
                 file.seekp(i * sizeof(Hashrow), ios::beg);
                 file.write((char *)&temp, sizeof(Hashrow));
@@ -141,13 +146,42 @@ class Filehash
             cout << "\n FULL!";
         }
     }
+    int search(int roll)
+    {
+        Hashrow r;
+        int i = hashF(roll);
+        file.open(filename, ios::in | ios::out | ios::binary);
+        moveG(i);
+        file.read((char *)&r, sizeof(Hashrow));
+
+        if (r.S.roll == roll)
+        {
+            file.close();
+            return i;
+        }
+        while (r.link != -1)
+        {
+            int k = r.link;
+            moveG(k);
+            file.read((char *)&r, sizeof(Hashrow));
+            if (r.S.roll == roll)
+            {
+                file.close();
+                return k;
+            }
+        }
+
+        file.close();
+        return -1;
+    }
 };
 main()
 {
-    Filehash F("new.dat");
+    Filehash F("NAVA.dat");
     int ch;
     while (1)
     {
+        line();
         cout << "\nEnter the Choice"
                 "\n1) Insert Record"
                 "\n2) Display Record"
@@ -159,20 +193,33 @@ main()
         switch (ch)
         {
         case 1:
+            line();
             F.insert();
             break;
 
         case 2:
+            line();
             F.display();
             break;
 
         case 3:
-            F.insert();
+            line();
+            int roll;
+            cout << "\nEnter Roll no. you want to search : ";
+            cin >> roll;
+            roll = F.search(roll);
+            if (roll!= -1)
+                cout << "\nFound at "<<roll;
+            else
+                cout << "\nNot Found";
+
             break;
         case 4:
+            line();
             //F.Modify();
             break;
         case 5:
+
             exit(0);
             break;
 
