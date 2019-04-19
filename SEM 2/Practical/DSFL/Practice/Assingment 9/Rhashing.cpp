@@ -95,23 +95,25 @@ class Hashtable
                 // Next Empty Location
                 k = i + 1 % MAX;
                 while (H[k].S.tel != 0)
-                {
                     k = k + 1 % MAX;
-                }
 
+                // Previous link
                 int preI = H[i].S.tel % MAX;
                 while (H[preI].link != i)
                     preI = H[preI].link;
 
                 H[preI].link = H[i].link;
 
+                // End of link
                 while (H[preI].link != -1)
                     preI = H[preI].link;
 
+               
                 H[k] = H[i];
                 H[k].link = -1;
                 H[preI].link = k;
 
+                // new data
                 H[i].S = S;
                 H[i].link = -1;
             }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 class Vertex;
 class Network;
@@ -29,17 +30,20 @@ class Vertex
     // Vertex Data
     Vertex *downlink;
     Edge *firstEdge;
+    bool visited;
     Vertex()
     {
         id = 0;
         downlink = NULL;
         firstEdge = NULL;
+        visited = false;
     }
     Vertex(int id)
     {
         this->id = id;
         downlink = NULL;
         firstEdge = NULL;
+        visited = false;
     }
 };
 
@@ -70,6 +74,15 @@ class Network
             temp->downlink = v;
         }
         count++;
+    }
+    void init()
+    {
+        Vertex *v = root;
+        while (v != NULL)
+        {
+            v->visited = false;
+            v = v->downlink;
+        }
     }
     void display()
     {
@@ -145,11 +158,46 @@ class Network
 
     void DFS()
     {
+        init();
+        DFS(root);
+    }
+    void DFS(Vertex *v)
+    {
+        v->visited = true;
+        cout << " " << v->id;
+        Edge *g = v->firstEdge;
 
+        while (g != NULL)
+        {
+            if (g->adjacentV->visited != true)
+                DFS(g->adjacentV);
+            g = g->nextEdge;
+        }
     }
     void BFS()
     {
-        
+        queue<Vertex *> q;
+        Vertex *t;
+        t = root;
+        t->visited = true;
+        q.push(t);
+
+        while (!q.empty())
+        {
+            t = q.front();
+            cout << " " << t->id;
+            q.pop();
+            Edge *e = t->firstEdge;
+            while (e != NULL)
+            {
+                if (!e->adjacentV->visited)
+                {
+                    q.push(e->adjacentV);
+                    e->adjacentV->visited = true;
+                }
+                e = e->nextEdge;
+            }
+        }
     }
 };
 
@@ -163,6 +211,8 @@ int main()
                 "\n1) Create Network"
                 "\n2) Display Network"
                 "\n3) Make Friend"
+                "\n4) DFS"
+                "\n5) BFS"
                 "\nYour Choice : ";
         cin >> ch;
         switch (ch)
@@ -182,6 +232,12 @@ int main()
 
         case 3:
             F.setConnection();
+            break;
+        case 4:
+            F.DFS();
+            break;
+        case 5:
+            F.BFS();
             break;
 
         default:
