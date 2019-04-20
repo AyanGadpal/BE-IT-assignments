@@ -60,7 +60,7 @@ void display()
     // int x = rotatex(200, 200, 45);
     // int y = rotatex(200, 200, 45);
     
-    checkBox(Point(-0,-0), Point(200, 200));
+    checkBox(Point(150,0), Point(200, 200));
 
     glFlush();
 }
@@ -81,7 +81,7 @@ void checkBox(Point B, Point T)
     DDALine(TL, T);
     DDALine(BR, T);
 
-    cross(B, T, 3); // Bottom , Top ,Intensity
+  //  cross(B, T, 3); // Bottom , Top ,Intensity
 
 }
 

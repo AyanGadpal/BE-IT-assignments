@@ -35,6 +35,7 @@ class Vertex
 {
   public:
     int id;
+    char city[30];
     Vertex *downlink;
     Edge *firstE;
 };
@@ -76,8 +77,10 @@ class Graph
         for (i = 0; i < vertexCount; i++)
         {
             n->id = i;
+            cout << "\nEnter the city : ";
+            cin >> n->city;
             pre->downlink = n;
-            pre = pre->downlink;
+            pre = pre->downlink; // BUG here clear it
             n = new Vertex();
         }
     }
@@ -110,7 +113,7 @@ class Graph
         int i;
         Vertex *v;
         v = root;
-        for (i = 1; i <= vertexCount; i++)
+        for (i = 0; i < vertexCount; i++)
         {
             if (i == id)
                 break;
@@ -177,6 +180,7 @@ class Graph
         priEdge path;
         unionInit();
         int index = 0;
+        Vertex *src, *des;
         int cost = 0;
         while (index != vertexCount - 1) // n-1 iteration
         {
@@ -202,7 +206,10 @@ class Graph
                 v = v->downlink;
             }
             connect(0, path.ev);
-            cout <<endl<< path.sv << "<--(" << path.weight << ")-->" << path.ev;
+            src = findVertexById(path.sv);
+            des = findVertexById(path.ev);
+            cout << endl
+                 << src->city << "<--(" << path.weight << ")-->" << des->city;
             cost += path.weight;
             index++;
         }
