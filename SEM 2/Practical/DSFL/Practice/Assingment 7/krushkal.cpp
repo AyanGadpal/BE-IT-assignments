@@ -125,7 +125,8 @@ class Graph
         int i;
         Vertex *v;
         v = root;
-        for (i = 1; i <= vertexCount; i++)
+        for (i = 1; i
+         <= vertexCount; i++)
         {
             if (i == id)
                 break;

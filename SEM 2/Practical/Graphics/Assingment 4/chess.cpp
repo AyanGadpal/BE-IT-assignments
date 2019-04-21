@@ -1,5 +1,6 @@
-// Auther : Ayan N Gadpal
+// Auther : Ayan Naresh Gadpal
 // Copyright : GNU public libraly
+
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include <iostream>
@@ -9,12 +10,12 @@ using namespace std;
 
 class Point;
 void DDALine(Point, Point);
-void checkBox(Point, Point);
-void cross(Point, Point, int); // Bottom,Top,Density of lines
+void checkBox(Point, Point, Point, Point);
+void cross(Point, Point, Point, Point, int); // Bottom,Top,Density of lines
 
 class Point
 {
-  public:
+public:
     int x, y;
     Point()
     {
@@ -27,25 +28,19 @@ class Point
     }
 };
 
-// int rotatex(int x, int y, double angle)
-// {
-// 	return x*cos( angle * PI / 180.0 ) - y*sin( angle * PI / 180.0 );
-// }
+Point rotate(Point p1, float angle)
+{
+    Point result;
+    float theta = angle * PI / 180;
+    result.x = p1.x * cos(theta) - p1.y * sin(theta);
+    result.y = p1.x * sin(theta) + p1.y * cos(theta);
+    return result;
+}
 
-// int rotatey(int x, int y, double angle)
-// {
-// 	return x*sin( angle * PI / 180.0 ) + y*cos( angle * PI / 180.0 );
-// }
+Point translate(Point p,int tra)
+{
 
-// int translatex(int x, int tx)
-// {
-// 	return x - tx;
-// }
-
-// int translatey(int y, int ty)
-// {
-// 	return y - ty;
-// }
+}
 
 void init()
 {
@@ -57,49 +52,66 @@ void init()
 
 void display()
 {
-    // int x = rotatex(200, 200, 45);
-    // int y = rotatex(200, 200, 45);
-    
-    checkBox(Point(150,0), Point(200, 200));
+
+    Point B(0, 0), TL(0, 200), T(200, 200), BR(200, 0);
+    checkBox(B,TL,T,BR);
+
+    B = rotate(B,45);
+    T = rotate(T,45);
+    BR = rotate(BR,45);
+    TL = rotate(TL,45);
+
+    glColor3f(1.0f, 0.0f, 0.0f);
+    checkBox(B,TL,T,BR);
 
     glFlush();
 }
 
 void mouseEventListener(int button, int state, int x, int y)
 {
+    
 }
 
-void checkBox(Point B, Point T)
+void checkBox(Point B, Point TL, Point T, Point BR)
 {
-    Point TL, BR;
-    TL = Point(B.x, T.y);
-    BR = Point(T.x, B.y);
-
     DDALine(B, TL);
     DDALine(B, BR);
 
     DDALine(TL, T);
     DDALine(BR, T);
 
-  //  cross(B, T, 3); // Bottom , Top ,Intensity
-
+    cross(B, TL, T, BR, 3); // Bottom , Top ,Intensity
 }
 
-void cross(Point B, Point T, int l)
+void cross(Point B, Point TL, Point T, Point BR, int l)
 {
-    int mx = B.x + T.x;
-    int my = B.y + T.y;
-    int nx = mx / 2;
-    int ny = my / 2;
+    int x1 = (B.x + BR.x) / 2;
+    int y1 = (B.y + BR.y) / 2;
+    Point verticalA(x1, y1);
+    int x2 = (TL.x + T.x) / 2;
+    int y2 = (TL.y + T.y) / 2;
+    Point verticalB(x2, y2);
+
+    x1 = (B.x + TL.x) / 2;
+    y1 = (B.y + TL.y) / 2;
+    Point horizontalA(x1, y1);
+    x2 = (BR.x + T.x) / 2;
+    y2 = (BR.y + T.y) / 2;
+    Point horizontalB(x2, y2);
+
+    x1 = (B.x + T.x) / 2;
+    y1 = (B.y + T.y) / 2;
+    Point mid(x1, y1);
+
     if (l > 0)
     {
-        DDALine(Point(nx, B.y), Point(nx, T.y)); // ^
-        DDALine(Point(B.x, ny), Point(T.x, ny)); // >
+        DDALine(verticalA, verticalB);     // ^
+        DDALine(horizontalA, horizontalB); // >
         l--;
-        cross(B,Point(nx,ny),l);
-        cross(Point(B.x, ny), Point(nx, T.y), l);
-        cross(Point(nx,ny),T,l);
-        cross(Point(nx,B.y),Point(T.x,ny),l);
+        cross(B, horizontalA, mid, verticalA, l);
+        cross(horizontalA,TL,verticalB,mid, l);
+        cross(mid,verticalB,T,horizontalB, l);
+        cross(verticalA,mid,horizontalB,BR, l);
     }
     else
     {
@@ -118,13 +130,9 @@ void DDALine(Point p1, Point p2)
     GLfloat step = 0;
 
     if (abs(dx) > abs(dy))
-    {
         step = abs(dx);
-    }
     else
-    {
         step = abs(dy);
-    }
 
     GLfloat xInc = dx / step;
     GLfloat yInc = dy / step;
