@@ -8,10 +8,11 @@
 #define PI 3.14159265
 using namespace std;
 
-class Point;
-void DDALine(Point, Point);
-void checkBox(Point, Point, Point, Point);
-void cross(Point, Point, Point, Point, int); // Bottom,Top,Density of lines
+class Point;                                 // Well, for coordinates x,y
+void DDALine(Point, Point);                  // Starting point ,ending point
+void checkBox(Point, Point, Point, Point);   // Bottom,Top_left,Top,Bottom_Right
+void cross(Point, Point, Point, Point, int); // Bottom,Top_left,Top,Bottom_Right,Density
+Point midPoint(Point, Point);                // Returns the Midpoint of given two Point
 
 class Point
 {
@@ -26,6 +27,10 @@ public:
         this->x = x;
         this->y = y;
     }
+    Point neg() // Negate the points and return
+    {
+        return Point(-x, -y);
+    }
 };
 
 Point rotate(Point p1, float angle)
@@ -37,9 +42,9 @@ Point rotate(Point p1, float angle)
     return result;
 }
 
-Point translate(Point p,int tra)
+Point translate(Point p, Point t)
 {
-
+    return Point(p.x + t.x, p.y + t.y);
 }
 
 void init()
@@ -53,70 +58,82 @@ void init()
 void display()
 {
 
-    Point B(0, 0), TL(0, 200), T(200, 200), BR(200, 0);
-    checkBox(B,TL,T,BR);
+    Point B(0, 0), TL(0, 200), T(200, 200), BR(200, 0); // coordinates
+    //checkBox(B, TL, T, BR);  //Original chess Box
 
-    B = rotate(B,45);
-    T = rotate(T,45);
-    BR = rotate(BR,45);
-    TL = rotate(TL,45);
+    Point mid = midPoint(B, T); // Centroid
 
+    /* Translate its center to origin, if you want to rotate around its center */
+    B = translate(B, mid.neg());
+    BR = translate(BR, mid.neg());
+    T = translate(T, mid.neg());
+    TL = translate(TL, mid.neg());
+
+    // NOW ROTATEEEEE!!!
+    B = rotate(B, 45);
+    T = rotate(T, 45);
+    BR = rotate(BR, 45);
+    TL = rotate(TL, 45);
+
+    //Translate back to its orignal position, but with rotated coordinates ! ^_^
+    B = translate(B, mid);
+    BR = translate(BR, mid);
+    T = translate(T, mid);
+    TL = translate(TL, mid);
+
+    // Change color and display rotated chessbox
     glColor3f(1.0f, 0.0f, 0.0f);
-    checkBox(B,TL,T,BR);
+    checkBox(B, TL, T, BR);
 
     glFlush();
 }
 
 void mouseEventListener(int button, int state, int x, int y)
 {
-    
 }
 
 void checkBox(Point B, Point TL, Point T, Point BR)
 {
+    // DRAW BAKSAA
     DDALine(B, TL);
     DDALine(B, BR);
-
     DDALine(TL, T);
     DDALine(BR, T);
 
-    cross(B, TL, T, BR, 3); // Bottom , Top ,Intensity
+    cross(B, TL, T, BR, 2); // Bottom , Top ,Intensity! (Factorial maybe)
+}
+
+Point midPoint(Point A, Point B)
+{
+    return Point((A.x + B.x) / 2, (A.y + B.y) / 2);
 }
 
 void cross(Point B, Point TL, Point T, Point BR, int l)
 {
-    int x1 = (B.x + BR.x) / 2;
-    int y1 = (B.y + BR.y) / 2;
-    Point verticalA(x1, y1);
-    int x2 = (TL.x + T.x) / 2;
-    int y2 = (TL.y + T.y) / 2;
-    Point verticalB(x2, y2);
+    // For Vetrical Partition
+    Point verticalA = midPoint(B, BR);
+    Point verticalB = midPoint(TL, T);
 
-    x1 = (B.x + TL.x) / 2;
-    y1 = (B.y + TL.y) / 2;
-    Point horizontalA(x1, y1);
-    x2 = (BR.x + T.x) / 2;
-    y2 = (BR.y + T.y) / 2;
-    Point horizontalB(x2, y2);
+    // For Horizontal Partition
+    Point horizontalA = midPoint(B, TL);
+    Point horizontalB = midPoint(BR, T);
 
-    x1 = (B.x + T.x) / 2;
-    y1 = (B.y + T.y) / 2;
-    Point mid(x1, y1);
+    Point mid = midPoint(B, T);
 
-    if (l > 0)
+    if (l > 0) // To control level of recurstion
     {
-        DDALine(verticalA, verticalB);     // ^
-        DDALine(horizontalA, horizontalB); // >
+        DDALine(verticalA, verticalB);     // ↕
+        DDALine(horizontalA, horizontalB); // ↔
         l--;
-        cross(B, horizontalA, mid, verticalA, l);
-        cross(horizontalA,TL,verticalB,mid, l);
-        cross(mid,verticalB,T,horizontalB, l);
-        cross(verticalA,mid,horizontalB,BR, l);
+
+        // Recursive Pass All 4 new small boxes to cross
+        cross(B, horizontalA, mid, verticalA, l); 
+        cross(horizontalA, TL, verticalB, mid, l);
+        cross(mid, verticalB, T, horizontalB, l);
+        cross(verticalA, mid, horizontalB, BR, l);
     }
     else
-    {
-        return;
-    }
+        return; // well return
 }
 
 void DDALine(Point p1, Point p2)
