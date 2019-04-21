@@ -87,7 +87,8 @@ COLOR getPixelColor(int x, int y)
 {
  	COLOR temp;
 	glReadPixels(x,y,1,1,GL_RGB, GL_FLOAT, &temp);
-	return temp;
+
+        return temp;
 }
 
 void setPixelColor(int X, int Y, COLOR color)

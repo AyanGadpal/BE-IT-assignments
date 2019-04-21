@@ -3,7 +3,7 @@
 #include <math.h>
 #include <iostream>
 using namespace std;
-
+struct COLOR;
 void myMouseFunc(int, int, int, int); // To handle click event
 
 void seedFill(int , int , COLOR , COLOR ); // Filling
