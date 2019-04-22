@@ -59,10 +59,12 @@ void seedFill(int X, int Y, COLOR oldColor, COLOR fillColor)
     }
 }
 
+
+
 COLOR getPixelColor(int x, int y)
 {
     COLOR temp;
-    glReadPixels(320 + x, 320 + y, 1, 1, GL_RGB, GL_FLOAT, &temp);
+    glReadPixels(320+x, 320+y, 1,1, GL_RGB, GL_FLOAT, &temp);
     return temp;
 }
 
@@ -164,7 +166,7 @@ void cross(Point B, Point TL, Point T, Point BR, int l)
 
     if (l > 0) // To control level of recurstion
     {
-        glColor3f(0, 0, 0);
+        glColor3f(0,0,0);
         DDALine(verticalA, verticalB);     // ↕
         DDALine(horizontalA, horizontalB); // ↔
         l--;
@@ -177,7 +179,7 @@ void cross(Point B, Point TL, Point T, Point BR, int l)
     }
     else
     {
-        COLOR fillcolor, oldColor;
+        COLOR fillcolor,oldColor;
         oldColor.r = 0.0f;
         oldColor.g = 0.0f;
         oldColor.b = 0.0f;
@@ -192,10 +194,11 @@ void cross(Point B, Point TL, Point T, Point BR, int l)
         {
             flag = true;
             fillcolor.r = 0.0f;
-            fillcolor.g = 0.0f; // Blue
+            fillcolor.g = 0.0f;// Blue
             fillcolor.b = 1.0f;
         }
-        seedFill(mid.x, mid.y, oldColor, fillcolor);
+        seedFill(mid.x,mid.y,oldColor,fillcolor);
+ 
     }
     return; // well return
 }
@@ -229,6 +232,7 @@ void DDALine(Point p1, Point p2)
     glEnd();
     glFlush();
     glPointSize(1);
+   
 }
 
 int main(int argc, char **argv)
