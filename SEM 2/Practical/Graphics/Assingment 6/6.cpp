@@ -33,7 +33,7 @@ public:
         return Point(-x, -y);
     }
 };
-
+dnyan
 Point S, E, T;
 
 void DDALine(Point A, Point B)
