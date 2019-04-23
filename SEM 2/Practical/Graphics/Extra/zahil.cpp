@@ -1,5 +1,5 @@
 // Code : CG Mock Exam
-// Auther : Zahil Shaikh
+// Auther : Zahil Shaikh (sahil)
 // Batch : H11 SE11
 // Roll No: 23376
 // Ques No. : ?

@@ -74,7 +74,7 @@ void reset()
     xmax = T.x > B.x ? T.x : B.x;
     ymin = B.y < T.y ? B.y : T.y;
     ymax = T.y > B.y ? T.y : B.y;
-    cout << "\nymin: " << ymin;
+   
 }
 void renderDisplay()
 {
@@ -103,9 +103,11 @@ void cohenLine()
     float m = (E.x - S.x) / (E.y - S.y);
     int x, y;
     int c;
+    
+
     while ((scode | ecode) != 0)
     {
-        cout << "in";
+        
         if ((scode & ecode) != 0)
             return;
         // Means Partically in
@@ -115,17 +117,17 @@ void cohenLine()
             y = ymax;
             x = S.x + ((y - S.y) * m);
         }
-        if (c & BOTTOM)
+        else if (c & BOTTOM)
         {
             y = ymin;
             x = S.x + ((y - S.y) * m);
         }
-        if (c & RIGHT)
+        else if (c & RIGHT)
         {
             x = xmax;
             y = S.y + (x - S.x) * m;
         }
-        if (c & LEFT)
+        else if (c & LEFT)
         {
             x = xmin;
             y = S.y + (x - S.x) * m;
@@ -181,7 +183,7 @@ void motion(int x, int y)
             E.x = x;
             E.y = y;
             reset();
-            DDALine(S, E);
+
         }
     }
 }
@@ -190,7 +192,8 @@ void pas(int x, int y)
     flag = true;
     if (Mode == 2)
     {
-        //cohenLine();
+        cout << "\n xmin : "<<xmin<<"\n xmax : "<<xmax<<"\n ymin : "<<ymin<<"\n ymax : "<<ymax;
+        cohenLine();
         DDALine(S, E);
     }
 }
