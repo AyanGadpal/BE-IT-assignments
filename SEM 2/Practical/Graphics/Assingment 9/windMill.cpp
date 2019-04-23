@@ -1,3 +1,6 @@
+// Auther : Ayan Naresh Gadpal
+// Copyright : GNU public libraly
+
 #include <iostream>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
@@ -5,7 +8,7 @@
 using namespace std;
 
 void Timer(int);
-float x = 215 - 100, y = 185 - 100;
+float x = 215 - 100, y = 185 - 100; //width - height (works somhow)
 
 class Point
 {

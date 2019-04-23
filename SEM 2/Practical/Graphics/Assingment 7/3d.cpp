@@ -1,6 +1,3 @@
-// Auther : Ayan Naresh Gadpal
-// Copyright : GNU public libraly
-
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include <iostream>
