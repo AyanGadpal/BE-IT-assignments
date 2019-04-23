@@ -34,7 +34,37 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //  glColor3d();
+    /* SKY */
+    glColor3f(0, 0, 0.9);
+    glBegin(GL_POLYGON);
+    glVertex2f(-250, -100);
+    glVertex2f(250, -100);
+    glVertex2f(250, 250);
+    glVertex2f(-250, 250);
+    glEnd();
+
+    /* Grass */
+    glColor3f(0, 0.7, 0);
+    glBegin(GL_POLYGON);
+    glVertex2f(-250, -100);
+    glVertex2f(250, -100);
+    glVertex2f(250, -250);
+    glVertex2f(-250, -250);
+    glEnd();
+
+    /* Stand */
+    glColor3f(0.6, 0.4, 0.1);
+    glBegin(GL_POLYGON);
+    glVertex2f(-10, 0);
+    glVertex2f(10, 0);
+    glVertex2f(10, -230);
+    glVertex2f(-10, -230);
+
+    glEnd();
+
+    /* WINDMILL */
+
+    glColor3f(1, 0.5, 0);
     glBegin(GL_POLYGON);
     glVertex2f(0, 0);
     glVertex2f(A1.x, A1.y);
@@ -69,7 +99,7 @@ int main(int argc, char **argv)
 
     init();
     glutDisplayFunc(display);
-    //glutReshapeFunc(reshape);
+
     glutMainLoop();
     return 0;
 }
