@@ -57,8 +57,8 @@ Point rotateAC(Point p1, float angle)
 {
     Point result;
     float theta = angle * 3.14159265 / (float)180;
-    result.x = p1.x * cos(theta) - p1.y * sin(theta);
-    result.y = p1.x * sin(theta) + p1.y * cos(theta);
+    result.x = p1.x * cos(theta) +p1.y * sin(theta);
+    result.y = -p1.x * sin(theta) + p1.y * cos(theta);
     return result;
 }
 
@@ -89,8 +89,8 @@ void display()
         DDALine(T4, CTR);
 
         /* ROTATE THE WHOLE HAND BY 90*/
-        CTR = CTL; // OBIVIOUS
-        CTL = rotateAC(CTL, 90);
+        CTL = CTR; // OBIVIOUS
+        CTR = rotateAC(CTR, 90);
         T1 = rotateAC(T1, 90);
         T2 = rotateAC(T2, 90);
         T3 = rotateAC(T3, 90);
