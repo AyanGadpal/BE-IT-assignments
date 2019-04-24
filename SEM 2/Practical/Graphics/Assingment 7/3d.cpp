@@ -7,24 +7,6 @@ int y = 30;
 int z = 45;
 
 void Timer(int );
-class Point
-{
-public:
-    GLfloat x, y;
-    Point()
-    {
-        x = y = 0;
-    }
-    Point(float x, float y)
-    {
-        this->x = x;
-        this->y = y;
-    }
-    Point neg() // Negate the points and return
-    {
-        return Point(-x, -y);
-    }
-};
 
 void init()
 {
@@ -38,13 +20,7 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    // glBegin(GL_LINES);
-    // glVertex3f(0, 0, 0);
-    // glVertex3f(1.0, 0, 0);
-    // glVertex3f(0, 0, 0);
-    // glVertex3f(0.0, 1, 0);
-    // glVertex3f(0, 0, 0);
-    // glVertex3f(0, 0, 0.1);
+
 
     glEnd();
 

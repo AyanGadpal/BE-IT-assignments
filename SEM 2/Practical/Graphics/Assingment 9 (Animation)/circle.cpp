@@ -98,14 +98,12 @@ void circle(Point C, float r)
         putPixel(Point(P.y + C.x, -P.x + C.y));
         putPixel(Point(P.y + C.x, P.x + C.y));
     }
-    int x = C.x + r * cos(angle * 3.14 / 180);
-    int y = C.y + r * sin(angle * 3.14 / 180);
-    DDALine(C, Point(x, y));
-
-    x = C.x - r * cos(angle * 3.14 / 180);
-    y = C.y - r * sin(angle * 3.14 / 180);
-    DDALine(C, Point(x, y));
-
+    for (int i = 0; i < 360;i+=30)
+    {
+        int x = C.x + r * cos(angle +i * 3.14 / 180);
+        int y = C.y + r * sin(angle +i* 3.14 / 180);
+        DDALine(C, Point(x, y));
+    }
 
     // DDALine(C, Point(x,y));
     // DDALine(C, Point(x,y));
@@ -118,13 +116,13 @@ void myDisplay()
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     circle(C, 28);
-    circle(Point(C.x+60,C.y), 28);
-    
+    circle(Point(C.x + 60, C.y), 28);
+
     glBegin(GL_POLYGON);
-    glVertex2f(a,28);
-    glVertex2f(b,28);
-    glVertex2f(b,130);
-    glVertex2f(a,130);
+    glVertex2f(a, 28);
+    glVertex2f(b, 28);
+    glVertex2f(b, 130);
+    glVertex2f(a, 130);
     glEnd();
 
     glFlush();
@@ -149,8 +147,8 @@ void Timer(int t)
     glutTimerFunc(1000 / 100, Timer, 0);
 
     C.x += i;
-    angle -= i;
-    a+=i;
+    angle += i;
+    a += i;
     b += i;
     if (C.x == 330 - r)
         i = -1;
