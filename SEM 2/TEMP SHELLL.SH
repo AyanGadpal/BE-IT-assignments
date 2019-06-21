@@ -13,7 +13,7 @@ CreateFile()
 	echo "Enter File Name"
 	read filename
 	touch $filename
-	echo "File Created Successfully !"
+	echo "File Created / Opened Successfully !"
 }
 
 AddRecord()
@@ -74,7 +74,7 @@ ModifyRecord()
 		return 
 	fi
 
-	echo "Enter the Roll No of Student You Want to Modify"
+	echo "Enter the Name / Roll No of Student You Want to Modify"
 	read pattern
 	echo "Name "
 	read name
@@ -114,8 +114,9 @@ do
 			   		cat $filename
 				fi;;
 				
-			3) echo ""
+			3) # Add A Loop To Accept Multiple records 
 				AddRecord;;
+				
 			4) SearchRecord;;
 			5) DeleteRecord;;
 			6) ModifyRecord;;
