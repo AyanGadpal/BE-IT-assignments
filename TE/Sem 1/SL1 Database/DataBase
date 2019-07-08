@@ -1,0 +1,82 @@
+
+WORKING WITH DATABASES
+
+1) Create Database
+	create database orderMan;
+2) Show DB
+	show Databases;
+3) TO SELECT DATABASE
+	USE orderMan;
+4) Delete Database
+	drop database orderMan;
+
+Tables 
+1) Create table 
+
+mysql> 
+    create table product (
+     	P_ID int not null AUTO_INCREMENT,
+     	P_name varchar(20) not null,
+        P_price float not null,
+        P_stock int not null, 
+        primary key(P_ID) 
+	       );
+	create table customer (
+	     	C_ID int not null AUTO_INCREMENT,
+	     	name varchar(20) not null,
+		phone varchar(10),
+		email varchar(20), 
+		primary key(C_ID) 
+	       );
+
+  
+mysql> create table order_record(
+     O_ID int not null  AUTO_INCREMENT,
+     DOP date not null,
+     quantity int not null,
+     total_cost float not null,
+     P_ID int,
+     C_ID int,
+     primary key(O_ID,P_ID,C_ID),
+     foreign key(C_ID) references customer(C_ID),
+     foreign key(P_ID) references product(P_ID)
+     );
+
+2) See tables with its attribute
+	show columns from customer ;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| C_ID  | char(5)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| phone | char(12)    | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+3) Add Columns 
+alter table customer add Email varchar(20);
+
+3.1 ) change the datatype
+alter table order_record modify DOP datetime not null ;
+
+
+4) Add Constrain externally
+alter table customer modify name varchar(20) not null;
+
+5) Inserting Value 
+
+insert into customer 
+     values ('00001','Ayan','7757025466','ayan@gmail.com','1999-10-25','Haveli');
+     
+     
+insert into customer(name,phone,email,address) values ('dnyanu','9887372321','dnanu@gmail.com','Nagpur'),
+ ('Atharva',NULL,'Ath@gmail.com','Nagpur'),
+ 
+ insert into product(P_id)
+  ('Gavruav','9876777767','Gav@gmail.com','pune'),
+   ('Ankit','9087886753','ank@gmail.com','pune'),
+    ('Manas',NULL,'man@gmail.com','Goa');
+    
+    
+    insert into product (P_name,P_price,P_stock) values ('Dell',37000.0,4),('Sony',47000.0,2),('Acer',33000.0,10),('Apple',137000.0,2);
+
+
