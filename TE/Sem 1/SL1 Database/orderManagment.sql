@@ -29,7 +29,7 @@ CREATE TABLE `customer` (
   `email` varchar(20) DEFAULT NULL,
   `address` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`C_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Ayan','9881522447','ayan@gmail.com','Nagpur'),(2,'Kalpit.c',NULL,NULL,NULL),(3,'Archana','8999331239','archi@gmail.com','Nagpur'),(4,'Zhahil',NULL,NULL,NULL),(5,'Manasi','7757025466','manasi@gmail.com','pune'),(6,'dnyanu','9887372321','dnanu@gmail.com','Nagpur'),(7,'Atharva',NULL,'Ath@gmail.com','Nagpur'),(8,'Gavruav','9876777767','Gav@gmail.com','pune'),(9,'Ankit','9087886753','ank@gmail.com','pune'),(10,'Manas',NULL,'man@gmail.com','Goa');
+INSERT INTO `customer` VALUES (1,'Ayan','9881522447','ayan@gmail.com','Nagpur'),(2,'Kalpit.c',NULL,NULL,NULL),(3,'Archana','8999331239','archi@gmail.com','Nagpur'),(4,'Zhahil',NULL,NULL,NULL),(5,'Manasi','9977435521','manasi@gmail.com','pune'),(6,'dnyanu','9887372321','dnanu@gmail.com','Nagpur'),(7,'Atharva',NULL,'Ath@gmail.com','Nagpur'),(8,'Gavruav','9876777767','Gav@gmail.com','pune'),(9,'Ankit','9087886753','ank@gmail.com','pune'),(10,'Manas',NULL,'man@gmail.com','Goa');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,8 +50,8 @@ DROP TABLE IF EXISTS `order_record`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `order_record` (
-  `O_ID` int(11) NOT NULL,
-  `DOP` datetime NOT NULL,
+  `O_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DOP` date NOT NULL,
   `quantity` int(11) NOT NULL,
   `total_cost` float NOT NULL,
   `P_ID` int(11) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `order_record` (
   KEY `P_ID` (`P_ID`),
   CONSTRAINT `order_record_ibfk_1` FOREIGN KEY (`C_ID`) REFERENCES `customer` (`C_ID`),
   CONSTRAINT `order_record_ibfk_2` FOREIGN KEY (`P_ID`) REFERENCES `product` (`P_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,7 @@ CREATE TABLE `order_record` (
 
 LOCK TABLES `order_record` WRITE;
 /*!40000 ALTER TABLE `order_record` DISABLE KEYS */;
+INSERT INTO `order_record` VALUES (1,'2012-07-25',1,91000,1,1),(1,'2012-08-25',2,74000,2,3),(1,'2016-08-25',2,74000,2,5),(1,'2012-07-25',1,99000,4,1);
 /*!40000 ALTER TABLE `order_record` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,4 +109,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-08 15:48:19
+-- Dump completed on 2019-07-10 13:10:06
