@@ -111,25 +111,63 @@
         }
 
         #feed {
+            height: 150%;
+  
+        }
+
+        #MainFeed {
+            width: 85%;
             height: 100%;
+
         }
-        #MainFeed
-        {
-            width: 100%;
-            height: 100%;
-        }
-        .box
-        {
-            width:32%;
-            height:46%;
-            background: red;
-            margin: 5px;
-            float: left;
-            border-radius:5%; 
-        }
+
         footer {
             height: 40%;
             background: grey;
+        }
+
+        .card-container {
+            cursor: pointer;
+            position: relative;
+            float: left;
+            width: 410px;
+            height: 410px;
+            margin: 10px;
+      
+        }
+
+        .card {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: all 1s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+        }
+
+        .card:hover {
+            transform: rotateY(180deg);
+        }
+
+        .card .side {
+            backface-visibility: hidden;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+
+        }
+
+        .card .back {
+            background: #7e7d7f;
+            color: white;
+            line-height: 150px;
+            text-align: center;
+            transform: rotateY(180deg);
+            border: solid 5px #7e7d7f;
         }
     </style>
 </head>
@@ -159,29 +197,59 @@
 
     </div>
 
-
-
+    <br>
+    <h1 align="center" class="qoute">
+        <font color="#7e7d7f">MEET</font> .
+        <font color="#eb8712">ORGANISE</font> .
+        <font color="#7e7d7f"> PLAY</font>
+    </h1>
+    <br>
     <div id="feed">
-        <h1 align="center" class="qoute">
-            <font color="#7e7d7f">MEET</font> .
-            <font color="#eb8712">ORGANISE</font> .
-            <font color="#7e7d7f"> PLAY</font>
-        </h1>
-        <div id = "MainFeed">
-            <div class="box"></div>
+        <br>
+        <br>
+        <br>
 
-            <div class="box"></div>
+        <div id="MainFeed">
 
-            <div class="box"></div>
-
-            <div class="box"></div>
-
-            <div class="box"></div>
-
-            <div class="box"></div> 
-
-
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('fb.png');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side " style="background-image: url('crket.png');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side " style="background-image: url('golf.jpg');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('volley_club.png');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('basket.jpeg');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('fb.jpg');"></div>
+                    <div class="side back">Description</div>
+                </div>
+            </div>
+           
         </div>
+     
 
     </div>
     <footer>
