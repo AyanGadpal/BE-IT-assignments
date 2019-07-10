@@ -1,0 +1,149 @@
+EXPORT
+sudo mysqldump -u root -p orderManagment > orderManagment.sql
+
+IMPORT 
+create an empty newdatabase
+mysql -u [username] -p newdatabase < [database name].sql
+
+
+WORKING WITH DATABASES
+
+1) Create Database
+	create database orderMan;
+2) Show DB
+	show Databases;
+3) TO SELECT DATABASE
+	USE orderMan;
+4) Delete Database
+	drop database orderMan;
+
+Tables 
+1) Create table 
+
+mysql> 
+    create table product (
+     	P_ID int not null AUTO_INCREMENT,
+     	P_name varchar(20) not null,
+        P_price float not null,
+        P_stock int not null, 
+        primary key(P_ID) 
+	       );
+	create table customer (
+	     	C_ID int not null AUTO_INCREMENT,
+	     	name varchar(20) not null,
+		phone varchar(10),
+		email varchar(20), 
+		primary key(C_ID) 
+	       );
+
+  
+mysql> create table order_record(
+     O_ID int not null  AUTO_INCREMENT,
+     DOP date not null,
+     quantity int not null,
+     total_cost float not null,
+     P_ID int,
+     C_ID int,
+     primary key(O_ID,P_ID,C_ID),
+     foreign key(C_ID) references customer(C_ID),
+     foreign key(P_ID) references product(P_ID)
+     );
+
+2) See tables with its attribute
+	show columns from customer ;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| C_ID  | char(5)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| phone | char(12)    | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+3) Add Columns 
+alter table customer add Email varchar(20);
+
+3.1 ) change the datatype
+alter table order_record modify DOP datetime not null ;
+
+
+4) Add Constrain externally
+alter table customer modify name varchar(20) not null;
+
+5) Inserting Value 
+
+insert into customer 
+     values ('00001','Ayan','7757025466','ayan@gmail.com','1999-10-25','Haveli');
+     
+     
+insert into customer(name,phone,email,address) values ('dnyanu','9887372321','dnanu@gmail.com','Nagpur'),
+ ('Atharva',NULL,'Ath@gmail.com','Nagpur'),
+ 
+ insert into product(P_id)
+  ('Gavruav','9876777767','Gav@gmail.com','pune'),
+   ('Ankit','9087886753','ank@gmail.com','pune'),
+    ('Manas',NULL,'man@gmail.com','Goa');
+    
+    
+    insert into product (P_name,P_price,P_stock) values ('Dell',37000.0,4),('Sony',47000.0,2),('Acer',33000.0,10),('Apple',137000.0,2);
+
+4 assisgnment 
+
+grant all on orderManagement.customer to kalpit@localhost identified by '12345678';
+
+show grants for me@localhost;
+
+revoke insert on orderManagment.customer from 'me'@'localhost'
+	
+select user.host,user from mysql.user;
+
+
+5 Assignment
+
+ update customer set phone = '9977435521' where name='Manasi';
+
+delete from customer where name = 'me'
+
+insert into order_record(O_ID,C_ID,P_ID,DOP,quantity,total_cost) values (1,1,1,str_to_date('07-25-2012','%m-%d-%Y'),1,91000);
+	
++------+-------------+---------+---------+
+| P_ID | P_name      | P_price | P_stock |
++------+-------------+---------+---------+
+|    1 | Asus-Laptop |   91000 |       4-1  |
+|    2 | Dell        |   37000 |       4 -2 |
+|    3 | Sony        |   47000 |       2    |
+|    4 | Acer        |   33000 |      10-3  |
+|    5 | Apple       |  137000 |       2    |
++------+-------------+---------+---------+
++------+----------+------------+------------------+---------+
+| C_ID | name     | phone      | email            | address |
++------+----------+------------+------------------+---------+
+|    1 | Ayan     | 9881522447 | ayan@gmail.com   | Nagpur  |
+|    2 | Kalpit.c | NULL       | NULL             | NULL    |
+|    3 | Archana  | 8999331239 | archi@gmail.com  | Nagpur  |
+|    4 | Zhahil   | NULL       | NULL             | NULL    |
+|    5 | Manasi   | 9977435521 | manasi@gmail.com | pune    |
+|    6 | dnyanu   | 9887372321 | dnanu@gmail.com  | Nagpur  |
+|    7 | Atharva  | NULL       | Ath@gmail.com    | Nagpur  |
+|    8 | Gavruav  | 9876777767 | Gav@gmail.com    | pune    |
+|    9 | Ankit    | 9087886753 | ank@gmail.com    | pune    |
+|   10 | Manas    | NULL       | man@gmail.com    | Goa     |
++------+----------+------------+------------------+---------+
+
+Display all the Purchase orders of a specific Customer.
+	select * from order_record where C_ID = 5;
+
+Get Customer and Data Item Information for a Specific
+Purchase Order.
+	
+	
+Get the Total Value of Purchase Orders.
+		 select sum(total_cost) from order_record;
++-----------------+
+| sum(total_cost) |
++-----------------+
+|          338000 |
++-----------------+
+
+
+
+
