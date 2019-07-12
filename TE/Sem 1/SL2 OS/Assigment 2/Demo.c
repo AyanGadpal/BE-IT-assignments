@@ -23,7 +23,7 @@ void swap(int *a, int *b)
 // Print a line for output formatting
 void line()
 {
-    printf("================================\n");
+    printf("\n==============================================\n");
 }
 
 // Bubble Sort Algorithm is used for sorting
@@ -41,9 +41,11 @@ void bubbleSort(int *A, int n)
 int main()
 {
     int *array, n, i, status = -1;
-    char *a[10], rst;
+    char *a[10], *rst;
+    line();
     printf("Enter the Size of array : ");
     scanf("%d", &n);
+    line();
     array = malloc(n * sizeof(int));
     printf("Enter the elements of array\n");
     for (i = 0; i < n; i++)
@@ -51,33 +53,41 @@ int main()
         printf("\n%d) ", i + 1);
         scanf("%d", array + i);
     }
+    line();
     printf("Sorting Array.... \n");
     bubbleSort(array, n);
+    line();
     printf("Sorting Completed !\nSorted Array : ");
     displayArray(array, n);
-    printf("Forking...");
+    line();
+    printf("Forking...\n");
 
     // COVERTING to STRING
     for (i = 0; i < n; i++)
     {
-        sprintf(&rst, "%d", array[i]);
+        rst = malloc(sizeof(int));
+        sprintf(rst, "%d", array[i]);
         a[i] = malloc(sizeof(int));
-        *a[i] = rst;
-        printf("string %s\n", a[i]);
+        a[i] = rst;
     }
-
     status = fork();
 
     if (status != 0) // PARENT
     {
-        printf("watt pahaa \n");
+        line();
+        printf("[ PARENT ] : Waiting for Child \n");
         wait(NULL);
+        line();
+        printf("[ PARENT ] : Child Arrived, Exiting\n");
         exit(0);
     }
     else // CHILD
     {
-        printf("Child aa gaya\n");
+        line();
+        printf("[ CHILD ] : Child Proccess running\n");
         execvp("./b.out", a);
+        printf("\n[ CHILD ] : Operation Completed");
+        exit(0);
     }
 
     return (0);
