@@ -28,8 +28,9 @@ CREATE TABLE `customer` (
   `phone` varchar(10) DEFAULT NULL,
   `email` varchar(20) DEFAULT NULL,
   `address` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`C_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`C_ID`),
+  UNIQUE KEY `cid` (`C_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +62,7 @@ CREATE TABLE `order_record` (
   KEY `P_ID` (`P_ID`),
   CONSTRAINT `order_record_ibfk_1` FOREIGN KEY (`C_ID`) REFERENCES `customer` (`C_ID`),
   CONSTRAINT `order_record_ibfk_2` FOREIGN KEY (`P_ID`) REFERENCES `product` (`P_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +71,7 @@ CREATE TABLE `order_record` (
 
 LOCK TABLES `order_record` WRITE;
 /*!40000 ALTER TABLE `order_record` DISABLE KEYS */;
-INSERT INTO `order_record` VALUES (1,'2012-07-25',1,91000,1,1),(1,'2012-08-25',2,74000,2,3),(1,'2016-08-25',2,74000,2,5),(1,'2012-07-25',1,99000,4,1);
+INSERT INTO `order_record` VALUES (1,'2012-07-25',1,91000,1,1),(1,'2012-08-25',2,74000,2,3),(1,'2016-08-25',2,74000,2,5),(1,'2012-07-25',1,99000,4,1),(7,'2012-09-25',1,1000000,1,2);
 /*!40000 ALTER TABLE `order_record` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-10 13:10:06
+-- Dump completed on 2019-07-15 15:52:58
