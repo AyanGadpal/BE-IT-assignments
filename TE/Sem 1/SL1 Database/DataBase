@@ -4,8 +4,6 @@ sudo mysqldump -u root -p orderManagment > orderManagment.sql
 IMPORT 
 create an empty newdatabase
 mysql -u [username] -p newdatabase < [database name].sql
-
-
 WORKING WITH DATABASES
 
 1) Create Database
@@ -86,6 +84,11 @@ insert into customer(name,phone,email,address) values ('dnyanu','9887372321','dn
     
     insert into product (P_name,P_price,P_stock) values ('Dell',37000.0,4),('Sony',47000.0,2),('Acer',33000.0,10),('Apple',137000.0,2);
 
+
+
+    insert into order (P_name,P_price,P_stock) values ('Dell',37000.0,4),('Sony',47000.0,2),('Acer',33000.0,10),('Apple',137000.0,2);
+
+
 4 assisgnment 
 
 grant all on orderManagement.customer to kalpit@localhost identified by '12345678';
@@ -103,7 +106,7 @@ select user.host,user from mysql.user;
 
 delete from customer where name = 'me'
 
-insert into order_record(O_ID,C_ID,P_ID,DOP,quantity,total_cost) values (1,1,1,str_to_date('07-25-2012','%m-%d-%Y'),1,91000);
+insert into order_record(O_ID,C_ID,P_ID,DOP,quantity,total_cost) values (7,2,1,str_to_date('09-25-2012','%m-%d-%Y'),1,1000000);
 	
 +------+-------------+---------+---------+
 | P_ID | P_name      | P_price | P_stock |
@@ -144,6 +147,32 @@ Get the Total Value of Purchase Orders.
 |          338000 |
 +-----------------+
 
+Display All Information of customer who have brought somthing with order info
+ select * from customer,order_record where customer.C_ID = order_record.C_ID;
++------+---------+------------+------------------+---------+------+------------+----------+------------+------+------+
+| C_ID | name    | phone      | email            | address | O_ID | DOP        | quantity | total_cost | P_ID | C_ID |
++------+---------+------------+------------------+---------+------+------------+----------+------------+------+------+
+|    1 | Ayan    | 9881522447 | ayan@gmail.com   | Nagpur  |    1 | 2012-07-25 |        1 |      91000 |    1 |    1 |
+|    3 | Archana | 8999331239 | archi@gmail.com  | Nagpur  |    1 | 2012-08-25 |        2 |      74000 |    2 |    3 |
+|    5 | Manasi  | 9977435521 | manasi@gmail.com | pune    |    1 | 2016-08-25 |        2 |      74000 |    2 |    5 |
+|    1 | Ayan    | 9881522447 | ayan@gmail.com   | Nagpur  |    1 | 2012-07-25 |        1 |      99000 |    4 |    1 |
++------+---------+------------+------------------+---------+------+------------+----------+------------+------+------+
 
+MAX PURCHASE
+
+select name,total_cost 
+from customer,order_record 
+where customer.C_ID=order_record.C_ID 
+and
+order_record.C_ID not in 
+			(
+			select DISTINCT T.C_ID 
+			from order_record as T,order_record as S 
+			where T.total_cost < S.total_cost
+			);
+
+MIN PURCHASE
+
+select name,total_cost from customer,order_record where customer.C_ID=order_record.C_ID and order_record.C_ID not in (select DISTINCT T.C_ID from order_record as T,order_record as S where T.total_cost > S.total_cost );
 
 
