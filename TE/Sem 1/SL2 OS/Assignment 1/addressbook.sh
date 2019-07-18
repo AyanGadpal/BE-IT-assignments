@@ -12,7 +12,7 @@
 
 # Output Formatting Line
 line() {
-    echo "======================================================="
+    printf "\n=======================================================\n"
 }
 sline() {
     echo "------------------------------------------------"
@@ -76,15 +76,23 @@ AddRecord() {
 
     # Adding Record
     printf "\n%10s %10s %5s %8s %14s %10s %6s" $name $phone $no_ $street $state $city $zip >>"$filename"
-    
-    echo "\n Record Added Successfully "
+
+    printf "\n Record Added Successfully "
+    unset zip
+    unset name
+    unset phone
+    unset street
+    unset state
+    unset city
+    unset no_
 }
 
 SearchRecord() {
-    echo "Enter The Name Or Roll No of Student You Want to Search"
-    read pattern
-    grep -r -w $pattern $filename
-    result=$(grep -r -w $pattern $filename)
+    line
+    echo "Entern Search Key"
+    read key
+    grep -r -w $key "temp"
+    result=$(grep -r -w $key "temp")
     if [ -n "$result" ]; then
         echo "Found"
     else
@@ -93,31 +101,105 @@ SearchRecord() {
 }
 
 DeleteRecord() {
-    echo "Enter the Roll or Name No you want to be removed"
+    echo "Enter Name of you want"
     read pattern
     sed -i "/$pattern/d" $filename
 }
 
 ModifyRecord() {
-    echo "Enter the Name / Roll No of Student You Want to Modify"
+    echo "Enter the Details of Person"
     read pattern
-    echo "Name "
-    read name
-    echo "Roll No"
-    read roll
-    echo "class"
-    read class
-    sed -i "/$pattern/c\|\t $name    \t|\t $roll \t|\t $class" $filename
+    # Required to check the type of value in variable
+    re='^[0-9]+$'
+    # Taking Input from User for new Entry
+    echo "Enter the Details of Person"
+    while [ -z $name ]; do
+        echo "Name "
+        read name
+    done
+    sline
+    while [ -z $phone ]; do
+        echo "Phone"
+        read phone
+        if [ ${#phone} -ne 10 ] || ! [[ $phone =~ $re ]]; then
+            echo "Not a valid number"
+            unset phone
+        fi
+    done
+    sline
+    while [ -z $no_ ]; do
+        echo "Building / flat / house No "
+        read no_
+        if ! [[ $no_ =~ $re ]]; then
+            echo "Not a valid number"
+            unset no_
+        fi
+    done
+    sline
+    while [ -z $street ]; do
+        echo "Street "
+        read street
+    done
+    sline
+    while [ -z $state ]; do
+        echo "State "
+        read state
+    done
+    sline
+    while [ -z $city ]; do
+        echo "City "
+        read city
+    done
+    sline
+    while [ -z $zip ]; do
+        echo "Zip"
+        read zip
+        if [ ${#zip} -ne 6 ] || ! [[ $zip =~ $re ]]; then
+            echo "Not a valid number"
+            unset zip
+        fi
+    done
+    sline
+    sed -i "/$pattern/c\ $name $phone $no_ $street $state $city $zip" $filename
 }
 
 DisplayFile() {
-
     echo "FILE NAME : $filename\n"
     cat $filename
 }
 
 sorting() {
-    sort -k 20n $filename
+    line
+    echo "Sort by ?"
+    echo "1) Name"
+    echo "2) Phone"
+    echo "3) Building no."
+    echo "4) Street"
+    echo "5) State"
+    echo "6) City"
+    echo "7) Zip"
+    echo "Your Choice : "
+    read pattern
+    line
+
+    case $pattern in
+
+    1) sort -s -k1 $filename ;;
+
+    2) sort -s -k2 $filename ;;
+
+    3) sort -s -k3 $filename ;;
+
+    4) sort -s -k4 $filename ;;
+
+    5) sort -s -k5 $filename ;;
+
+    6) sort -s -k6 $filename ;;
+
+    7) sort -s -k7 $filename ;;
+    # Inproper Option Handling
+    *) echo "ERROR :: Please Enter the Proper Option for 1 to 7." ;;
+    esac
 }
 
 # MAIN

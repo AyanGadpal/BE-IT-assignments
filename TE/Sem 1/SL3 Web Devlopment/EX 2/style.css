@@ -1,0 +1,121 @@
+* {
+    margin: 0px auto;
+    padding: 0px auto;
+    width: 80%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#main {
+    height: 100%;
+    width: 100%;
+}
+
+header {
+    height: 10%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#logo {
+    height: 100%;
+    width: 30%;
+    background-image: url("Logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+#log {
+    width: 20%;
+    float: right;
+}
+
+#log a {
+    text-decoration: none;
+    color: black;
+    margin: 3px;
+    padding: 3px;
+    font-size: 20px;
+    text-align: right;
+    display: block;
+    transition-duration: 0.4s;
+}
+
+#log a:hover {
+    font: bold;
+    color: #eb8712;
+}
+
+nav {
+    height: 5%;
+     /* overflow: hidden;
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 999999; */
+     
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    
+}
+
+li {
+    float: left;
+    width: 20%;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 10px;
+    font-size: 25px;
+    text-decoration: none;
+    transition-duration: 0.4s;
+}
+
+li a:hover ,dropdown-contain{
+    font: bold;
+    color: #eb8712;
+    font-size: 30px;
+}
+
+#Active {
+    color: #eb8712;
+}
+
+#slider {
+    height: 50%;
+    background-image: url("slider.png");
+    background-size: cover;
+}
+
+.qoute {
+    margin-top: 5px;
+}
+
+#feed {
+    height: 170%;
+}
+
+#MainFeed {
+    width: 85%;
+    height: 100%;
+}
+
+footer {
+    height: 40%;
+    background: grey;
+}

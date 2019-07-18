@@ -3,137 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css">
     <title>
         Sports Meet
     </title>
     <style>
-        * {
-            margin: 0px auto;
-            padding: 0px auto;
-            width: 80%;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-        }
-
-        #main {
-
-            height: 100%;
-            width: 100%;
-        }
-
-        header {
-            height: 10%;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
-
-        #logo {
-            height: 100%;
-            width: 30%;
-            background-image: url("Logo.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            float: left;
-        }
-
-        #log {
-            width: 20%;
-            float: right;
-
-
-        }
-
-        #log a {
-            text-decoration: none;
-            color: black;
-            margin: 3px;
-            padding: 3px;
-            font-size: 20px;
-            text-align: right;
-            display: block;
-        }
-
-        #log a:hover {
-            font: bold;
-            color: #eb8712;
-        }
-
-        nav {
-            height: 5%;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        li {
-            float: left;
-            width: 20%;
-        }
-
-        li a {
-            display: block;
-            color: black;
-            text-align: center;
-            padding: 10px 10px;
-            font-size: 20px;
-            text-decoration: none;
-        }
-
-        li a:hover {
-            font: bold;
-            color: #eb8712;
-        }
-
-        #Active {
-            color: #eb8712;
-        }
-
-
-        #slider {
-            height: 50%;
-            background-image: url("/home/a3-402-15/Desktop/33308/EX 2/slider.png");
-            background-size: cover;
-
-        }
-
-        .qoute {
-            margin-top: 5px;
-        }
-
-        #feed {
-            height: 150%;
-  
-        }
-
-        #MainFeed {
-            width: 85%;
-            height: 100%;
-
-        }
-
-        footer {
-            height: 40%;
-            background: grey;
-        }
-
         .card-container {
             cursor: pointer;
             position: relative;
             float: left;
-            width: 410px;
-            height: 410px;
+            width: 30%;
+            height: 25%;
             margin: 10px;
-      
         }
 
         .card {
@@ -143,7 +24,6 @@
             transform-style: preserve-3d;
             transition: all 1s ease-in-out;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-
         }
 
         .card:hover {
@@ -153,21 +33,68 @@
         .card .side {
             backface-visibility: hidden;
             height: 100%;
-            background-size: cover;
+            background-position: center;
+            background-size: contain;
+
             background-repeat: no-repeat;
             position: absolute;
-            overflow: hidden;
             width: 100%;
-
         }
 
         .card .back {
-            background: #7e7d7f;
+            background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
             color: white;
-            line-height: 150px;
+            overflow: hidden;
             text-align: center;
+            scroll-behavior: smooth;
+            font-size: 20px;
             transform: rotateY(180deg);
-            border: solid 5px #7e7d7f;
+        }
+
+        .join {
+            background-color: #000;
+            border: none;
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            width: 50%;
+            height: 10%;
+            transition-duration: 0.4s;
+        }
+
+        .join:hover {
+            cursor: pointer;
+            color: #eb8712;
+            font-size: 115%;
+            font: bold;
+            background: white;
+
+        }
+
+        .dropdown-contain {
+          visibility: hidden;
+            position: absolute;
+            background-color: #f9f9f9;
+            width: 160px;
+        }
+
+        .dropdown-content a {
+            color: black;
+       
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            z-index: 99999;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        #s:hover>.dropdown-contain
+        {
+            visibility: visible;
+            display: block;
         }
     </style>
 </head>
@@ -186,7 +113,14 @@
     <nav>
         <ul>
             <li><a href="Home.Html" id="Active"><b>Home</b></a> </li>
-            <li><a href="">Sports</a> </li>
+            <li id="s"><a href="">Sports</a>
+                <div class="dropdown-contain">
+                    <a>Join</a>
+                    <a>Create</a>
+                    <a>See All</a>
+                </div>
+
+            </li>
             <li><a href="">Clubs</a> </li>
             <li><a href="">Events</a> </li>
             <li><a href="">Contact Us</a> </li>
@@ -201,7 +135,7 @@
     <h1 align="center" class="qoute">
         <font color="#7e7d7f">MEET</font> .
         <font color="#eb8712">ORGANISE</font> .
-        <font color="#7e7d7f"> PLAY</font>
+        <font color="#7e7d7f">PLAY</font>
     </h1>
     <br>
     <div id="feed">
@@ -214,42 +148,98 @@
             <div class="card-container">
                 <div class="card">
                     <div class="side" style="background-image: url('fb.png');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side back">
+                        <br>
+                        <h2> Football </h2>
+                        <br>
+                        <p>Football or soccer, is a team sport played with
+                            a spherical ball between two teams of eleven players. It is played by 250 million players in
+                            over 200 countries and dependencies, making
+                            it the world's most popular sport.</p>
+                        <br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
                 </div>
             </div>
             <div class="card-container">
                 <div class="card">
                     <div class="side " style="background-image: url('crket.png');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side back">
+                        <br>
+                        <h2> Cricket </h2>
+                        <br>
+                        <p>Cricket is a bat-and-ball game played between two teams of eleven players on a field at the
+                            centre of which is a 20-metre pitch with a wicket at each end, each comprising two bails
+                            balanced on three stumps.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
                 </div>
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side " style="background-image: url('golf.jpg');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side " style="background-image: url('golf.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Golf </h2>
+                        <br>
+                        <p>Golf is a club-and-ball sport in which players use various clubs to hit balls into a series
+                            of holes on a course in as few strokes as possible..</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
                 </div>
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side" style="background-image: url('volley_club.png');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side" style="background-image: url('voll.jpg');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Volleyball </h2>
+                        <br>
+                        <p>Volleyball is a popular team sport in which two teams of six players are separated by a net.
+                            Each team tries to score points by grounding a ball on the other team's court under
+                            organized rules.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
                 </div>
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side" style="background-image: url('basket.jpeg');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side" style="background-image: url('baske.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Basketball </h2>
+                        <br>
+                        <p>Basketball is a team sport in which two teams, most commonly of five players each, opposing
+                            one another on a rectangular court, compete with the primary objective of shooting a
+                            basketball through the defender's hoop while preventing the opposing team from shooting
+                            through their own hoop.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
                 </div>
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side" style="background-image: url('fb.jpg');"></div>
-                    <div class="side back">Description</div>
+                    <div class="side" style="background-image: url('running.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Sprinting </h2>
+                        <br>
+                        <p>Sprinting is running over a short distance in a limited period of time. It is used in many
+                            sports that incorporate running, typically as a way of quickly reaching a target or goal, or
+                            avoiding or catching an opponent.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+
+                    </div>
                 </div>
             </div>
-           
+
         </div>
-     
+
 
     </div>
     <footer>
