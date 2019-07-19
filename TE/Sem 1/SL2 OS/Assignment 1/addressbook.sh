@@ -12,20 +12,22 @@
 
 # Output Formatting Line
 line() {
-    printf "\n=======================================================\n"
+    printf "\n=================================================================\n"
 }
 sline() {
-    echo "------------------------------------------------"
+    echo "---------------------------------------------------------------"
 }
 
 # FILE FUNCTIONS
 
+# To Insert a single record into the address book
 AddRecord() {
     # Required to check the type of value in variable
     re='^[0-9]+$'
     # Taking Input from User for new Entry
     echo "Enter the Details of Person"
-    while [ -z $name ]; do
+
+    while [ -z $name ]; do # Do not allow Null
         echo "Name "
         read name
     done
@@ -33,9 +35,11 @@ AddRecord() {
     while [ -z $phone ]; do
         echo "Phone"
         read phone
+
+        # Input Validation for 10 digit number
         if [ ${#phone} -ne 10 ] || ! [[ $phone =~ $re ]]; then
             echo "Not a valid number"
-            unset phone
+            unset phone # Unset the invalid phone number
         fi
     done
     sline
@@ -67,6 +71,8 @@ AddRecord() {
     while [ -z $zip ]; do
         echo "Zip"
         read zip
+
+        # Input Validation for 6 digit number
         if [ ${#zip} -ne 6 ] || ! [[ $zip =~ $re ]]; then
             echo "Not a valid number"
             unset zip
@@ -74,10 +80,12 @@ AddRecord() {
     done
     sline
 
-    # Adding Record
-    printf "\n%10s %10s %5s %8s %14s %10s %6s" $name $phone $no_ $street $state $city $zip >>"$filename"
+    # Adding Record to the file
+    printf "\n%10s %10s %9s %8s %14s %10s %6s" $name $phone $no_ $street $state $city $zip >>"$filename"
 
-    printf "\n Record Added Successfully "
+    printf "\nRecord Added Successfully "
+
+    # Unsetting variables for Next Record
     unset zip
     unset name
     unset phone
@@ -87,19 +95,19 @@ AddRecord() {
     unset no_
 }
 
+# Search an entry from the address book
 SearchRecord() {
     line
+
+    # Ask for key such as name,phone number
     echo "Entern Search Key"
     read key
-    grep -r -w $key "temp"
-    result=$(grep -r -w $key "temp")
-    if [ -n "$result" ]; then
-        echo "Found"
-    else
-        echo "Not Found"
-    fi
+
+    # Search for that key and print appropiate message
+    (grep -r -w $key $filename && echo "Found") || echo "Not found"
 }
 
+# Delete an entry from the address book
 DeleteRecord() {
     echo "Enter Name of you want"
     read pattern
@@ -160,16 +168,24 @@ ModifyRecord() {
         fi
     done
     sline
+
+    # MODIFY THE RECORD
     sed -i "/$pattern/c\ $name $phone $no_ $street $state $city $zip" $filename
 }
 
+# DISPLAY THE CONTENT OF THE FILE
 DisplayFile() {
     echo "FILE NAME : $filename\n"
+    printf "\n      NAME      PHONE BUILDING STREET         STATE     CITY      ZIP\n"
+    sline
     cat $filename
 }
 
+# DISPLAY THE CONTENT OF THE FILE WITH SORTING
 sorting() {
     line
+
+    # ASK USER FOR WHICH COLUNM THEY WANT
     echo "Sort by ?"
     echo "1) Name"
     echo "2) Phone"
@@ -184,19 +200,20 @@ sorting() {
 
     case $pattern in
 
-    1) sort -s -k1 $filename ;;
+    1) sort -s -k1 $filename ;; # NAME WISE
 
-    2) sort -s -k2 $filename ;;
+    2) sort -s -k2 $filename ;; # PHONE WISE
 
-    3) sort -s -k3 $filename ;;
+    3) sort -s -k3 $filename ;; # BUILDING WISE
 
-    4) sort -s -k4 $filename ;;
+    4) sort -s -k4 $filename ;; # STREET WISE
 
-    5) sort -s -k5 $filename ;;
+    5) sort -s -k5 $filename ;; # STATE WISE
 
-    6) sort -s -k6 $filename ;;
+    6) sort -s -k6 $filename ;; # CITY WISE
 
-    7) sort -s -k7 $filename ;;
+    7) sort -s -k7 $filename ;; # ZIP WISE
+
     # Inproper Option Handling
     *) echo "ERROR :: Please Enter the Proper Option for 1 to 7." ;;
     esac
