@@ -1,7 +1,7 @@
 /*====================================================
 Auther : Ayan N Gadpal K11 33308
 Code : Matrix Multiplication using multithreading
-Date : Jun 16 2019
+Date : Jun 19 2019
 Copyright : GNU public Library
 =====================================================*/
 #include <stdio.h>
@@ -9,17 +9,23 @@ Copyright : GNU public Library
 #include <unistd.h>
 #include <pthread.h>
 
-int A[3][3], B[3][3], c[3][3] = {0};
 int step = 0;
 
-void *multi()
+struct matrix
 {
-    int i, j, k, count = step++;
-    printf("\nThread Process Stated NO. %d", count);
+    int A[3][3], B[3][3], c[3][3];
+};
+
+// one third Multiply the Matrix
+void *multi(void *p)
+{
+    int i, j, k, count = step++; //Part of multiplication
+    struct matrix *m = (struct matrix *)p;
+    printf("\nThread Process Started NO. %d", count);
     for (i = count; i < count + 1; i++)
         for (j = 0; j < 3; j++)
             for (k = 0; k < 3; k++)
-                c[i][j] += A[i][k] * B[k][j];
+                m->c[i][j] += m->A[i][k] * m->B[k][j];
 }
 
 void inputMatrix(int *matrix)
@@ -48,27 +54,32 @@ void displayMatrix(int *matrix)
 
 int main()
 {
-    pthread_t thread_id[4];
-    int i;
-    printf("Input first Matrix: ");
-    inputMatrix((int *)A);
-    printf("Input Second Matrix: ");
-    inputMatrix((int *)B);
+    pthread_t thread_id[3];
+    int i, j;
+    struct matrix M, *p;
+    for (i = 0; i < 3; i++)
+        for (j = 0; j < 3; j++)
+            M.c[i][j] = 0;
 
-    for (i = 0; i < 4; i++)
-        pthread_create(&thread_id[i], NULL, multi, NULL);
+    printf("Input first Matrix: ");
+    inputMatrix((int *)M.A);
+    printf("Input Second Matrix: ");
+    inputMatrix((int *)M.B);
+    p = &M;
+    for (i = 0; i < 3; i++)
+        pthread_create(&thread_id[i], NULL, multi, (void *)p);
 
     printf("\nMain\n");
     printf("\n===================\n");
     printf("\nA\n");
-    displayMatrix((int *)A);
+    displayMatrix((int *)M.A);
     printf("\nB\n");
-    displayMatrix((int *)B);
+    displayMatrix((int *)M.B);
     printf("\nWaiting for threads");
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 3; i++)
         pthread_join(thread_id[i], NULL);
 
     printf("\n===================\n");
-    displayMatrix((int *)c);
+    displayMatrix((int *)M.c);
     return 0;
 }
