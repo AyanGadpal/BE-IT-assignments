@@ -33,21 +33,18 @@
         .card .side {
             backface-visibility: hidden;
             height: 100%;
-            background-position: center;
-            background-size: contain;
-
+            background-size: 100%;
             background-repeat: no-repeat;
             position: absolute;
             width: 100%;
         }
 
         .card .back {
-            background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
+            background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
             color: white;
             overflow: hidden;
             text-align: center;
             scroll-behavior: smooth;
-            font-size: 20px;
             transform: rotateY(180deg);
         }
 
@@ -63,37 +60,54 @@
         }
 
         .join:hover {
-            cursor: pointer;
+            background: #fff;
             color: #eb8712;
-            font-size: 115%;
-            font: bold;
-            background: white;
-
+            font-size: 120%;
         }
 
-        .dropdown-contain {
+        ul li ul li {
             visibility: hidden;
-            position: absolute;
-            background-color: #f9f9f9;
-            width: 160px;
+            display: none;
+            background: rgba(255, 255, 255);
+            width: 100%;
+            border-bottom: 0.5px solid #7e7d7f;
+            float: none;
         }
 
-        .dropdown-content a {
-            color: black;
+        .dropdown:hover>a {
+            border-bottom: 0.5px solid #7e7d7f;
+        }
 
-            text-decoration: none;
+        .dropdown:hover>ul li {
             display: block;
-            text-align: left;
-            z-index: 99999;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        #s:hover>.dropdown-contain {
             visibility: visible;
-            display: block;
+        }
+
+        .test {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
+
+        #search {
+            width: 30%;
+            height: 50%;
+            margin-top: 3%;
+            font-size: 20px;
+            transition: width 0.44s ease-in-out;
+            background-image: url('search.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            background-size: 25px;
+            padding: 12px 20px 12px 40px;
+            border-radius: 5%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+        }
+
+        #search:focus {
+            width: 100%;
+            box-shadow: 10px 5px 5px red;
         }
     </style>
 </head>
@@ -102,6 +116,9 @@
     <header>
         <div id="logo">
 
+        </div>
+        <div class="test">
+            <input id="search" type="text" name="search" placeholder="Search..">
         </div>
         <div id="log">
             <h2> <a href="Login.html">Login</a>
@@ -112,16 +129,26 @@
     <nav>
         <ul>
             <li><a href="Home.Html" id="Active"><b>Home</b></a> </li>
-            <li id="s"><a href="">Sports</a>
-                <div class="dropdown-contain">
-                    <a>Join</a>
-                    <a>Create</a>
-                    <a>See All</a>
-                </div>
+            <li class="dropdown"><a href="">Sports</a>
+                <ul>
+                    <li><a>See ALL Sports</a></li>
+                    <li><a>Add New Sports</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"><a href="">Clubs</a>
+                <ul>
+                    <li><a>Select Club</a></li>
+                    <li><a>Add Your Club</a></li>
+                </ul>
 
             </li>
-            <li><a href="">Clubs</a> </li>
-            <li><a href="">Events</a> </li>
+            <li class="dropdown"><a href="">Events</a>
+                <ul>
+                    <li><a>See all Events</a></li>
+                    <li><a>Create a new Event</a></li>
+                    <li><a>Join Event</a></li>
+                </ul>
+            </li>
             <li><a href="">Contact Us</a> </li>
         </ul>
     </nav>
@@ -137,6 +164,7 @@
         <font color="#7e7d7f">PLAY</font>
     </h1>
     <br>
+
     <div id="feed">
         <br>
         <br>

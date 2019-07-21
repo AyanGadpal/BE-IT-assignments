@@ -1,120 +1,276 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html>
 
 <head>
-	<title>Pet Shop</title>
-	<style>
-		* {
-			margin: 0px auto;
-			padding: 0px auto;
-			width: 80%;
-			font-family: Arial, Helvetica, sans-serif;
-		}
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <title>
+        Sports Meet
+    </title>
+    <style>
+        .card-container {
+            cursor: pointer;
+            position: relative;
+            float: left;
+            width: 30%;
+            height: 25%;
+            margin: 10px;
+        }
 
-		html,
-		body {
-			height: 100%;
-			width: 100%;
-			margin: 0;
-		}
+        .card {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: all 1s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
 
-		#main {
+        .card:hover {
+            transform: rotateY(180deg);
+        }
 
-			height: 100%;
-			width: 100%;
-		}
+        .card .side {
+            backface-visibility: hidden;
+            height: 100%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            position: absolute;
+            width: 100%;
+        }
 
-		header {
-			height: 13%;
-		}
+        .card .back {
+            background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+            color: white;
+            overflow: hidden;
+            text-align: center;
+            scroll-behavior: smooth;
+            transform: rotateY(180deg);
+        }
 
-		#logo {
-			height: 100%;
-			width: 10%;
-			background-image: url("/home/a3-402-15/Downloads/pett.png");
-			background-size: contain;
-			background-repeat: no-repeat;
-			float: left;
-		}
+        .join {
+            background-color: #000;
+            border: none;
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            width: 50%;
+            height: 10%;
+            transition-duration: 0.4s;
+        }
 
-		nav {
-			height: 5%;
-		}
+        .join:hover {
+            background: #fff;
+            color: #eb8712;
+            font-size: 120%;
+        }
 
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-			width: 100%;
-		}
+        ul li ul li {
+            visibility: hidden;
+            display: none;
+            background: rgba(255, 255, 255);
+            width: 100%;
+            border-bottom: 0.5px solid #7e7d7f;
+            float: none;
+        }
 
-		li {
-			float: left;
-			width: 20%;
-		}
+        .dropdown:hover>a {
+            border-bottom: 0.5px solid #7e7d7f;
+        }
 
-		li a {
-			display: block;
-			color: black;
-			text-align: center;
-			padding: 10px 10px;
-			font-size: 20px;
-			text-decoration: none;
-		
-	
-		}
+        .dropdown:hover>ul li {
+            display: block;
+            visibility: visible;
+        }
 
-		li a:hover
-		{
-			font:bold;
-			color: red;
-		}
+        .test {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
 
-		#slider {
-			height: 40%;
-			background-image:url("/home/a3-402-15/Downloads/doggi.png");
-			background-size: cover;
-			 
-		}
+        #search {
+            width: 30%;
+            height: 50%;
+            margin-top: 3%;
+            font-size: 20px;
+            transition: width 0.44s ease-in-out;
+            background-image: url('search.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            background-size: 25px;
+            padding: 12px 20px 12px 40px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+        }
 
-		#sales {
-			height: 50%;
-		}
-
-		footer {
-			height: 40%;
-			background: grey;
-		}
-	</style>
+        #search:focus {
+            width: 100%;
+            border: 2px solid #eb8712;
+        }
+    </style>
 </head>
 
 <body id="main">
-	<header>
-		<div id="logo">
+    <header>
+        <div id="logo">
 
-		</div>
-		<h1>Pet.com</h1>
-	</header>
-	<nav>
-		<ul>
-			<li><a href="">Dogs</a> </li>
-			<li><a href="">Cats</a> </li>
-			<li><a href="">Small Animals</a> </li>
-			<li><a href="">Personalised</a> </li>
-			<li><a href="">Water Based</a> </li>
-		</ul>
-	</nav>
-	<div id="slider">
+        </div>
+        <div class="test">
+            <input id="search" type="text" name="search" placeholder="Search..">
+        </div>
+        <div id="log">
+            <h2> <a href="Login.html">Login</a>
+                <a href="singup.html">Sign up</a></h2>
+        </div>
+    </header>
 
-	</div>
-	<div id="sales">
+    <nav>
+        <ul>
+            <li><a href="Home.Html" id="Active"><b>Home</b></a> </li>
+            <li class="dropdown"><a href="">Sports</a>
+                <ul>
+                    <li><a>See ALL Sports</a></li>
+                    <li><a>Add New Sports</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"><a href="">Clubs</a>
+                <ul>
+                    <li><a>Select Club</a></li>
+                    <li><a>Add Your Club</a></li>
+                </ul>
 
-	</div>
-	<footer>
+            </li>
+            <li class="dropdown"><a href="">Events</a>
+                <ul>
+                    <li><a>See all Events</a></li>
+                    <li><a>Create a new Event</a></li>
+                    <li><a>Join Event</a></li>
+                </ul>
+            </li>
+            <li><a href="">Contact Us</a> </li>
+        </ul>
+    </nav>
 
-	</footer>
+    <div id="slider">
 
+    </div>
+
+    <br>
+    <h1 align="center" class="qoute">
+        <font color="#7e7d7f">MEET</font> .
+        <font color="#eb8712">ORGANISE</font> .
+        <font color="#7e7d7f">PLAY</font>
+    </h1>
+    <br>
+
+    <div id="feed">
+        <br>
+        <br>
+        <br>
+
+        <div id="MainFeed">
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('fb.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Football </h2>
+                        <br>
+                        <p>Football or soccer, is a team sport played with
+                            a spherical ball between two teams of eleven players. It is played by 250 million players in
+                            over 200 countries and dependencies, making
+                            it the world's most popular sport.</p>
+                        <br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side " style="background-image: url('crket.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Cricket </h2>
+                        <br>
+                        <p>Cricket is a bat-and-ball game played between two teams of eleven players on a field at the
+                            centre of which is a 20-metre pitch with a wicket at each end, each comprising two bails
+                            balanced on three stumps.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side " style="background-image: url('swin.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Swimming </h2>
+                        <br>
+                        <p>Swimming is an individual or team sport that requires the use of one's entire body to move
+                            through water. The sport takes place in pools or open water.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('voll.jpg');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Volleyball </h2>
+                        <br>
+                        <p>Volleyball is a popular team sport in which two teams of six players are separated by a net.
+                            Each team tries to score points by grounding a ball on the other team's court under
+                            organized rules.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('baske.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Basketball </h2>
+                        <br>
+                        <p>Basketball is a team sport in which two teams, most commonly of five players each, opposing
+                            one another on a rectangular court, compete with the primary objective of shooting a
+                            basketball through the defender's hoop while preventing the opposing team from shooting
+                            through their own hoop.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+                    </div>
+                </div>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="side" style="background-image: url('running.png');"></div>
+                    <div class="side back">
+                        <br>
+                        <h2> Sprinting </h2>
+                        <br>
+                        <p>Sprinting is running over a short distance in a limited period of time. It is used in many
+                            sports that incorporate running, typically as a way of quickly reaching a target or goal, or
+                            avoiding or catching an opponent.</p>
+                        <br><br>
+                        <input class="join" type="button" value="JOIN">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <footer>
+
+    </footer>
 </body>
 
 </html>

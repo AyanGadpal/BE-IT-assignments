@@ -49,17 +49,13 @@ header {
 
 #log a:hover {
     font: bold;
+    font-size: 100%;
     color: #eb8712;
 }
 
 nav {
     height: 5%;
-     /* overflow: hidden;
-    position: sticky;
-    width: 100%;
-    top: 0;
-    z-index: 999999; */
-     
+
 }
 
 ul {
@@ -68,7 +64,6 @@ ul {
     padding: 0;
     overflow: hidden;
     width: 100%;
-    
 }
 
 li {
@@ -81,15 +76,15 @@ li a {
     color: black;
     text-align: center;
     padding: 10px 10px;
-    font-size: 25px;
+    font-size: 20px;
     text-decoration: none;
     transition-duration: 0.4s;
 }
 
-li a:hover ,dropdown-contain{
+li a:hover {
     font: bold;
     color: #eb8712;
-    font-size: 30px;
+    font-size: 165%;
 }
 
 #Active {
@@ -107,11 +102,11 @@ li a:hover ,dropdown-contain{
 }
 
 #feed {
-    height: 170%;
+    height: 150%;
 }
 
 #MainFeed {
-    width: 85%;
+    width: 80%;
     height: 100%;
 }
 
