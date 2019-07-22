@@ -106,7 +106,7 @@ select user.host,user from mysql.user;
 
 delete from customer where name = 'me'
 
-insert into order_record(O_ID,C_ID,P_ID,DOP,quantity,total_cost) values (7,2,1,str_to_date('09-25-2012','%m-%d-%Y'),1,1000000);
+insert into order_record(O_ID,C_ID,P_ID,DOP,quantity,total_cost) values (5,4,2,str_to_date('10-25-2012','%m-%d-%Y'),1,37000), (5,2,2,str_to_date('10-25-2012','%m-%d-%Y'),2,74000), (3,4,3,str_to_date('10-25-2012','%m-%d-%Y'),1,94000);
 	
 +------+-------------+---------+---------+
 | P_ID | P_name      | P_price | P_stock |
@@ -164,15 +164,21 @@ select name,total_cost
 from customer,order_record 
 where customer.C_ID=order_record.C_ID 
 and
-order_record.C_ID not in 
+order_record.C_ID in 
 			(
 			select DISTINCT T.C_ID 
 			from order_record as T,order_record as S 
-			where T.total_cost < S.total_cost
+			where T.total_cost > S.total_cost
 			);
 
 MIN PURCHASE
 
 select name,total_cost from customer,order_record where customer.C_ID=order_record.C_ID and order_record.C_ID not in (select DISTINCT T.C_ID from order_record as T,order_record as S where T.total_cost > S.total_cost );
+
+5% discount
+update order_record set total_cost =  total_cost - (total_cost/10)/2 where total_cost >= 80000;
+
+
+
 
 
