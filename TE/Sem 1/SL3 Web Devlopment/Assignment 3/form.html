@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <title>Registration Form</title>
+    <style>
+        body {
+            margin: 20px;
+            padding: 0px;
+            font-size: 20px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input:focus {
+            transition-duration: 0.4s;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <form name="myform">
+        <fieldset>
+            <h1 id="heading"></h1>
+            <legend>Account Sign up</legend>
+            <label>Name              : </label> <input oninput="nameValidate()" style="width: 300px;" name="name" placeholder="Ex: Ayan Gadpal" type="text"><br><br>
+            <label>Email             : </label> <input style="width: 300px;" name="email" placeholder="Ex: Ayangadpal2@gmail.com" type="email"><br><br>
+            <label>Gender : </label>
+            <br>Male<input name="Gender" type="radio">
+            <br>Female<input name="Gender" type="radio"><br><br>
+            <label>Password          : </label> <input style="width: 300px;" name="password" type="password"><br><br>
+            <label>Re-enter Password : </label> <input style="width: 300px;" oninput="passwordV()" name="password2" type="password"><br><br>
+            <label id="status"></label>
+            <label>Address : </label><br><textarea style="width: 500px;height: 100px;" placeholder="Ex : At Post XX2345, street no. 5 , Nagpur, MH"></textarea>
+            <br><br>
+            <label>Occupaption :</label>
+            <select>
+            <optgroup label="Working">
+                <option value="std">Student</option>
+                <option value="pro">Professional</option>
+            </optgroup>
+            <optgroup label="Non-Working">
+                <option value="hw">Housewife</option>
+                <option value="eld">Elderly</option>
+            </optgroup>
+        </select><br><br>
+            <label>Select What you Own : </label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Credit/Debit card</label><input type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Car</label><input type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>House</label><input type="checkbox">
+
+            <button onclick="halwa()">Submit</button>
+            <button type="reset" onclick="reset()">RESET</button>
+        </fieldset>
+    </form>
+    <script>
+        function nameValidate() {
+            var a = document.forms["myform"]["name"].value;
+            if (a == "") {
+                alert("Enter the name");
+            }
+
+        }
+
+        function halwa() {
+
+
+        }
+
+        function passwordV() {
+            pwd1 = document.forms["myform"]["password"].value;
+            pwd2 = document.forms["myform"]["password2"].value;
+
+            if (pwd1 != pwd2) {
+                alert("NEW");
+                document.getElementById("status").innerHTML = "Password Does Not Mached !";
+                event.preventDefault();
+            }
+        }
+    </script>
+</body>
+
+</html>
