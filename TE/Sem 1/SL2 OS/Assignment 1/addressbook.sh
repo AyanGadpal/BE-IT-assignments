@@ -41,6 +41,16 @@ AddRecord() {
             echo "Not a valid number"
             unset phone # Unset the invalid phone number
         fi
+
+        # Unique phone number validation
+        if [ -n $phone ]; then
+
+            (grep -r -w $phone $filename) && unset phone
+            if [ -z $phone ]; then
+                echo "ERROR : Phone number Already Present !"
+            fi
+
+        fi
     done
     sline
     while [ -z $no_ ]; do
@@ -111,7 +121,12 @@ SearchRecord() {
 DeleteRecord() {
     echo "Enter Name of you want"
     read pattern
-    sed -i "/$pattern/d" $filename
+    if grep -r -w $pattern $filename; then
+        sed -i "/$pattern/d" $filename
+        echo "Deletion Successful"
+    else
+        echo "Record Not Found !"
+    fi
 }
 
 ModifyRecord() {
