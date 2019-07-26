@@ -1,3 +1,10 @@
+/*====================================================
+Auther : Ayan N Gadpal K11 33308
+Code : Assignment 2 Part B Array Sort Main Process
+Date : Jun 8 2019
+Copyright : GNU public Library
+=====================================================*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -41,7 +48,9 @@ void bubbleSort(int *A, int n)
 int main()
 {
     int *array, n, i, status = -1;
-    char *a[10], *rst;
+    char *a[20], *rst;
+
+    // TAKING THE ARRAY AS INPUT FROM USER
     line();
     printf("Enter the Size of array : ");
     scanf("%d", &n);
@@ -53,6 +62,8 @@ int main()
         printf("\n%d) ", i + 1);
         scanf("%d", array + i);
     }
+
+    // SORTING ARRAY
     line();
     printf("Sorting Array.... \n");
     bubbleSort(array, n);
@@ -60,7 +71,7 @@ int main()
     printf("Sorting Completed !\nSorted Array : ");
     displayArray(array, n);
     line();
-    printf("Forking...\n");
+
 
     // COVERTING to STRING
     for (i = 0; i < n; i++)
@@ -70,6 +81,9 @@ int main()
         a[i] = malloc(sizeof(int));
         a[i] = rst;
     }
+
+    // CREATING NEW PROCESS
+    printf("Forking...\n");
     status = fork();
 
     if (status != 0) // PARENT
@@ -85,6 +99,8 @@ int main()
     {
         line();
         printf("[ CHILD ] : Child Proccess running\n");
+
+        // CREATING NEW PROCESS AND PASSING THE STRING AS AGRUMENT
         execvp("./b.out", a);
         printf("\n[ CHILD ] : Operation Completed");
         exit(0);
