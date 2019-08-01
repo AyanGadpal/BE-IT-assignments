@@ -14,6 +14,11 @@
             font-weight: bold;
         }
         
+        #pv {
+            font-size: 10px;
+            color: red;
+        }
+        
         input:focus {
             transition-duration: 0.4s;
             font-size: 20px;
@@ -22,20 +27,31 @@
 </head>
 
 <body>
-    <form name="myform">
+    <form name="myform" style="width: 80%;margin: 0px auto;">
         <fieldset>
-            <h1 id="heading"></h1>
-            <legend>Account Sign up</legend>
-            <label>Name              : </label> <input oninput="nameValidate()" style="width: 300px;" name="name" placeholder="Ex: Ayan Gadpal" type="text"><br><br>
-            <label>Email             : </label> <input style="width: 300px;" name="email" placeholder="Ex: Ayangadpal2@gmail.com" type="email"><br><br>
-            <label>Gender : </label>
-            <br>Male<input name="Gender" type="radio">
-            <br>Female<input name="Gender" type="radio"><br><br>
-            <label>Password          : </label> <input style="width: 300px;" name="password" type="password"><br><br>
-            <label>Re-enter Password : </label> <input style="width: 300px;" oninput="passwordV()" name="password2" type="password"><br><br>
+
+            <h5 id="aaa">
+            </h5>
+            <legend style="text-align: center;">Account Sign up</legend>
+
+            <label>Name              : </label> <input style="width: 300px;" id="name" placeholder="Ex: Ayan Gadpal" type="text"><br><br>
+
+            <label>Email             : </label> <input style="width: 300px;" id="email1" placeholder="Ex: Ayangadpal2@gmail.com" type="email"><br><br>
+
+            <label id="gen">Gender : </label>
+            <br>Male<input name="Gender" id="R1" type="radio">
+            <br>Female<input name="Gender" id="R2" type="radio"><br><br>
+
+            <label>Password          : </label> <input id="pw1" style="width: 300px;" name="password" type="password">
+            <label id="pv"></label><br><br>
+
+            <label>Re-enter Password : </label> <input id="pw2" style="width: 300px;" oninput="passwordV()" name="password2" type="password"><br><br>
             <label id="status"></label>
-            <label>Address : </label><br><textarea style="width: 500px;height: 100px;" placeholder="Ex : At Post XX2345, street no. 5 , Nagpur, MH"></textarea>
+
+            <label>Address : </label><br><textarea id="adr" style="width: 500px;height: 100px;" placeholder="Ex : At Post XX2345, street no. 5 , Nagpur, MH"></textarea>
+
             <br><br>
+
             <label>Occupaption :</label>
             <select>
             <optgroup label="Working">
@@ -46,39 +62,103 @@
                 <option value="hw">Housewife</option>
                 <option value="eld">Elderly</option>
             </optgroup>
+
         </select><br><br>
-            <label>Select What you Own : </label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Select What you Own : </label><br>
             <label>Credit/Debit card</label><input type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label>Car</label><input type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label>House</label><input type="checkbox">
-
-            <button onclick="halwa()">Submit</button>
+            <br><br>
+            <button onclick="submitBtn()">Submit</button>
             <button type="reset" onclick="reset()">RESET</button>
+
         </fieldset>
     </form>
     <script>
-        function nameValidate() {
-            var a = document.forms["myform"]["name"].value;
-            if (a == "") {
-                alert("Enter the name");
-            }
-
-        }
-
-        function halwa() {
-
-
-        }
-
         function passwordV() {
             pwd1 = document.forms["myform"]["password"].value;
             pwd2 = document.forms["myform"]["password2"].value;
 
             if (pwd1 != pwd2) {
-                alert("NEW");
-                document.getElementById("status").innerHTML = "Password Does Not Mached !";
-                event.preventDefault();
+                document.getElementById("pw1").style.borderColor = "red";
+                document.getElementById("pw2").style.borderColor = "red";
             }
+            if (pwd1 == pwd2) {
+                document.getElementById("pw1").style.borderColor = "green";
+                document.getElementById("pw2").style.borderColor = "green";
+                if (pwd1.length < 8) {
+                    document.getElementById("pv").innerHTML = "Minimum 8 length";
+
+                }
+                if (pwd1.length > 8) {
+                    document.getElementById("pv").innerHTML = "";
+
+                }
+
+            }
+            document.getElementById("pw1").style.borderWidth = "3px";
+            document.getElementById("pw2").style.borderWidth = "3px";
+            event.preventDefault();
+        }
+
+        function submitBtn() {
+            flag = false;
+            name1 = document.getElementById("name");
+            email1 = document.getElementById("email1");
+            r1 = document.getElementById("R1");
+            r2 = document.getElementById("R2");
+            adr = document.getElementById("adr");
+            pw1 = document.getElementById("pw1");
+            pw2 = document.getElementById("pw2");
+            // Name Validation 
+            if (name1.value == "") {
+                name1.style.borderColor = "red";
+                flag = true;
+            } else {
+                name1.style.borderColor = "green";
+            }
+            // Email Validation
+            if (email1.value == "") {
+                email1.style.borderColor = "red";
+                flag = true;
+            } else {
+                email1.style.borderColor = "green";
+            }
+
+            if (!r1.checked && !r2.checked) {
+                flag = true;
+                document.getElementById("gen").style.color = "red";
+            } else {
+                document.getElementById("gen").style.color = "black";
+            }
+
+            if (adr.value == "") {
+                adr.style.borderColor = "red";
+                flag = true;
+            } else {
+                adr.style.borderColor = "green";
+            }
+
+            if (pw2.value == "" && pw1.value == "") {
+                pw1.style.borderColor = "red";
+                pw2.style.borderColor = "red";
+                flag = true;
+            } else {
+                pw1.style.borderColor = "none";
+                pw2.style.borderColor = "none";
+            }
+
+
+            if (flag) {
+
+                document.getElementById("aaa").innerHTML = "Please Fill the Detail";
+                document.getElementById("aaa").style.color = "red";
+
+            } else {
+                alert("Sumbitted");
+            }
+
+            event.preventDefault();
         }
     </script>
 </body>
