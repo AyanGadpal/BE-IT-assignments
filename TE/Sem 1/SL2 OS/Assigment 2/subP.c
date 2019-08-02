@@ -5,6 +5,9 @@ Date : Jun 8 2019
 Copyright : GNU public Library
 =====================================================*/
 
+// NOTE : D0 NOT RUN THIS DIRECTLY, ONLY COMPILE IT AND NAME OUTPUT FILE AS "b.out"
+// gcc subP.c -o b.out
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
