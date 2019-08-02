@@ -5,6 +5,8 @@ Date : Jun 8 2019
 Copyright : GNU public Library
 =====================================================*/
 
+// NOTE : COMPILE THE PROGRAM "subP.c" AS OUTPUT "b.out" BEFORE EXECUTING THIS CODE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
