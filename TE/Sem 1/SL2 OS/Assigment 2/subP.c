@@ -50,7 +50,7 @@ void binarySearch(int n, int array[], int key)
                 break;
             }
             fs = m;
-            m = (fs + ls) / 2;
+            m = (fs + ls) + 1/ 2;
         }
     }
 }
