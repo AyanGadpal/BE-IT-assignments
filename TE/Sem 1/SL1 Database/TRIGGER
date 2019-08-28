@@ -1,0 +1,42 @@
+#TABLES
+create table student(
+id int,
+name varchar(20),
+attend float,
+primary key(id)
+);
+
+create table default(
+id int,
+name varchar(20)
+);                   
+
+=============TRIGGERS==============
+
+#CHECK ATTENDENCE WHILE NEW ENTRY
+create trigger checkD after insert on student 
+FOR Each row begin 
+if new.attend<75 
+then
+insert into defaulter(id,name) values(new.id,new.name);
+end if;
+end;//
+
+#REMOVE FROM DEFAULTERS IF ATTENDENCE IS ABOVE 75 AFTER UPDATE
+create trigger deleteD after update on student
+FOR Each row begin 
+if old.attend>75 then 
+delete from defaulter
+where id = old.id;
+end if;
+end//
+
+
+#ADD TO DEFAULTERS IF ATTENDENCE IS BELOW 75 ATFER UPDATE
+create trigger deleteDd after update on student 
+FOR Each row begin 
+if new.attend<75 then 
+insert into defaulter(id,name) 
+values(new.id,new.name);
+end if;
+end//
