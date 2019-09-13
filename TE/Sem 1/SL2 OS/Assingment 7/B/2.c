@@ -1,9 +1,4 @@
-/*====================================================
-Auther : Ayan N Gadpal K11 33308
-Code : Matrix Multiplication using multithreading
-Date : Sep 6 2019
-Copyright : GNU public Library
-=====================================================*/
+
 
 // NOTE : THIS IS THE SECOND PROCESS
 
@@ -67,19 +62,29 @@ int main()
 {
     char str[MAX];
     int fd;
-    int count = 0;
+    int charCount = 0;
+    int lineCount = 0;
+    int wordCount = 0;
     int i = 0;
     char *filename = "/tmp/contain.txt";
-    char *stats = "/tmp/stats.txt";
+    char *stats = "/tmp/contain2.txt";
     mkfifo(filename, 0666);
     mkfifo(stats, 0666);
     fd = open(filename, O_RDONLY);
     read(fd, str, MAX);
-    int fd2 = open(stats, O_WRONLY);  
+    int fd2 = open(stats, O_WRONLY);
     // TODO :
     // Convert stats to string and write it to the stats.txt
-    // write contain of filename
+    charCount = count_chars(str);
+    wordCount = count_words(str);
+    lineCount = count_lines(str);
 
+    FILE *file = fopen("/home/oslab-14/33308/Assignment 7/B/stats.txt", "w");
+    fprintf(file, "Character Count: %d\nWord Count: %d\nLine Count: %d\n", charCount, wordCount, lineCount);
+    fclose(file);
+    write(fd2, str, strlen(str) + 1);
+    // write contain of filename
+    close(fd2);
     close(fd);
     return 0;
 }
