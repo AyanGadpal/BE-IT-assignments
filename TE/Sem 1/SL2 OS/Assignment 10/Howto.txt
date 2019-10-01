@@ -1,0 +1,102 @@
+wget https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.17.4.tar.xz
+
+sudo tar -xvf linux-4.17.4.tar.xz -C/usr/src/
+
+cd /usr/src/linux-4.17.4/
+
+sudo -s
+
+mkdir hello
+
+cd hello
+
+gedit hello.c
+
+#include <linux/kernel.h>
+
+asmlinkage long sys_hello(void)
+{
+        printk("Hello world\n");
+        return 0;
+}
+
+gedit Makefile
+
+obj-y := hello.o
+
+cd ..
+
+gedit Makefile
+
+core-y += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ hello/ (add hello/ after block/ , use ctrl+f to find core-y in file)
+
+cd arch/x86/entry/syscalls/
+
+gedit syscall_64.tbl
+
+548       64        hello          sys_hello (add at the end of the table)
+
+cd ..
+
+cd ..
+
+cd ..
+
+cd ..
+
+cd include/linux/
+
+gedit syscalls.h
+
+asmlinkage long sys_hello(void);(add before end if statement at end of file)
+
+sudo apt-get install gcc
+
+sudo apt-get install libncurses5-dev
+
+sudo apt-get install bison
+
+sudo apt-get install flex
+
+sudo apt-get install libssl-dev
+
+sudo apt-get install libelf-dev
+
+sudo apt-get update
+
+sudo apt-get upgrade
+
+cd ..
+
+cd ..
+
+sudo make menuconfig (check if ext4 is selected in File system)
+
+sudo make -j4
+
+sudo make modules_install install
+
+shutdown -r now
+
+uname -r
+
+cd 33241/ass10
+
+gedit userspace.c
+
+#include <stdio.h>
+#include <linux/kernel.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+int main()
+{
+         long int amma = syscall(548);
+         printf("System call sys_hello returned %ld\n", amma);
+         return 0;
+}
+
+gcc userspace.c
+
+./a.out
+
+dmesg
