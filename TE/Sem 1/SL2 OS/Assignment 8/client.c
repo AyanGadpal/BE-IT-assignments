@@ -25,18 +25,24 @@ struct keyServed
 
 int main()
 {
-    // To Store shared memory id
+     // To Store shared memory id
     int shmid;
 
-    void *sharedMemory = (void *)0;
+    void *sharedMemory = (void *)0;// NULL
+    
     struct keyServed *sharedStuff;
 
+    // Create Memory
     shmid = shmget((key_t)1234, sizeof(struct keyServed), 0666 | IPC_CREAT);
 
+    // Get the Base Address of SM
     sharedMemory = (void *)shmat(shmid, NULL, 0);
 
+    // Attach
     sharedStuff = (struct keyServed *)sharedMemory;
-    printf("\n%d\n", (int )sharedMemory);
+   // printf("\n%d\n", (int )sharedMemory);
+
+    // Pooling
     while (1)
     {
         if (sharedStuff->server_done == 0)
