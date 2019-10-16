@@ -66,6 +66,7 @@ int main()
     int lineCount = 0;
     int wordCount = 0;
     int i = 0;
+    
     char *filename = "/tmp/contain.txt";
     char *stats = "/tmp/contain2.txt";
     mkfifo(filename, 0666);
