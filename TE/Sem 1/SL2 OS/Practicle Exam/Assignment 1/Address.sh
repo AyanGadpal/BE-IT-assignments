@@ -143,7 +143,28 @@ Modify(){
 
 
 # 6) Sort START
+Sort(){
+        # SORT command is used to sort a file
+        # sort command sorts file assuming the contents are ASCII
+        # Blank space is the default field separator
+        echo "Sort by?"
+        echo "1) Name"
+        echo "2) Phone"
+        echo "3) Zip"
+        read pattern
+        
+        case $pattern in
+        
+        1)sort -s -k1 $filename;;
+        
+        2)sort -s -k2 $filename;;
+        
+        3)sort -s -k3 $filename;;
+        
+        *)echo "Invalid Option, Exiting to Main Menu..."
+        esac 
 
+}
 # Sort END
 
 # MAIN 
@@ -180,7 +201,7 @@ while :; do
        
        5) Modify;;
        
-       6) echo "6";;
+       6) Sort;;
        
        7) exit;;
        
