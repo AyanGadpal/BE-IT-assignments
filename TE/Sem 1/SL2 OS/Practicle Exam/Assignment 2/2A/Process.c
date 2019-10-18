@@ -1,7 +1,7 @@
 /*
 Name        : Process control System calls
 Auther      : Ayan Naresh Gadpal
-Copyright   : GNU public Libraly
+Copyright   : GNU public Library
 Description : Take two Array, One will be sorted by parent and other will be by child
 Date        : Fri Oct 18 2019 , 1:37 PM
 */
