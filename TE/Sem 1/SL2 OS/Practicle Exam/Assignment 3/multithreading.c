@@ -84,7 +84,9 @@ void *multi(void *v)
 int main()
 {
         int i,j;
-       
+        clock_t start, end;	
+        double totaltime;
+
         pthread_t *thread_id;
         
         // Take input for 1st matrix
@@ -105,6 +107,8 @@ int main()
         
         // Resultant Matrix Memory Allocation
         m3 = (int *)malloc(sizeof(int)*(r1)*(c2));
+        
+        start = clock();
       
         for (i=0;i<r1;i++) // ROW 1
                 for (j=0;j<c2;j++) // COL 2
@@ -132,6 +136,10 @@ int main()
                 }
                 
        // DISPLAY RESULT
+       end = clock();
+       
+       totaltime = ((double) (end - start)) / _SC_CLK_TCK;
+       printf("\n Time for execution --> %f \n\n",totaltime);
        display(m3,r1,c2);
        
        

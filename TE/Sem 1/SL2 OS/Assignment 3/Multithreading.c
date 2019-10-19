@@ -55,6 +55,8 @@ void displayMatrix(int *matrix)
 int main()
 {
     pthread_t thread_id[3];
+    clock_t start, end;	
+    double totaltime;
     int i, j;
     struct matrix M, *p;
     for (i = 0; i < 3; i++)
@@ -66,6 +68,7 @@ int main()
     printf("Input Second Matrix: ");
     inputMatrix((int *)M.B);
     p = &M;
+    start = clock();
     for (i = 0; i < 3; i++)
         pthread_create(&thread_id[i], NULL, multi, (void *)p);
 
@@ -78,6 +81,11 @@ int main()
     printf("\nWaiting for threads");
     for (i = 0; i < 3; i++)
         pthread_join(thread_id[i], NULL);
+        
+    end = clock();
+       
+    totaltime = ((double) (end - start)) / _SC_CLK_TCK;
+    printf("\n Time for execution --> %f \n\n",totaltime);
 
     printf("\n===================\n");
     displayMatrix((int *)M.c);
