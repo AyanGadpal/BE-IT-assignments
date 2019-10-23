@@ -67,7 +67,7 @@ int main()
     int wordCount = 0;
     int i = 0;
     
-    char *filename = "/tmp/contain.txt";
+    char *filename = "/tmp/contain1.txt";
     char *stats = "/tmp/contain2.txt";
     mkfifo(filename, 0666);
     mkfifo(stats, 0666);
@@ -77,7 +77,7 @@ int main()
     // TODO :
     // Convert stats to string and write it to the stats.txt
     charCount = count_chars(str);
-    wordCount = count_words(str);
+    wordCount = count_words(str); 
     lineCount = count_lines(str);
 
     FILE *file = fopen("/home/oslab-14/33308/Assignment 7/B/stats.txt", "w");

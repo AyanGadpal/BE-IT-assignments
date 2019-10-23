@@ -15,7 +15,7 @@ int main()
 {
     int fd, ch;
 
-    char *filename = "/tmp/contain.txt", str[MAX];
+    char *filename = "/tmp/contain1.txt", str[MAX];
     char *stats = "/tmp/contain2.txt";
     mkfifo(filename, 0666);
       mkfifo(stats, 0666);
