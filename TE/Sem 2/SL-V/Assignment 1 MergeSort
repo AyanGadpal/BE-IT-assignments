@@ -1,0 +1,98 @@
+
+//=================================================================================
+// Name        : 1 SL-V
+// Author      : Ayan Gadpal 33308
+// Version     : 1.0
+// Copyright   : GNU Public License
+// Description : Merge Sort
+//=================================================================================
+
+#include <iostream>
+
+using namespace std;
+
+void merge(int arr[], int l, int m, int r)
+{
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+	int L[n1], R[n2];
+
+	int i, j, k;
+
+	for (i = 0; i < n1; i++)
+		L[i] = arr[l + i];
+
+	for (j = 0; j < n2; j++)
+		R[j] = arr[m + 1 + j];
+
+	i = j = 0;
+	k = l;
+
+	while (i < n1 && j < n2)
+	{
+		if (L[i] <= R[j])
+			arr[k] = L[i], i++;
+		else
+			arr[k] = R[j], j++;
+
+
+		k++;
+	}
+
+	while (i < n1)
+		arr[k] = L[i],k++,i++;
+
+	while (j < n2)
+		arr[k] = R[j],k++,j++;
+	
+}
+
+// Array ,left , right
+void mergeSort(int A[], int l, int r)
+{
+	if (l < r)
+	{
+		int m = l + (r - l) / 2; // Middle
+
+		// cout << endl
+		// 	 << l << " " << m << " " << r;
+
+		// Left , Right
+		mergeSort(A, l, m), mergeSort(A, m + 1, r);
+
+		// Merging
+		merge(A, l, m, r);
+	}
+}
+
+void inputArray(int A[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		cout << "\nEnter the " << i << "th number :", cin >> A[i];
+}
+
+void displayArray(int A[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		cout << endl
+			 << i << "th :" << A[i];
+}
+
+int main()
+{
+	int A[10], n = 10;
+
+	// Taking Input and Displaying afterwards
+	inputArray(A, n);
+	displayArray(A, n);
+
+	// Applying Merge Sort
+	mergeSort(A, 0, n);
+
+	cout<<"\nAfter Sorting \n";
+	displayArray(A,n);
+	return 0;
+}
