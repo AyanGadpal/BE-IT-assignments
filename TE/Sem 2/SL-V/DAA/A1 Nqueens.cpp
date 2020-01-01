@@ -21,19 +21,24 @@ private:
     int n;
 
 public:
-    int count;
+    int count,subCount;
+    bool solved;
     // Set size of chessboard
     ChessBoard()
     {
         this->n = 4;
         this->Board = new int[n];
         count = 0;
+        subCount = 0;
+        solved = false;
     }
     ChessBoard(int size)
     {
         this->n = abs(size);
         this->Board = new int[n];
         count = 0;
+        subCount = 0;
+        solved = false;
     }
 
     // nqueens path
@@ -46,6 +51,12 @@ public:
             return false;
         }
         nqueenParser(0);
+        if (!solved)
+        {
+        	cout<<"PASS END HERE \nNo More Solutions are Available";
+        }
+        else
+        	cout<<"Solved";
         if(count == 0)
             cout<<"No Solution Available !";
         return true;
@@ -59,6 +70,7 @@ public:
             if (isSafe(row, i))
             {
                 //cout<<"\nSafe col "<<i;
+                passDisplay(row);
                 Board[row] = i;
                 if (row >= n - 1)
                     display();
@@ -83,10 +95,35 @@ public:
         return true;
     }
 
-    // Need Modification
-    void display()
+     void passDisplay(int row)
     {
-        cout << "================="<<endl<<"Solution : "<<(++count)<<endl;
+        solved = false;
+        cout << "---------------"<<endl<<"Pass : "<<(++subCount)<<endl;
+        for (int i = 0; i < n; i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(Board[i]!=j)
+                    cout<<"_,";
+                else
+                	if(isSafe(i,j))
+                		cout<<"Q,";
+                	else
+                		cout<<"_,";
+
+                    
+            }
+            cout<<endl;
+            // cout << Board[i] + 1;
+        }
+        cout << "\n";
+    }
+    // Need Modification
+   
+
+ 	 void display()
+    {
+        cout << endl<<"Solution : "<<(++count)<<endl;
         for (int i = 0; i < n; i++)
         {
             for(int j=0;j<n;j++)
@@ -99,6 +136,9 @@ public:
             cout<<endl;
             // cout << Board[i] + 1;
         }
+        solved = true;
+        cout << "=================================="<<endl;
+        subCount = 0;
         cout << "\n";
     }
 };
