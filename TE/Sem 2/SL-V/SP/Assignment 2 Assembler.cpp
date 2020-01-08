@@ -10,11 +10,10 @@
 // Note you will need tu put your code in input.txt and check output in MachineCode.txt
 // 
 // TODOs
-// 1) Handle Label and Symbol Decalretion
+// 1) Handle Symbol Decalretion 
 // 2) Complete Other half of symbol table
 // 3) Literal and pool table
-// 4) Make LC more Accurate, now its simply += 1
-// 5) Error Reporting
+// 4) Error Reporting
 //=================================================================================
 #include <bits/stdc++.h>
 
@@ -34,27 +33,36 @@ class symbolTable
 
 private:
    struct Row row[20];
-   int len; 
+   int top; 
 
 public:
 
 	symbolTable()
 	{
-		len = 0;
+		top = 0;
 	}
+	
+	// ADD find index to handle dublic entry in ST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODING HERE
 
-	int	add(char *symbol)
+	int add(char *symbol)
 	{
-		row[len].symbol = symbol;
-		row[len].value = -1;
-		return len++;
+		row[top].symbol = symbol;
+		row[top].value = -1;
+		return top++;
+	}
+	
+	void add(char *symbol,int address)
+	{
+		row[top].symbol = symbol;
+		row[top].value = address;
+		top++;
 	}
 
 	void display()
 	{
 		cout<<"SYMBOL TABLE \n";
-		for(int i =0;i<len;i++)
-			cout<<endl<<i<<" "<<row[i].symbol;
+		for(int i =0;i<top;i++)
+			cout<<endl<<i<<" "<<row[i].symbol<<" "<<row[i].value;
 	}
 
 };
@@ -75,7 +83,6 @@ public:
     TranslationTable()
     {
         LC = -1;
-
         START = false;
 
         row[0].symbol = "STOP";
@@ -102,7 +109,7 @@ public:
         row[5].type = "IS";
         row[5].value = 05;
 
-  		row[6].symbol = "COMP";
+  	row[6].symbol = "COMP";
         row[6].type = "IS";
         row[6].value = 6;
 
@@ -110,7 +117,7 @@ public:
         row[7].type = "IS";
         row[7].value = 7;
 
- 		row[8].symbol = "DIV";
+ 	row[8].symbol = "DIV";
         row[8].type = "IS";
         row[8].value = 8;
 
@@ -118,43 +125,42 @@ public:
         row[9].type = "IS";
         row[9].value = 9;
 
-		row[10].symbol = "PRINT";
+	row[10].symbol = "PRINT";
         row[10].type = "IS";
         row[10].value = 10;
 
 		// R
 	
-		row[11].symbol = "AREG";
+	row[11].symbol = "AREG";
         row[11].type = "R";
         row[11].value = 1;
 
-		row[12].symbol = "BREG";
+	row[12].symbol = "BREG";
         row[12].type = "R";
         row[12].value = 2;
 	
-		row[13].symbol = "CREG";
+	row[13].symbol = "CREG";
         row[13].type = "R";
         row[13].value = 3;
 
-		// AD
-
-		row[14].symbol = "START";
+	// AD
+	row[14].symbol = "START";
         row[14].type = "AD";
         row[14].value = 0;
 
-		row[15].symbol = "END";
+	row[15].symbol = "END";
         row[15].type = "AD";
         row[15].value = 1;
 
-		row[16].symbol = "ORIGIN";
+	row[16].symbol = "ORIGIN";
         row[16].type = "AD";
         row[16].value = 2;
 
-		row[17].symbol = "EQU";
+	row[17].symbol = "EQU";
         row[17].type = "AD";
         row[17].value = 3;
 
-		row[18].symbol = "LTORG";
+	row[18].symbol = "LTORG";
         row[18].type = "AD";
         row[18].value = 4;
 
@@ -190,7 +196,7 @@ public:
 		long converted = strtol(s, &p, 10);
 		
 		if (*p) {
-		    // conversion failed because the input wasn't a number
+		    // Conversion failed because the input wasn't a number
 		    if(s[0] == 61)
 		    	return 'L';
 		    else
@@ -220,21 +226,26 @@ public:
             // Covert string into char[]
             int n = str.length();
             char chstr[n + 1];
+           
             strcpy(chstr, str.c_str());
 
-            // divide by space
-            char *token = strtok(chstr, " ");
+            // Splite Word by space
+            char *back,*token = strtok(chstr, " ");
             
-	    // CODING HERE : TODO 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	    int label = match(token);
 
             if(label == -1)
-            {
-
+            {	
+		cout<<endl<<token<<" Is Symbol";
+		if(LC == -1)
+			cout<<"[ERROR] START ERROR";
+		else
+		{
+			ST.add(token,LC+1);
+			token = strtok(NULL, " ");	
+		}
+		
             }
-
-            // if (LC != -1)
-            // 	out<<LC++<<" ";
 
             // For each word in the sentence
             while (token != NULL)
@@ -249,8 +260,10 @@ public:
                 	START = false;
                 }
 
-                if (id == 14)
-					START = true;
+                if (id == 14) // START ENCOUNTERED
+			START = true;
+
+			
 
 
                 // Opcode
@@ -263,7 +276,6 @@ public:
                     	out <<LC++<<" "<<"(" << row[id].type << ","<<row[id].value<<")";
 
                 }
-                
                 // No Opcode, i.e unidentified symbol or label or Operand
                 else
                 {
@@ -277,8 +289,15 @@ public:
 
                 }
                 
-                // Go to next word
+                 // Go to next word
                 token = strtok(NULL, " ");
+                
+                // DC or DS
+		if (id == 19 || id == 20)
+		{
+		 	LC+=atoi(token)-1;
+		 	continue;
+		}   
             }
             out << endl;
         }
