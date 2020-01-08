@@ -1,9 +1,9 @@
 //=================================================================================
 // Name        : 3 SL-V Assembler's 1 Pass Output
 // Author      : Ayan Gadpal 33308
-// Version     : 3.0
+// Version     : 4.0
 // Copyright   : GNU Public License
-// Date        : 3 Jan 2020
+// Date        : 8 Jan 2020
 // Description : 2 Pass Assembler
 // Status      : 50% Done 
 //
