@@ -1,19 +1,19 @@
 //=================================================================================
-// Name        : 3 SL-V Assembler's 1 Pass Output
+// Name        : 2 SL-V Assembler's 1 Pass Output
 // Author      : Ayan Gadpal 33308
-// Version     : 4.0
+// Version     : 5.0
 // Copyright   : GNU Public License
-// Date        : 8 Jan 2020
+// Date        : 10 Jan 2020
 // Description : 2 Pass Assembler
-// Status      : 50% Done 
+// Status      : 90% Done 
 //
 // Note you will need tu put your code in input.txt and check output in MachineCode.txt
 // 
 // TODOs
-// 1) Handle Symbol Decalretion 
-// 2) Complete Other half of symbol table
-// 3) Literal and pool table
-// 4) Error Reporting
+// 1) EQU Handling
+// 2) Branch Intruction Handling
+// 3) Error Reporting
+//		1.1) Syntatical Error	
 //=================================================================================
 #include <bits/stdc++.h>
 
@@ -27,6 +27,68 @@ struct Row
     int value;
 };
 
+class pool
+{
+private:
+   int row[20];
+   int top; 
+public:
+};
+
+class litralTable
+{
+private:
+  struct Row row[20];
+  int top;
+  int pool; // act as a pool for now
+public:
+  litralTable()
+  {
+	top = 0;
+	pool = 0;
+  }
+  
+  int isPresent(char *symbol)
+  {
+	for(int i=pool;i<top;i++)
+		if(strcmp(symbol, row[i].symbol.c_str()) == 0)
+			return i;
+
+	return -1;
+  }
+
+  int add(char *symbol)
+  {
+	int index = isPresent(symbol);
+	if(index == -1)
+	{
+	  row[top].symbol = symbol;
+	  row[top].value = -1;
+	  return top++;
+	}
+	return index;
+
+  }
+  
+  void display()
+  {
+		cout<<"\n\nLITRAL TABLE \n";
+		for(int i =0;i<top;i++)
+			cout<<endl<<i<<" "<<row[i].symbol<<" "<<row[i].value;
+  }
+  
+  int LTORG(int LC)
+  {
+  		for(int i=pool;i<top;i++)
+  			row[i].value = (LC++);
+  	
+  		pool = top;
+  		return LC;
+  }
+
+  
+
+};
 // Keep track of Symbols
 class symbolTable
 {
@@ -34,7 +96,7 @@ class symbolTable
 private:
    struct Row row[20];
    int top; 
-
+   
 public:
 
 	symbolTable()
@@ -42,20 +104,43 @@ public:
 		top = 0;
 	}
 	
-	// ADD find index to handle dublic entry in ST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODING HERE
-
+	int isPresent(char *symbol)
+	{
+		for(int i=0;i<top;i++)
+			if(strcmp(symbol, row[i].symbol.c_str()) == 0)
+				return i;
+		
+		return -1;
+	}
+	
 	int add(char *symbol)
 	{
-		row[top].symbol = symbol;
-		row[top].value = -1;
-		return top++;
+		int index = isPresent(symbol);
+		if(index == -1)
+		{
+		  row[top].symbol = symbol;
+		  row[top].value = -1;
+		  return top++;
+		}
+		return index;
+		
 	}
 	
 	void add(char *symbol,int address)
 	{
-		row[top].symbol = symbol;
-		row[top].value = address;
-		top++;
+		int index = isPresent(symbol);
+		int i;
+		
+		if(index == -1)
+		{
+		  row[top].symbol = symbol;
+		  row[top].value = address;
+		  top++;
+		}
+		else
+		  row[index].value = address;
+		
+		
 	}
 
 	void display()
@@ -63,6 +148,18 @@ public:
 		cout<<"SYMBOL TABLE \n";
 		for(int i =0;i<top;i++)
 			cout<<endl<<i<<" "<<row[i].symbol<<" "<<row[i].value;
+	}
+	
+	bool isError()
+	{
+		for(int i=0;i<top;i++)
+			if(row[i].value == -1)
+			{
+				cout<<"'"<<row[i].symbol<<"'"<<" Not Define";
+				return true;				
+			}
+				
+		return false;
 	}
 
 };
@@ -76,6 +173,7 @@ private:
     int LC;
     bool START;
     symbolTable ST;
+    litralTable LT;
 
 public:
 
@@ -109,7 +207,7 @@ public:
         row[5].type = "IS";
         row[5].value = 05;
 
-  	row[6].symbol = "COMP";
+  	    row[6].symbol = "COMP";
         row[6].type = "IS";
         row[6].value = 6;
 
@@ -117,7 +215,7 @@ public:
         row[7].type = "IS";
         row[7].value = 7;
 
- 	row[8].symbol = "DIV";
+ 	    row[8].symbol = "DIV";
         row[8].type = "IS";
         row[8].value = 8;
 
@@ -125,11 +223,11 @@ public:
         row[9].type = "IS";
         row[9].value = 9;
 
-	row[10].symbol = "PRINT";
+	    row[10].symbol = "PRINT";
         row[10].type = "IS";
         row[10].value = 10;
 
-		// R
+	// R
 	
 	row[11].symbol = "AREG";
         row[11].type = "R";
@@ -234,9 +332,10 @@ public:
             
 	    int label = match(token);
 
+	    // ONLY first word of sentence
             if(label == -1)
             {	
-		cout<<endl<<token<<" Is Symbol";
+		//cout<<endl<<token<<" Is Symbol";
 		if(LC == -1)
 			cout<<"[ERROR] START ERROR";
 		else
@@ -261,9 +360,10 @@ public:
                 }
 
                 if (id == 14) // START ENCOUNTERED
-			START = true;
+					START = true;
 
-			
+				if(id == 18 || id == 15) // LTORG or END
+					LC = LT.LTORG(LC);
 
 
                 // Opcode
@@ -284,8 +384,10 @@ public:
                 	{
                 		 out<<" ("<<s<<","<<ST.add(token)<<")";
                 	}
+                	else if(s == 76)
+                		out<<" ("<<s<<", "<<LT.add(token)<<")";
                 	else
-                		out<<" ("<<s<<","<<token<<")";
+                		out<<" ("<<s<<", "<<token<<")";
 
                 }
                 
@@ -301,7 +403,10 @@ public:
             }
             out << endl;
         }
+        if(ST.isError())
+        	cout<<"[ ERROR ] : Reference Error";
         ST.display();
+        LT.display();
         // Close the Files
         in.close();
         out.close();
