@@ -1,20 +1,20 @@
-//=================================================================================
+//===============================================================================================
 // Name        : 2 SL-V Assembler's 1 Pass Output
 // Author      : Ayan Gadpal 33308
-// Version     : 5.0
+// Version     : 6.0
 // Copyright   : GNU Public License
-// Date        : 10 Jan 2020
+// Modifed     : 17 Jan 2020
 // Description : 2 Pass Assembler
-// Status      : 90% Done 
+// Status      : 92% Done 
 //
 // Note you will need tu put your code in input.txt and check output in MachineCode.txt
 // 
 // TODOs
-// 1) EQU Handling
+// 1) Need to handle "B EQU A+10", Currently only works with 'A' or Constant number as operand
 // 2) Branch Intruction Handling
 // 3) Error Reporting
 //		1.1) Syntatical Error	
-//=================================================================================
+//===============================================================================================
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -27,20 +27,13 @@ struct Row
     int value;
 };
 
-class pool
-{
-private:
-   int row[20];
-   int top; 
-public:
-};
-
 class litralTable
 {
 private:
   struct Row row[20];
   int top;
   int pool; // act as a pool for now
+  
 public:
   litralTable()
   {
@@ -139,8 +132,15 @@ public:
 		}
 		else
 		  row[index].value = address;
-		
-		
+	}
+
+	int addressOf(char *symbol)
+	{
+		int i = isPresent(symbol);
+		if(i != -1)
+			return row[i].value;
+		return -1;
+	
 	}
 
 	void display()
@@ -171,7 +171,7 @@ private:
     struct Row row[22]; 
     int len; // length of element present
     int LC;
-    bool START;
+    bool START,END;
     symbolTable ST;
     litralTable LT;
 
@@ -182,6 +182,7 @@ public:
     {
         LC = -1;
         START = false;
+        END = false;
 
         row[0].symbol = "STOP";
         row[0].type = "IS";
@@ -207,7 +208,7 @@ public:
         row[5].type = "IS";
         row[5].value = 05;
 
-  	    row[6].symbol = "COMP";
+  	row[6].symbol = "COMP";
         row[6].type = "IS";
         row[6].value = 6;
 
@@ -215,7 +216,7 @@ public:
         row[7].type = "IS";
         row[7].value = 7;
 
- 	    row[8].symbol = "DIV";
+ 	row[8].symbol = "DIV";
         row[8].type = "IS";
         row[8].value = 8;
 
@@ -223,7 +224,7 @@ public:
         row[9].type = "IS";
         row[9].value = 9;
 
-	    row[10].symbol = "PRINT";
+	row[10].symbol = "PRINT";
         row[10].type = "IS";
         row[10].value = 10;
 
@@ -309,15 +310,15 @@ public:
     {
         ifstream in; // Input file
         ofstream out; // Output file
-
+	
         // Open the file
         in.open(inputFilename);
 
         // Open the Destination file
-        out.open("MachineCode.txt");
+        out.open("machineCode.txt");
 
         string str; 
-        
+       	int last = -1;
         // Process line by line input
         while (getline(in, str))
         {
@@ -328,7 +329,7 @@ public:
             strcpy(chstr, str.c_str());
 
             // Splite Word by space
-            char *back,*token = strtok(chstr, " ");
+            char *symbol,*token = strtok(chstr, " ,");
             
 	    int label = match(token);
 
@@ -340,8 +341,37 @@ public:
 			cout<<"[ERROR] START ERROR";
 		else
 		{
-			ST.add(token,LC+1);
-			token = strtok(NULL, " ");	
+			symbol = token;
+			token = strtok(NULL, " ,");
+			
+			// EQU Statments
+			if(match(token) == 17)
+			{
+				// Get the operand
+				token = strtok(NULL, " ,");
+				
+				char s = operand(token);
+				int address;
+				
+				// Check operand type is constant Address or Symbol
+				if(s == 83)
+					address = ST.addressOf(token);
+				else
+					address = atoi(token);
+				
+				// Genrate IC 	
+				out <<"     (" << row[17].type << ","<<row[17].value<<")";
+				out <<" (C, "<<address<<")";
+				
+				ST.add(symbol,address);		
+				
+				token = strtok(NULL, " ,");	
+			}
+			
+			// DL statments
+			else
+			 	ST.add(symbol,LC);
+			
 		}
 		
             }
@@ -360,51 +390,73 @@ public:
                 }
 
                 if (id == 14) // START ENCOUNTERED
-					START = true;
+			START = true;
 
-				if(id == 18 || id == 15) // LTORG or END
-					LC = LT.LTORG(LC);
+		if(id == 18 || id == 15) // LTORG or END
+			LC = LT.LTORG(LC);
+			
+		if(id == 15)
+			END = true;
 
-
+		
+			
                 // Opcode
                 if (id != -1)
                 {
-                    if( LC==-1 || strcmp("AD", row[id].type.c_str()) == 0)
-                    	out <<"     (" << row[id].type << ","<<row[id].value<<")";
-
-                    else if(LC != -1 && (strcmp("IS", row[id].type.c_str()) == 0 || strcmp("DL", row[id].type.c_str()) == 0)) 
-                    	out <<LC++<<" "<<"(" << row[id].type << ","<<row[id].value<<")";
-
+                   if(last == -1)
+                   {
+		            if( LC==-1 || strcmp("AD", row[id].type.c_str()) == 0)
+		            	out <<"     (" << row[id].type << ","<<row[id].value<<")";
+		            else if(LC != -1 && (strcmp("IS", row[id].type.c_str()) == 0 || strcmp("DL", row[id].type.c_str()) == 0)) 
+		            	out <<LC++<<" "<<"(" << row[id].type << ","<<row[id].value<<")";
+		            else if(LC != -1 && strcmp("R", row[id].type.c_str()) == 0)
+		            	out <<" "<<"(" << row[id].type << ","<<row[id].value<<")";
+		            last = 1;
+                   }
+                   else
+                   	cout<<"[ ERROR ]: Invalid Instruction";
                 }
                 // No Opcode, i.e unidentified symbol or label or Operand
                 else
                 {
-                	char s = operand(token);
-                	if(s == 83)
+                	if (last != -1)
                 	{
-                		 out<<" ("<<s<<","<<ST.add(token)<<")";
+                		char s = operand(token);
+		        	if(s == 83)
+		        		 out<<" ("<<s<<","<<ST.add(token)<<")";
+		        	else if(s == 76)
+		        		out<<" ("<<s<<", "<<LT.add(token)<<")";
+		        	else
+		        		out<<" ("<<s<<", "<<token<<")";
+		        	last = -1;
                 	}
-                	else if(s == 76)
-                		out<<" ("<<s<<", "<<LT.add(token)<<")";
                 	else
-                		out<<" ("<<s<<", "<<token<<")";
+                		cout<<"[ ERROR ]: INVALID OPERAND";
+                	
 
                 }
                 
                  // Go to next word
-                token = strtok(NULL, " ");
+                token = strtok(NULL, " ,");
+                
+                // ORIGIN
+                if(id == 16)
+                	LC=atoi(token);
                 
                 // DC or DS
 		if (id == 19 || id == 20)
-		{
-		 	LC+=atoi(token)-1;
-		 	continue;
-		}   
+			LC+=atoi(token)-1;
+
             }
             out << endl;
         }
         if(ST.isError())
         	cout<<"[ ERROR ] : Reference Error";
+        if(END && !START)
+        	cout<<"[ ERROR ] : START ERROR";
+        if(!END)
+        	cout<<"[ ERROR ] : END ERROR";
+
         ST.display();
         LT.display();
         // Close the Files
