@@ -3,7 +3,7 @@
 // Author      : Ayan Gadpal 33308
 // Version     : 6.0
 // Copyright   : GNU Public License
-// Modifed     : 17 Jan 2020 
+// Modified    : 17 Jan 2020
 // Total Time  : 8 Hours
 // Description : 2 Pass Assembler
 // Status      : 92% Done 
@@ -319,7 +319,7 @@ public:
         out.open("machineCode.txt");
 
         string str; 
-       	int last = -1;
+
         // Process line by line input
         while (getline(in, str))
         {
@@ -339,7 +339,7 @@ public:
             {	
 		//cout<<endl<<token<<" Is Symbol";
 		if(LC == -1)
-			cout<<"[ERROR] START ERROR";
+			cout<<"[ERROR] START ERROR\n";
 		else
 		{
 			symbol = token;
@@ -404,38 +404,24 @@ public:
                 // Opcode
                 if (id != -1)
                 {
-                   if(last == -1)
-                   {
-		            if( LC==-1 || strcmp("AD", row[id].type.c_str()) == 0)
-		            	out <<"     (" << row[id].type << ","<<row[id].value<<")";
-		            else if(LC != -1 && (strcmp("IS", row[id].type.c_str()) == 0 || strcmp("DL", row[id].type.c_str()) == 0)) 
-		            	out <<LC++<<" "<<"(" << row[id].type << ","<<row[id].value<<")";
-		            else if(LC != -1 && strcmp("R", row[id].type.c_str()) == 0)
-		            	out <<" "<<"(" << row[id].type << ","<<row[id].value<<")";
-		            last = 1;
-                   }
-                   else
-                   	cout<<"[ ERROR ]: Invalid Instruction";
+	            if( LC==-1 || strcmp("AD", row[id].type.c_str()) == 0)
+	            	out <<"     (" << row[id].type << ","<<row[id].value<<")";
+	            else if(LC != -1 && (strcmp("IS", row[id].type.c_str()) == 0 || strcmp("DL", row[id].type.c_str()) == 0)) 
+	            	out <<LC++<<" "<<"(" << row[id].type << ","<<row[id].value<<")";
+	            else if(LC != -1 && strcmp("R", row[id].type.c_str()) == 0)
+	            	out <<" "<<"(" << row[id].type << ","<<row[id].value<<")";
                 }
                 // No Opcode, i.e unidentified symbol or label or Operand
                 else
                 {
-                	if (last != -1)
-                	{
-                		char s = operand(token);
-		        	if(s == 83)
-		        		 out<<" ("<<s<<","<<ST.add(token)<<")";
-		        	else if(s == 76)
-		        		out<<" ("<<s<<", "<<LT.add(token)<<")";
-		        	else
-		        		out<<" ("<<s<<", "<<token<<")";
-		        	last = -1;
-                	}
-                	else
-                		cout<<"[ ERROR ]: INVALID OPERAND";
-                	
-
-                }
+        		char s = operand(token);
+	        	if(s == 83)
+	        		 out<<" ("<<s<<","<<ST.add(token)<<")";
+	        	else if(s == 76)
+	        		out<<" ("<<s<<", "<<LT.add(token)<<")";
+	        	else
+	        		out<<" ("<<s<<", "<<token<<")";
+	        }
                 
                  // Go to next word
                 token = strtok(NULL, " ,");
@@ -452,11 +438,9 @@ public:
             out << endl;
         }
         if(ST.isError())
-        	cout<<"[ ERROR ] : Reference Error";
-        if(END && !START)
-        	cout<<"[ ERROR ] : START ERROR";
+        	cout<<"[ ERROR ] : Reference Error\n";
         if(!END)
-        	cout<<"[ ERROR ] : END ERROR";
+        	cout<<"[ ERROR ] : END ERROR\n";
 
         ST.display();
         LT.display();
