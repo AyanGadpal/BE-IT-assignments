@@ -3,7 +3,8 @@
 // Author      : Ayan Gadpal 33308
 // Version     : 6.0
 // Copyright   : GNU Public License
-// Modifed     : 17 Jan 2020
+// Modifed     : 17 Jan 2020 
+// Total Time  : 8 Hours
 // Description : 2 Pass Assembler
 // Status      : 92% Done 
 //
