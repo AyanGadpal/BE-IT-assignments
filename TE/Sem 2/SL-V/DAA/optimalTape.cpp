@@ -1,53 +1,105 @@
 //=================================================================================
 // Name        : A3 SL-V DAA Optimal Storage
 // Author      : Ayan Gadpal 33308
-// Version     : 1.0
+// Version     : 2.0
 // Date        : 05 Feb 2020
 // Description : Use Greedy Approach to optimal storage on tape
 //=================================================================================
 #include <iostream>
 #include <bits/stdc++.h>
-
+#define line() (cout<<"\n================================")
 using namespace std;
+
+
 struct Disk{
-    int limit;
-    int count;
+    int limit,load,top;
     int *Tape;
-    Disk(int limit)
+
+    Disk(){
+        top = load = 0;
+    }
+
+    float display()
+    {
+        for(int i=0;i<top;i++)
+            cout<<" "<<Tape[i];
+        cout<<"  | Storage Used :  "<<load<<"  Retrival time : "<<(float)load/top;
+        return (float)load/top;
+    }
+
+    void AssignMemory(int limit,int elementNumber)
     {
         this->limit = limit;
-        Tape = new int[limit];
-
+        Tape = new int[elementNumber];
     }
-    // <<<<<<<<<<<<<<<<<<<< CODIND HERE
+    bool push(int element)
+    {
+        // Check for Tape Overflow
+        limit -= element;
+        if(limit<0)
+            return false;
+
+        // Add Element on the tape
+        Tape[top] = element;
+        load+=element;
+        top++;
+        
+        return true;
+    }
 };
 class Storage{
     private:
         int n,m,tapes;
         int *jobList;
-        int *Tape;
+        struct Disk *T;
     public:
         Storage()
         {
-            cout<<"\nEnter The number of jobs";
+            cout<<"\nEnter The number of jobs : ";
             cin>>n;
+            line();
+
             cout<<"\nEnter The size of each job";
             jobList = new int[n];
+            line();
+
             for(int i = 0;i<n;i++)
             {
                 cout<<"\nSize of JOB NO."<<i+1<<" : ";
                 cin>>jobList[i];
             }
-            cout<<"\nEnter the number of Tape";
+            line();
+
+            cout<<"\nEnter the number of Tape : ";
             cin>>tapes;
-            cout<<"\nEnter the size of Tape";
+            line();
+
+            cout<<"\nEnter the size of Tape : ";
             cin>>m;
+            line();
+            
+            // Assigning Memory to the Tapes
+            T = new Disk[tapes];
+            for(int i=0;i<tapes;i++)
+                T[i].AssignMemory(m,(n/tapes)+1);
+
+            // Merge Sort
             mergeSort(jobList,0,n-1);
         }
         void displayJobs()
         {
             for(int i=0;i<n;i++)
                 cout<<"\n"<<i+1<<") "<<jobList[i];   
+        }
+
+        void displayTapes()
+        {
+            float totalAvg = 0;
+            for(int i=0;i<tapes;i++)
+                line(),cout<<"\nTape "<<i+1<<endl,totalAvg += T[i].display();  
+
+            cout<<"\nTotal Average is "<<totalAvg/tapes<<endl; 
+            line();
         }
 
         void merge(int arr[], int l, int m, int r)
@@ -108,41 +160,12 @@ class Storage{
 
         void placeOnTape()
         {
-            int limit1,limit2,limit3;
-            limit1 = limit2 = limit3 = m;
-            
-            Tape1 = new int[m];
-            Tape2 = new int[m];
-            Tape3 = new int[m];
-            
-            for(int j=0,i = 0;i<n;i+=3,j++)
+            for(int i = 0;i<n;i++)
             {
-                Tape1[j] = jobList[i];
-                limit1 -= jobList[i];
-                
-                Tape2[j] = jobList[i+1];
-                limit2 -= jobList[i+1];
-                
-                Tape3[j] = jobList[i+2];
-                limit3 -= jobList[i+2];
+                int index = i % tapes;
+                if(!(T[index].push(jobList[i])))
+                    cout<<"\nOverload ! Tape "<<index+1;     
             }
-
-            if(limit1 < 0 || limit2 < 0 || limit3 < 0)
-                cout<<"\n [ ERROR ] : OVERFLOWED";
-
-            cout<<"\nTape 1 :";
-            for(int j=0,i = 0;i<n;i+=3,j++)
-                cout<<"  "<<Tape1[j];
-            
-            cout<<"\nTape 2 :";
-            for(int j=0,i = 0;i<n;i+=3,j++)
-                cout<<"  "<<Tape2[j];
-
-            cout<<"\nTape 3 :";
-            for(int j=0,i = 0;i<n;i+=3,j++)
-                cout<<"  "<<Tape3[j];
-            
-            cout<<"\n";
 
         }
 
@@ -151,7 +174,7 @@ class Storage{
 int main()
 {
     Storage HDD;
-    HDD.displayJobs();
     HDD.placeOnTape();
+    HDD.displayTapes();
     return 0;
 }
