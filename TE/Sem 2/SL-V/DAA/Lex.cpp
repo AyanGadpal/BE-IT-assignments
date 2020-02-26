@@ -6,7 +6,7 @@
 // Modified    : 26 Feb 2020
 // Total Time  : 2 Hours
 // Description : 1st Pass of 2 Pass Assembler
-// Status      : 92% Done
+// Status      : 22% Done
 //
 // Note you will need tu put your code in "program.c"
 //
