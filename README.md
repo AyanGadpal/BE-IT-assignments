@@ -7,7 +7,7 @@ This repository contains my all practical assignment codes performmed during my 
 
 ## TE
 ### ![SEM 1 Completed](https://github.com/AyanGadpal/BE-IT-assignments/tree/master/TE/Sem%201)
-### ![SEM 2 Currently in progress](https://github.com/AyanGadpal/BE-IT-assignments/tree/master/TE/Sem%202
+### ![SEM 2 Currently in progress](https://github.com/AyanGadpal/BE-IT-assignments/tree/master/TE/Sem%202)
 
 ## BE
 ### SEM 1 
