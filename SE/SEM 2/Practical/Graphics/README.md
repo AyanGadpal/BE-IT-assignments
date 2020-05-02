@@ -1,4 +1,4 @@
-# OPEN-GL Installion Notes
+# OPEN-GL Installation Notes
 
 1. Open a terminal and enter the following commands to install the necessary libraries for OpenGL development:
 ```
