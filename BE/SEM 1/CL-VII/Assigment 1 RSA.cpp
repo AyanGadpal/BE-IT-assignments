@@ -4,6 +4,7 @@
 // Date : 10.8.2020
 #include <iostream>
 #include<math.h>
+#include<string.h>
 using namespace std;
 
 int gcd(int a, int b)
@@ -31,13 +32,15 @@ double getE(double phi)
     return e;
 }
 
+
+
 int main()
 {
     double p,q,n,d,e,phi,flag;
     
     // Currently take a static p and q
-    p = 13;
-    q = 11;    
+    p = 19;
+    q = 61;    
     n = p*q;
     phi = (p-1)*(q-1);
 
@@ -45,10 +48,10 @@ int main()
 
     d=fmod((1/e),phi);
  
-    double message = 9;
-    double c = pow(message,e); //encrypt the message
-    double m = pow(c,d); 
-    c=fmod(c,n);
+    double message = 4;
+    double c1 = pow(message,e); //encrypt the message
+    double m = pow(c1,d); 
+    double c=fmod(c1,n);
     m=fmod(m,n);
 
     cout<<"p: "<<p<<"\n";
@@ -59,7 +62,7 @@ int main()
     cout<<"Original Message: "<<message<<"\n";
     cout<<"Decrypted Message: "<<m<<"\n";
     cout<<"Encrypted Message: "<<c<<"\n";
-    
+
     
     // cout<<generate_coprime(n,phi);
     cout<<"\n";
