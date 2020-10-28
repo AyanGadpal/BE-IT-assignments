@@ -1,0 +1,132 @@
+---
+title: "Part B Assignment 2"
+author: "43308 Ayan_Gapdapl P11"
+date: "12/10/2020"
+output: html_document
+---
+
+
+
+---
+
+## Objective
+Generate a proper 2-D data set of N points. Split the data set into Training Data set and Test Data set. <br>
+The lab manual has 6 task, But since we got Dataset with 7 features to choose from, we will add one more task of pre-processing data<br>
+
+1. Preprocess 
+2. Perform linear regression analysis with Least Squares Method. 
+3. Plot the graphs for Training MSE and Test MSE. 
+4. Apply Cross Validation and plot the graphs for errors.
+
+---
+
+### 1. Preprocess
+
+#### 1.1 Load Loading R packages and dataset
+
+```{r include=FALSE}
+library(tidyverse)
+library(car)
+library(psych)
+library(Amelia)
+library(ggrepel)
+
+```
+
+```{r}
+# Loading the dataset and Splitting the columns
+RE_data <- read.csv("/home/ayan_gadpal/Documents/CLVII/Part B/Real estate.csv")
+names(RE_data)[2]<-paste("X1.transaction.date")
+names(RE_data)[3]<-paste("X2.house.age")
+names(RE_data)[4]<-paste("X3.distance.to.the.nearest.MRT.station")
+names(RE_data)[5]<-paste("X4.number.of.convenience.stores")
+names(RE_data)[6]<-paste("X5.latitude")
+names(RE_data)[7]<-paste("X6.longitude")
+names(RE_data)[8]<-paste("Y.house.price.of.unit.area")
+RE_data <- RE_data[,-1]
+```
+
+#### 1.2 Summery
+* The original dataset contains *414 explanatory variables* describing *7 aspects* of real estate:
+
+```{r}
+dim(RE_data)
+summary(RE_data)
+```
+* There are *no NA values* in our dataset
+```{r}
+missmap(RE_data)
+```
+
+#### 1.3 Correlations with House Price
+
+```{r}
+pairs.panels(RE_data, cex=0.75)
+```
+<br>It Seems like the X3.distance.to.the.nearest.MRT.station is highly Correlated but it's also right-skewed In skewed data, the tail region may act as an outlier for the statistical model and that can adversely effect the model's performance
+
+```{r}
+hist(RE_data$X3.distance.to.the.nearest.MRT.station, main = "X3", prob = TRUE)
+lines(density(RE_data$X3.distance.to.the.nearest.MRT.station, adjust=2), lty="dotted") 
+lines(density(RE_data$X3.distance.to.the.nearest.MRT.station),col="red")
+```
+#### 1.4 Transforming
+
+```{r}
+t_x3 = log(RE_data$X3.distance.to.the.nearest.MRT.station)
+hist(t_x3, main = "X3", prob = TRUE)
+lines(density(t_x3, adjust=2), lty="dotted") 
+lines(density(t_x3),col="red")
+```
+#### 1.5 Scatter plots
+
+```{r}
+x = RE_data$X3.distance.to.the.nearest.MRT.station
+y = RE_data$Y.house.price.of.unit.area
+plot(x,y)
+```
+```{r}
+plot(t_x3,y)
+RE_data$X3.distance.to.the.nearest.MRT.station <- log(RE_data$X3.distance.to.the.nearest.MRT.station)
+```
+
+---
+
+### 2. Least Squares Method
+
+```{r}
+train <- RE_data[1:332,]
+test <- RE_data[332:414,]
+fit <- lm(Y.house.price.of.unit.area ~ X3.distance.to.the.nearest.MRT.station, data=train)
+plot(Y.house.price.of.unit.area ~ X3.distance.to.the.nearest.MRT.station, data=train)
+abline(fit)
+```
+
+---
+
+### 3.Plot the graphs for Training MSE and Test MSE. DONE
+
+```{r}
+preds <- predict(fit,data.frame(X3.distance.to.the.nearest.MRT.station = test$X3.distance.to.the.nearest.MRT.station))
+require("Metrics")
+TestMSE = mse(test$Y.house.price.of.unit.area,preds)
+print(paste0('Test MSE: ',TestMSE))
+
+trainPred = predict(fit,data.frame(X3.distance.to.the.nearest.MRT.station = train$X3.distance.to.the.nearest.MRT.station))
+TrainMSE = mse(train$Y.house.price.of.unit.area,trainPred)
+print(paste0('Train MSE: ',TrainMSE))
+
+xla =  c("TrainError","TestError")
+vec = c(TrainMSE,TestMSE)
+
+barplot(names.arg = xla,vec, xlab = 'Errors',main="Testing Error")
+```
+
+---
+
+### 4. Least Squares Method
+
+```{r}
+require("DAAG")
+model1=cv.lm(RE_data,(Y.house.price.of.unit.area~X3.distance.to.the.nearest.MRT.station),m=5)
+```

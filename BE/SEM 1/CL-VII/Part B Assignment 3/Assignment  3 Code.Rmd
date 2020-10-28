@@ -1,0 +1,56 @@
+---
+title: "Assignment 3"
+author: "43308_Ayan_Gapdapl_P11"
+date: "14/10/2020"
+---
+
+```{r include=FALSE}
+#import library
+library(arules)
+library(tidyverse)
+library(arulesViz)
+```
+
+## Read Dataset and print summery 
+
+```{r}
+df<-read.transactions("Groceries.csv",sep=",")
+inspect(df[1:5])
+summary(df)
+```
+
+## Frequency plot of top 10 items
+
+```{r}
+itemFrequencyPlot(df,topN=10,type="absolute")
+```
+
+## Get, summerize and print the rules
+
+```{r}
+rules = apriori(df, parameter = list(supp = 0.03, conf = 0.3))
+summary(rules)
+inspect(rules)
+```
+
+## Sort the rules by confidence
+
+```{r}
+rules = sort(rules, by = "confidence")
+options(digits = 2)
+inspect(rules)
+```
+
+## Inspect the reduntant rules, if redundancy rules<-rules[!is.reduntant(rules)]
+
+```{r}
+rules[is.redundant(rules)]
+```
+
+## Plot the graphs for the rules
+
+```{r}
+plot(rules, method = "graph")
+plot(rules, method = "paracoord")
+plot(rules, method = "matrix", control = list(reorder = "none"))
+```
