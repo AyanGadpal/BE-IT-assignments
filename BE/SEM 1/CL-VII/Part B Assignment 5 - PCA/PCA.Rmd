@@ -1,0 +1,69 @@
+---
+title: "PCA"
+author: "43308_Ayan_Gapdapl_P11"
+date: "07/11/2020"
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(Amelia)
+library(ggrepel)
+require(graphics)
+library(ggbiplot)
+
+```
+# Read Dataset
+
+```{r}
+db <- read.csv("Train.csv")
+db$Item_Identifier <- NULL # Remove 
+dim(db)
+```
+
+```{r}
+summary(db)
+```
+#### Convert Catogrical to numeic
+
+```{r}
+Type_peau<-as.factor(unique(db$Item_Type))
+Type_peau
+unclass(Type_peau)
+must_convert<-sapply(db,is.factor)       # logical vector telling if a variable needs to be displayed as numeric
+M2<-sapply(db[,must_convert],unclass)    # data.frame of all categorical variables now displayed as numeric
+out<-cbind(db[,!must_convert],M2)        # complete data.frame with all variables put together
+```
+```{r}
+summary(out)
+db<-out
+```
+# Handle Missing Values
+```{r}
+missmap(db)
+for(i in 1:ncol(db)){
+  db[is.na(db[,i]), i] <- mean(db[,i], na.rm = TRUE)
+}
+missmap(db)
+```
+# PCA
+
+```{r}
+pca <- prcomp(db, scale=TRUE) 
+summary(pca)
+plot(pca,type="l")
+
+
+#Working of Variation 
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
+barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", ylab="Percent Variation")
+biplot(pca)
+```
+# Manual Eigen Vector
+```{r}
+##Get the covarience matrix and eigen vector.
+matrix_form = matrix(c(db$Item_Weight, db$Item_MRP, db$Item_Visibility, db$Item_Outlet_Sales, db$Item_Fat_Content,  db$Item_Type, db$Outlet_Establishment_Year, db$Outlet_Identifier, db$Outlet_Size, db$Outlet_Location_Type, db$Outlet_Type), ncol=11)
+m = cov(matrix_form)
+eigenV = eigen(m)
+eigenV$vectors
+```
