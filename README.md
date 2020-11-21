@@ -10,5 +10,5 @@ This repository contains my all practical assignment codes performmed during my 
 ### [SEM 2 Completed](https://github.com/AyanGadpal/BE-IT-assignments/tree/master/TE/Sem%202)
 
 ## BE
-### SEM 1 Current
+### [SEM 1 Current](https://github.com/AyanGadpal/BE-IT-assignments/tree/master/BE/SEM%201)
 ### SEM 2
