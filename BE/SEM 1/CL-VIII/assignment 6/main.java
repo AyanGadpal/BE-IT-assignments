@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 import java.util.ArrayList;
-
+import java.util.*;
 
 class NGO_data 
 {
@@ -102,6 +102,16 @@ class Consumer extends User {
         return c_id;
     }
 
+ // Get all the details of consumer
+    public boolean getStatus() {
+        return status;
+    }
+
+    // Check whether food is delivered to consumer or not
+    public void setStatus() {
+        status=true;
+    }
+
     // Get all the details of consumer
     public String getDetails() {
         return null;
@@ -121,9 +131,11 @@ class Consumer extends User {
 
 class Volunteer extends User {
     // Attributes of Consumer
-    private int v_id, status, duration;
+    private int v_id, duration;
+    boolean status;
     private String organization, why_to_join, area;
     private Vector<Boolean> working_days;
+    private boolean status;
 
     Volunteer(int v_id, int status, String organization, String why_to_join, String area, int duration, Vector<Boolean> working_days) {
         if(isValid(status, duration, working_days)) {
@@ -140,8 +152,13 @@ class Volunteer extends User {
         }
     }
 
+    public boolean compareArea(String area)
+    {
+        return this.area.equals(area);
+    }
+
     // Validate status and duration of volunteer
-    boolean isValid(int status, int duration, Vector<Boolean> working_days) {
+    private boolean isValid(int status, int duration, Vector<Boolean> working_days) {
         if((status < -1 && status > 1) || ( duration == 0 || duration >= 8 ) || working_days.size() != 7)
             return false;
         return true;
@@ -159,17 +176,17 @@ class Volunteer extends User {
     }
     
     // Set Status
-    public void setStatus(String status)
+    public void setStatus()
     {
-        /* Set status of volunteer*/
+       status=true;
     }
 
     
      // Get Status of volunteer
-    public String getStatus()
+    public boolean getStatus()
     {
         /* Get status of volunteer*/
-        return null;
+        return status;
     }
     
     // Reset Status of Volunteer
@@ -304,23 +321,52 @@ class Volunteer_Report extends Report{
             groupQuries();
     }
     //method for fetching data as per report type
-    public void SingleQuries() {/**/};
-    public void groupQuries() {/**/};
+    public void SingleQuries() {/*
+        Queries for fetching Single data
+    */};
+    public void groupQuries() {/*
+        Queries for fetching Grouped data
+    */};
     
 }
 
 class Donation_Report extends Report{
     private Vector<Donation> donations ;
+    Donation_Report(Vector<Donation> donations)
+    {
+        this.donations = donations ;
+        if(this.donations.size() == 1)
+            SingleQuries();
+        else 
+            groupQuries();
+    }
     //method for fetching data as per report type
-    public void SingleQuries() {/* */};
-    public void groupQuries() {/* */};
+    public void SingleQuries() {/*
+        Queries for fetching Single data
+    */};
+    public void groupQuries() {/*
+        Queries for fetching Grouped data
+    */};
 }
 
 class Consumer_Report extends Report{
-    private Vector<Consumer> consumer ;
+    private Vector<Consumer> consumer_list ;
+        Consumer_Report(Vector<Consumer> Consumer_list)
+    {
+        this.Consumer_list = Consumer_list;
+        if (this.Consumer_list.size() == 1)
+            SingleQuries();
+        else
+            groupQuries();
+    }
+
     //method for fetching data as per report type
-    public void SingleQuries() {/* */};
-    public void groupQuries() {/* */};
+    public void SingleQuries() {/*
+        Queries for fetching Single data
+    */};
+    public void groupQuries() {/*
+        Queries for fetching Grouped data
+    */};
 }
 
 class Admin extends User {
@@ -351,26 +397,54 @@ class Admin extends User {
         return null;
     }
 
-    /* Get the report of Volunteer / Consumer / Donor */
-    public String VolunteerReport() {
+    /* Get the report of Volunteer*/
+    public void VolunteerReport() {
         
-        return null;
+
+    }
+    /* Get the report of Consumer  */
+    public void ConsumerReport() {
+        
+
+    }
+
+    public void DonationReport() {
+        
+
     }
 }
 
 class Mapping{
-    Vector<Volunteer> VolunteerGroup;
+   
+    Vector<Volunteer> volGrp;
     Consumer consumer;
     Date transactionDate;
-    private int status;
 
-    public void setVolunteerGroup(Vector<Volunteer> v){
+    public void getConsumer(Consumer c)
+    {
+        consumer=c;
+        consumer.setStatus();
+    }
+
+    // Assume the Volunteer from DB
+    public void getVolunteerGroup(Vector<Volunteer> v,String area){
         /*Get volunteers by group*/
-        // Volunteer_Report V = new Volunteer_Report();
+        this.volGrp = new Vector<Volunteer>();
+        // Iterator<Volunteer> value = v.iterator(); 
+        for(int index = 0; index < v.size(); index++) {
+            // Policy
+            if(v.get(index).compareArea(area))
+            {
+                // put the volunteers which satisfy the policy 
+                // into volunteer group
+                v.get(index).setStatus();
+                this.volGrp.add(v.get(index));
+            }
+        }
+           
     }
     
 }
-
 
 public class main {
     NGO_data global_Ngo_data;
