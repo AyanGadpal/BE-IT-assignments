@@ -354,17 +354,21 @@ class Consumer_Report extends Report{
 
 class Admin extends User {
     private String password;
-
+    private boolean session;
     /* Set Password */
     private void setPassword(String password) {
         this.password=password;
+        session = false;
         // Return Nothing
     }
 
     /* Checks Password*/
     private boolean checkPassword(String passwd) {
         if(password.equals(passwd))
+        {
+            session = true;
             return true;
+        }
         else
             return false;
     }
