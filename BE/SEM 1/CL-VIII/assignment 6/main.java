@@ -400,17 +400,16 @@ class Admin extends User {
     /* Get the report of Volunteer*/
     public void VolunteerReport() {
         
-
+        Volunteer_Report Cr = new Volunteer_Report();
     }
     /* Get the report of Consumer  */
     public void ConsumerReport() {
-        
-
+      Consumer_Report Cr = new Consumer_Report();
     }
 
     public void DonationReport() {
         
-
+        Donation_Report Cr = new Donation_Report();
     }
 }
 
