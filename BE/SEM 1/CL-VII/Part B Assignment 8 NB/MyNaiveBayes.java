@@ -29,7 +29,7 @@ public class MyNaiveBayes {
 		int trainSize = (int) Math.round(dataset.numInstances() * 0.8);
 		int testSize = dataset.numInstances() - trainSize;
 
-		dataset.randomize(new Debug.Random(1));// if you comment this line the accuracy of the model will be droped from 96.6% to 80%
+		dataset.randomize(new Debug.Random(1));
 		
 
 		Instances training = new Instances(dataset, 0, trainSize);
